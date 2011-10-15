@@ -61,7 +61,6 @@ public class CrazyPuzzleActivity extends Activity implements View.OnTouchListene
         outState.putBundle(ICICLE_KEY, mPuzzleView.saveState());
     }
 
-	@Override
 	public boolean onTouch(View v, MotionEvent event) 
 	{
 		return mPuzzleView.onTouch(v, event);
