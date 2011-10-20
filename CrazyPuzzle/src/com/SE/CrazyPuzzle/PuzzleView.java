@@ -178,9 +178,8 @@ public class PuzzleView extends View
     public boolean onTouch(View v, MotionEvent event)
     {
     	Index index;
-		float x = event.getXPrecision()*event.getX()+event.getX();
-		float y = event.getYPrecision()*event.getY()+event.getY();
-		Toast.makeText(v.getContext(), "X:" + x + " Y:" + y, Toast.LENGTH_SHORT).show();
+		float x = event.getX();
+		float y = event.getY();
 		
 		index = CoordinateToIndex(x, y);
 		if(index.x == 2012 || index.y == 2012)
