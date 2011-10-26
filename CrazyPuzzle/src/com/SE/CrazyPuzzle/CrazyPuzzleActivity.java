@@ -23,7 +23,7 @@ public class CrazyPuzzleActivity extends Activity implements View.OnTouchListene
         setContentView(R.layout.main);
         
         mPuzzleView = (PuzzleView) findViewById(R.id.puzzle);
-        mPuzzleView.setTextView((TextView) findViewById(R.id.text));
+        mPuzzleView.setTextView((TextView) findViewById(R.id.score));
         mPuzzleView.setOnTouchListener(this);
 
         if (savedInstanceState == null) 
