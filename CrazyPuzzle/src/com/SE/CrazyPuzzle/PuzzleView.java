@@ -66,6 +66,12 @@ public class PuzzleView extends View
     
     private final Puzzle mPuzzle = new Puzzle();
     
+    // Movement tracking
+	private float upX = 0.0f;
+	private float upY = 0.0f;
+	private float downX = 0.0f;
+	private float downY = 0.0f;
+    
     public PuzzleView(Context context, AttributeSet attrs) 
 	{
 		super(context, attrs);
@@ -177,7 +183,9 @@ public class PuzzleView extends View
     
     public boolean onTouch(View v, MotionEvent event)
     {
+    	
     	Index index;
+
 		float x = event.getX();
 		float y = event.getY();
 		
@@ -190,6 +198,9 @@ public class PuzzleView extends View
 		switch (event.getAction()) 
 		{
 		case MotionEvent.ACTION_DOWN:
+			downX = event.getX();
+			downY = event.getY();
+			/*
 			if (mBrickGrid[index.x][index.y] < 2012) 
         	{
         		if(mBrickGrid[index.x][index.y] < BLANK)
@@ -197,13 +208,36 @@ public class PuzzleView extends View
         			mBrickGrid[index.x][index.y] = mBrickGrid[index.x][index.y] + 15;
         			invalidate();
         		}
-        	}
+        	}*/
 			break;
 		case MotionEvent.ACTION_MOVE:
-        	//mStatusText.setText("ACTION_MOVE");
-        	//mStatusText.setVisibility(View.VISIBLE);
 			break;
 		case MotionEvent.ACTION_UP:
+			upX = event.getX();
+			upY = event.getY();
+			
+	    	Index downIndex;
+	    	Index upIndex;
+	    	
+			downIndex = CoordinateToIndex(downX, downY);
+			upIndex = CoordinateToIndex(upX, upY);
+			
+			// Check for drag on column
+			if ((upIndex.x == downIndex.x) && (Math.abs(upIndex.y - downIndex.y) == 4)) {
+				String equation = Integer.toString(mBrickGrid[upIndex.x][0]) 
+								+ mBrickGrid[upIndex.x][1] 
+								+ mBrickGrid[upIndex.x][2]
+								+ mBrickGrid[upIndex.x][3]
+								+ mBrickGrid[upIndex.x][4];
+				Toast.makeText(v.getContext(), equation + "\nColumn " + upIndex.x + "\nDetected", Toast.LENGTH_SHORT).show();
+
+			}
+			
+			// Check for drag on row
+			if ((upIndex.y == downIndex.y) && (Math.abs(upIndex.x - downIndex.x) == 4)) {
+				Toast.makeText(v.getContext(), "Row " + upIndex.y + "\nDetected", Toast.LENGTH_SHORT).show();
+			}
+			
 			if (mBrickGrid[index.x][index.y] < 2012) 
         	{
         		if(mBrickGrid[index.x][index.y] > BLANK)
@@ -215,6 +249,7 @@ public class PuzzleView extends View
         	mPuzzle.ChangePuzzle(index.x, index.y);
         	mBrickGrid = mPuzzle.GetPuzzle();
         	invalidate();
+        	
 			break;
 		default:
 			break;
