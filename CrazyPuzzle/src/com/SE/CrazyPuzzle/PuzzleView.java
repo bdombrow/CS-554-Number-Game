@@ -214,8 +214,14 @@ public class PuzzleView extends View
 			downX = event.getX();
 			downY = event.getY();
 			
-			// This the code that blanked a button on press, it interferes with drag detection.
-			/*
+			break;
+		case MotionEvent.ACTION_MOVE:
+			// What to do while the finger is moving.
+			
+			// Commenting out the break will fall through to ACTION_UP.
+			
+			// This will change the tiles while moving.
+			// Need to undo this on ACTION_UP
 			if (mBrickGrid[index.x][index.y] < 2012) 
         	{
         		if(mBrickGrid[index.x][index.y] < BLANK)
@@ -223,14 +229,20 @@ public class PuzzleView extends View
         			mBrickGrid[index.x][index.y] = mBrickGrid[index.x][index.y] + 15;
         			invalidate();
         		}
-        	}*/
-			break;
-		case MotionEvent.ACTION_MOVE:
-			// What to do while the finger is moving.
-			
-			// Commenting out the break will fall through to ACTION_UP.
+        	}
 			break;
 		case MotionEvent.ACTION_UP:
+			
+			// Un-highlight tiles
+			for (int i = 0; i < mXBrickCount; ++i) {
+				for (int j = 0; j < mYBrickCount; ++j) {
+					if (mBrickGrid[i][j] > BLANK) {
+						mBrickGrid[i][j] -= 15;
+					}
+				}
+				
+			}
+			invalidate();
 			
 			// Record the up coordinates
 			upX = event.getX();
