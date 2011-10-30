@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
+import android.os.Bundle; 
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -71,7 +71,10 @@ public class PuzzleView extends View
 	private float upY = 0.0f;
 	private float downX = 0.0f;
 	private float downY = 0.0f;
-    
+	
+	// Math game
+	private MathGame currentGame = new MathGame();
+	
     public PuzzleView(Context context, AttributeSet attrs) 
 	{
 		super(context, attrs);
@@ -87,6 +90,10 @@ public class PuzzleView extends View
     public void setTextView(TextView newView) 
     {
         mStatusText = newView;
+        
+        // Set the StatusText to the current score.
+        mStatusText.setText(currentGame.getScore());
+        mStatusText.setVisibility(View.VISIBLE);
     }
 	
     private void initPuzzleView() 
@@ -95,6 +102,7 @@ public class PuzzleView extends View
 
         mXBrickCount = 5;
         mYBrickCount = 5;
+    
     }
     
     public void resetBricks(int brickcount) 
@@ -189,17 +197,24 @@ public class PuzzleView extends View
 		float x = event.getX();
 		float y = event.getY();
 		
+		
+		// The touch was outside the grid, ignore it
 		index = CoordinateToIndex(x, y);
 		if(index.x == 2012 || index.y == 2012)
 		{
 			return true;
 		}
 		
+		// The initial touch downward
 		switch (event.getAction()) 
 		{
 		case MotionEvent.ACTION_DOWN:
+			
+			// Record the initial down coordinates
 			downX = event.getX();
 			downY = event.getY();
+			
+			// This the code that blanked a button on press, it interferes with drag detection.
 			/*
 			if (mBrickGrid[index.x][index.y] < 2012) 
         	{
@@ -211,10 +226,17 @@ public class PuzzleView extends View
         	}*/
 			break;
 		case MotionEvent.ACTION_MOVE:
+			// What to do while the finger is moving.
+			
+			// Commenting out the break will fall through to ACTION_UP.
 			break;
 		case MotionEvent.ACTION_UP:
+			
+			// Record the up coordinates
 			upX = event.getX();
 			upY = event.getY();
+
+			//((TextView)findViewById(R.id.score)).setText("Up");
 			
 	    	Index downIndex;
 	    	Index upIndex;
@@ -224,20 +246,33 @@ public class PuzzleView extends View
 			
 			// Check for drag on column
 			if ((upIndex.x == downIndex.x) && (Math.abs(upIndex.y - downIndex.y) == 4)) {
-				String equation = Integer.toString(mBrickGrid[upIndex.x][0]) 
-								+ mBrickGrid[upIndex.x][1] 
-								+ mBrickGrid[upIndex.x][2]
-								+ mBrickGrid[upIndex.x][3]
-								+ mBrickGrid[upIndex.x][4];
-				Toast.makeText(v.getContext(), equation + "\nColumn " + upIndex.x + "\nDetected", Toast.LENGTH_SHORT).show();
-
+				int points = currentGame.submit(columnToString(upIndex.x));
+				if (points > 0) {
+					Toast.makeText(v.getContext(), Integer.toString(points), Toast.LENGTH_SHORT).show();
+		        	mStatusText.setText(currentGame.getScore());
+		        	mStatusText.setVisibility(View.VISIBLE);
+				} else {
+					// Play a sound and vibrate?
+				}
+				
+				// Break out of the on up to avoid tile press detection.
+				break;
 			}
 			
 			// Check for drag on row
 			if ((upIndex.y == downIndex.y) && (Math.abs(upIndex.x - downIndex.x) == 4)) {
-				Toast.makeText(v.getContext(), "Row " + upIndex.y + "\nDetected", Toast.LENGTH_SHORT).show();
+				int points = currentGame.submit(rowToString(upIndex.y));
+				if (points > 0) {
+					Toast.makeText(v.getContext(), Integer.toString(points), Toast.LENGTH_SHORT).show();
+		        	mStatusText.setText(currentGame.getScore());
+		        	mStatusText.setVisibility(View.VISIBLE);
+				}
+				
+				// Break out of the on up to avoid tile press detection.
+				break;
 			}
 			
+			// No drag, then it should be a tile press.
 			if (mBrickGrid[index.x][index.y] < 2012) 
         	{
         		if(mBrickGrid[index.x][index.y] > BLANK)
@@ -284,6 +319,12 @@ public class PuzzleView extends View
         	mStatusText.setText("KEYCODE_DPAD_RIGHT");
         	mStatusText.setVisibility(View.VISIBLE);
         }
+        
+        if (keyCode == KeyEvent.KEYCODE_MENU)
+        {
+        	mStatusText.setText("KEYCODE_MENU");
+        	mStatusText.setVisibility(View.VISIBLE);
+        }
 
         return super.onKeyDown(keyCode, msg);
     }
@@ -327,6 +368,62 @@ public class PuzzleView extends View
         //mMoveDelay = icicle.getLong("mMoveDelay");
     }
     
+    /*
+     * Functions for converting the brick grid into a string
+     */
+    
+    private String columnToString(int x){
+    	String equation = "";
+    	for (int i = 0; i < 5; ++i) {
+    		equation += brickToString(mBrickGrid[x][i]);
+    	}
+    	return equation;
+    }
+    
+    private String rowToString(int y){
+    	String equation = "";
+    	for (int i = 0; i < 5; ++i) {
+    		equation += brickToString(mBrickGrid[i][y]);
+    	}
+    	return equation;
+    }
+    
+    // Convert a brick grid element to its corresponding text
+    // There might be a better way to do this
+    private String brickToString(int x) {
+    	switch(x) {
+    	case NUM_0:
+    		return "0";
+    	case NUM_1:
+    		return "1";
+    	case NUM_2:
+    		return "2";
+    	case NUM_3:
+    		return "3";
+    	case NUM_4:
+    		return "4";
+    	case NUM_5:
+    		return "5";
+    	case NUM_6:
+    		return "6";
+    	case NUM_7:
+    		return "7";
+    	case NUM_8:
+    		return "8";
+    	case NUM_9:
+    		return "9";
+    	case OP_PL:
+    		return "+";
+    	case OP_MN:
+    		return "-";
+    	case OP_MT:
+    		return "*";
+    	case OP_EQ:
+    		return "=";
+    	default:
+    		return "";
+    	}
+    }
     private class Index 
     {
         public int x;

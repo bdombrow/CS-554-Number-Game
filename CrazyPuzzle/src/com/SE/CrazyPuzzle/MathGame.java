@@ -34,14 +34,15 @@ public class MathGame {
 		return Integer.toString(score);
 	}
 	
-	public void submit(CharSequence inputString) {
+	public int submit(CharSequence inputString) {
 		Integer result = (Integer)equationTable.get(NormalizeEquation(inputString));
 		if (result != null) {
 			// We have a winner. Increment score and remove it from the table
 			score += result;
 			equationTable.remove(NormalizeEquation(inputString));
+			return result;
 		}
-		return;
+		return -1;
 
 	}
 
