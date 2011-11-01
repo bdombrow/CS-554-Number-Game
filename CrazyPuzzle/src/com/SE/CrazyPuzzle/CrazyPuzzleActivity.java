@@ -7,11 +7,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-public class CrazyPuzzleActivity extends Activity implements View.OnTouchListener
+public class CrazyPuzzleActivity extends Activity implements View.OnTouchListener, View.OnClickListener
 {
     private PuzzleView mPuzzleView;
+    
+    private Button button1;
+    private Button button2;
     
     private static String ICICLE_KEY = "puzzle-view";
 
@@ -25,6 +29,19 @@ public class CrazyPuzzleActivity extends Activity implements View.OnTouchListene
         mPuzzleView = (PuzzleView) findViewById(R.id.puzzle);
         mPuzzleView.setTextView((TextView) findViewById(R.id.text));
         mPuzzleView.setOnTouchListener(this);
+        
+        /*
+         * 
+         * 28 October 2011 - FWS
+         * Added the Scramble and Unscramble buttons
+         * 
+        */
+		button1 = (Button)findViewById(R.id.scrambleButton);
+		button1.setOnClickListener(this);
+
+		button2 = (Button)findViewById(R.id.unscrambleButton);
+		button2.setOnClickListener(this);
+		
 
         if (savedInstanceState == null) 
         {
@@ -64,5 +81,19 @@ public class CrazyPuzzleActivity extends Activity implements View.OnTouchListene
 	public boolean onTouch(View v, MotionEvent event) 
 	{
 		return mPuzzleView.onTouch(v, event);
+	}
+
+    /*
+     * 
+     * 28 October 2011 - FWS
+     * Added the onClick() method
+     * 
+    */
+	public void onClick(View v)
+	{
+		if (v == button1)
+			mPuzzleView.Scramble();
+		if (v == button2)
+			mPuzzleView.UnScramble();
 	}
 }

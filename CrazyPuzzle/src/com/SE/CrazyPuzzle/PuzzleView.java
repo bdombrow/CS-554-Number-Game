@@ -173,6 +173,27 @@ public class PuzzleView extends View
 		
     	return new Index(2012, 2012);
     }
+
+    /*
+     * 
+     * 28 October 2011 - FWS
+     * Added the Scramble() and UnScramble() methods
+     * 
+    */
+    public void Scramble()
+    {
+		mPuzzle.ScramblePuzzle();
+		mBrickGrid = mPuzzle.GetPuzzle();
+		invalidate();
+    }
+    
+    public void UnScramble()
+    {
+		mPuzzle.UnScramblePuzzle();
+		mBrickGrid = mPuzzle.GetPuzzle();
+		invalidate();
+    }
+
     
     public boolean onTouch(View v, MotionEvent event)
     {

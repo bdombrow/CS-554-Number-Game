@@ -23,5 +23,27 @@
 			android:gravity="center_horizontal"
 			android:textColor="#ff8888ff"
 			android:textSize="24sp"/>
+    		
+		<Button 
+			android:text="Scramble" 
+			android:id="@+id/scrambleButton" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:layout_alignParentBottom="true" 
+			android:layout_alignParentLeft="true" 
+			android:layout_marginLeft="24dp" 
+			android:layout_marginBottom="14dp"
+			/>
+			
+		<Button 
+			android:text="UnScramble" 
+			android:id="@+id/unscrambleButton" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:layout_alignBottom="@+id/scrambleButton" 
+			android:layout_alignParentRight="true" 
+			android:layout_marginRight="24dp"
+			/>
+
 	</RelativeLayout>
 </FrameLayout>

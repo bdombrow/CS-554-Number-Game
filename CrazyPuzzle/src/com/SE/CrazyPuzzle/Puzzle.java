@@ -63,6 +63,7 @@ public class Puzzle
         
         mXBlankBrick = 4;
         mYBlankBrick = 4;
+        numScrambles = 0;
 
         return mPuzzleGrid;
 	}
@@ -91,7 +92,7 @@ public class Puzzle
     public boolean ChangePuzzle(int x, int y)
     {
     	int i;
-    	
+	    playerMovedTile = true;
     	if((x == mXBlankBrick) && (y != mYBlankBrick))
     	{
     		if(y < mYBlankBrick)
@@ -141,4 +142,142 @@ public class Puzzle
     	
     	return true;
     }
+    
+    /*
+     * 
+     * 28 October 2011 - FWS
+     * Added the ScramblePuzzle() and UnScramblePuzzle() methods
+     * 
+    */
+    protected static boolean playerMovedTile = true;  // player moves are not tracked yet 
+    protected static int numScrambles = 0;  // only 1 scramble per unscramble currently allowed 
+    protected static int numRandomMoves = 100;  // 100 random moves arbitrarily chosen  
+    protected static int[] RandomMoves = new int[numRandomMoves];
+    public void ScramblePuzzle()
+    {
+    	if (numScrambles > 0)  //only 1 scramble per unscramble currently allowed 
+    		return;
+		   
+	    // generate random moves of the blank space 
+	    //   left  = 1
+	    //   right = 2
+	    //   up    = 3
+	    //   down  = 4
+	    int low = 1;
+	    int high = 4;
+	    for (int i=0; i<numRandomMoves; i++)
+	    	RandomMoves[i] = (int)(Math.random() * 100) % high + low;
+	    
+	    // calculate single number for the index of the blank space
+	    int BlankIndex =  (mYBlankBrick * mYBrickCount) + mXBlankBrick;
+	    
+	    // newIndex will be the new index of the blank space
+	    // and it is also the current index of the tile that will move
+	    int newIndex = 0;
+	   
+	    for (int i=0; i<numRandomMoves; i++)
+	    {
+	    	switch (RandomMoves[i])
+	    	{
+	        	// blank space left
+	        	case 1:
+	        		if (mXBlankBrick != 0) // cannot move left from leftmost column
+	        			newIndex = BlankIndex - 1;
+	        		else
+	        			RandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
+	        		break;
+
+	        	// blank space right
+	        	case 2:
+	        		if (mXBlankBrick != mXBrickCount-1)  // cannot move right from rightmost column
+	        			newIndex = BlankIndex + 1;
+	        		else
+	        			RandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
+	        		break;
+	          
+	        	// blank space up
+	        	case 3:
+	        		if (mYBlankBrick != 0)  // cannot move up from the topmost row
+	        			newIndex = BlankIndex - mXBrickCount;
+	        		else
+	        			RandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
+	        		break;
+	          
+	        	// blank space down
+	        	case 4:
+	        		if (mYBlankBrick != mYBrickCount-1)  // cannot move down from the bottom most row
+	        			newIndex = BlankIndex + mXBrickCount;
+	        		else
+	        			RandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
+	        		break;
+	    	}
+	      
+	    	if (RandomMoves[i] != 5)
+	    	{
+	    		BlankIndex = newIndex;  // set the new index of the blank space
+	    	  	int x = newIndex % mXBrickCount;  // calculate x or column index
+	    	  	int y = (newIndex - x)/ mYBrickCount;  // calculate y or row index
+				ChangePuzzle(x,y);
+	    	}
+	    }
+	    numScrambles = 1;  // increment scramble count
+	    playerMovedTile = false;  // enable unscramble
+	    return;
+	}
+	    
+    
+    public void UnScramblePuzzle()
+    {
+    	if (numScrambles == 0)  //only 1 unscramble per scramble currently allowed
+    		return;
+    	if (playerMovedTile)  // player moves are not tracked yet
+    	{
+    		numScrambles = 0;
+    		return;
+    	}
+    	
+	    int BlankIndex =  (mYBlankBrick * mYBrickCount) + mXBlankBrick;
+	    int newIndex = 0;
+        for (int i=(numRandomMoves-1); i>=0; i--)  // read the random moves in reverse order
+        {
+        	switch (RandomMoves[i])
+        	{
+            	// blank space left for the original move right
+            	case 2:
+            		newIndex = BlankIndex - 1;
+            		break;
+
+            	// blank space right for the original move left
+            	case 1:
+            		newIndex = BlankIndex + 1;
+            		break;
+            		
+            	// blank space up for the original move down
+            	case 4:
+            		newIndex = BlankIndex - mXBrickCount;
+            		break;
+            		
+            	// blank space down for the original move up
+            	case 3:
+            		newIndex = BlankIndex + mXBrickCount;
+            		break;
+            		
+            	// no move
+            	case 5:
+            		break;
+        	}
+        	
+	    	if (RandomMoves[i] != 5)
+	    	{
+	    		BlankIndex = newIndex;  // set the new index of the blank space
+	    	  	int x = newIndex % mXBrickCount;  // calculate x or column index
+	    	  	int y = (newIndex - x)/ mYBrickCount;  // calculate y or row index
+				ChangePuzzle(x,y);
+	    	}
+        }
+        
+    	numScrambles = 0;  // decrement scramble count
+        return;
+    }
+
 }
