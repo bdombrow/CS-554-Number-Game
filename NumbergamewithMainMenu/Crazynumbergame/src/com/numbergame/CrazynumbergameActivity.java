@@ -19,7 +19,7 @@ public class CrazynumbergameActivity extends Activity {
         				sleep(100);
         				logoTimer = logoTimer + 300;
         			}
-        			startActivity( new Intent("com.numbergame.MenuScreen"));
+        			startActivity( new Intent("com.numbergame.CrazyPuzzleActivity"));
         		} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

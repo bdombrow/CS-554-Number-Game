@@ -39,8 +39,10 @@ View.OnClickListener myListener = new View.OnClickListener(){
 		switch(v.getId()){
 		case R.id.Equation:	
 			    	
-			startActivity(new Intent("com.numbergame.CrazyPuzzleActivity"));	
-				    	
+			//startActivity(new Intent("com.numbergame.CrazyPuzzleActivity"));	
+			
+			startActivity( new Intent("com.numbergame.CrazyPuzzleActivity"));
+			
 			//break;	    	
 	case R.id.Numbers:
 		break;
