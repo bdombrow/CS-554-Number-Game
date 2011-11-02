@@ -47,12 +47,13 @@ public class MathGame {
 		}
 
 		private String NormalizeEquation(CharSequence inputCharSequence) {
-			// Make sure it's the right length
-			if (inputCharSequence.length() != 5) {
-				return null;
-			}
 			// CharSequences are read only, convert to a string to manipulate.
 			String inputString = inputCharSequence.toString();
+			
+			// Make sure it's the right length
+			if (inputCharSequence.length() != 5) {
+				return inputString;
+			}
 
 			// Is there an = at position 2?
 			if (inputString.charAt(1) == '=') {
