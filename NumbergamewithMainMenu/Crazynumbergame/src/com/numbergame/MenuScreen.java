@@ -49,7 +49,7 @@ public class MenuScreen extends Activity {
 				break;
 			case R.id.Help:
 				AlertDialog.Builder alert = new AlertDialog.Builder(MenuScreen.this);
-				alert.setMessage("DUMMY DUMMY DUMMY DUMMY DUMMY DUMMYDUMMY DUMMY DUMMYDUMMY DUMMY DUMMY");
+				alert.setMessage("Arrange the tiles to form math equations\n Swipe accross to submit the equation and score points.\n The same equation can not be used more than once.");
 				alert.show();
 				break;
 			}
