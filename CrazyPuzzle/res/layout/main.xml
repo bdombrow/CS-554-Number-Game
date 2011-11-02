@@ -24,15 +24,23 @@
 			android:layout_marginTop="20dp"
 			android:textColor="#ffffffff"
 			android:textSize="24sp"/>
-
-		<Button
-		    android:id="@+id/scramble"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentBottom="true"
-		    android:layout_centerHorizontal="true"
-		    android:layout_marginBottom="20dp"
-		    android:text="Scramble" />
+		<Button 
+			android:layout_width="wrap_content" 
+			android:id="@+id/scrambleButton" 
+			android:layout_height="wrap_content" 
+			android:text="Scramble" 
+			android:layout_alignParentBottom="true" 
+			android:layout_toLeftOf="@+id/score" 
+			android:layout_marginRight="17dp" 
+			android:layout_marginBottom="14dp"/>
+		<Button 
+			android:layout_width="wrap_content" 
+			android:id="@+id/unscrambleButton" 
+			android:layout_height="wrap_content" 
+			android:text="UnScramble" 
+			android:layout_alignBaseline="@+id/scrambleButton" 
+			android:layout_alignBottom="@+id/scrambleButton" 
+			android:layout_toRightOf="@+id/score"/>
 
 	</RelativeLayout>
 </FrameLayout>
