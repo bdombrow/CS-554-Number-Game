@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle; 
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.media.MediaPlayer;
 
 public class PuzzleView extends View
 	{
@@ -264,6 +266,8 @@ public class PuzzleView extends View
 			        	mStatusText.setText(currentGame.getScore());
 			        	mStatusText.setVisibility(View.VISIBLE);
 					} else {
+						//MediaPlayer mp3 = MediaPlayer.create(PuzzleView.this, R.raw.button);
+					        //mpSplash.start();
 						// Play a sound and vibrate?
 					}
 					
