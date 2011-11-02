@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+//import android.widget.ImageView;
 
 public class MenuScreen extends Activity {
      private Button bHelp = null;
@@ -34,25 +34,25 @@ public class MenuScreen extends Activity {
 	bExit.setOnClickListener(myListener);
 }
 
-View.OnClickListener myListener = new View.OnClickListener(){   
-	public void  onClick  (View  v){        	
-		switch(v.getId()){
-		case R.id.Equation:	
-			    	
-			startActivity(new Intent("com.numbergame.CrazyPuzzleActivity"));	
-				    	
-			//break;	    	
-	case R.id.Numbers:
-		break;
-	case R.id.Exit:
-		finish();
-		break;
-	case R.id.Help:
-		AlertDialog.Builder alert = new AlertDialog.Builder(MenuScreen.this);
-		alert.setMessage("DUMMY DUMMY DUMMY DUMMY DUMMY DUMMYDUMMY DUMMY DUMMYDUMMY DUMMY DUMMY");
-		alert.show();
-		break;
+	View.OnClickListener myListener = new View.OnClickListener(){   
+		public void  onClick  (View  v){        	
+			switch(v.getId()){
+			case R.id.Equation:	
+
+				startActivity(new Intent("com.numbergame.CrazyPuzzleActivity"));
+
+				break;	    	
+			case R.id.Numbers:
+				break;
+			case R.id.Exit:
+				finish();
+				break;
+			case R.id.Help:
+				AlertDialog.Builder alert = new AlertDialog.Builder(MenuScreen.this);
+				alert.setMessage("DUMMY DUMMY DUMMY DUMMY DUMMY DUMMYDUMMY DUMMY DUMMYDUMMY DUMMY DUMMY");
+				alert.show();
+				break;
+			}
 		}
-	}
-};
+	};
 }

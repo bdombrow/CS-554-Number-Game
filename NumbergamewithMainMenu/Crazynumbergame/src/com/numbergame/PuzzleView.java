@@ -201,7 +201,8 @@ public class PuzzleView extends View
 		// The touch was outside the grid, ignore it
 		index = CoordinateToIndex(x, y);
 		if(index.x == 2012 || index.y == 2012)
-		{
+		{	
+			clearSelected();
 			return true;
 		}
 		
@@ -233,16 +234,7 @@ public class PuzzleView extends View
 			break;
 		case MotionEvent.ACTION_UP:
 			
-			// Un-highlight tiles
-			for (int i = 0; i < mXBrickCount; ++i) {
-				for (int j = 0; j < mYBrickCount; ++j) {
-					if (mBrickGrid[i][j] > BLANK) {
-						mBrickGrid[i][j] -= 15;
-					}
-				}
-				
-			}
-			invalidate();
+			clearSelected();
 			
 			// Record the up coordinates
 			upX = event.getX();
@@ -378,6 +370,19 @@ public class PuzzleView extends View
         //mAppleList = coordArrayToArrayList(icicle.getIntArray("mAppleList"));
         //mDirection = icicle.getInt("mDirection");
         //mMoveDelay = icicle.getLong("mMoveDelay");
+    }
+    
+    private void clearSelected() {
+	// Un-highlight tiles
+	for (int i = 0; i < mXBrickCount; ++i) {
+		for (int j = 0; j < mYBrickCount; ++j) {
+			if (mBrickGrid[i][j] > BLANK) {
+				mBrickGrid[i][j] -= 15;
+			}
+		}
+		
+	}
+	invalidate();
     }
     
     /*
