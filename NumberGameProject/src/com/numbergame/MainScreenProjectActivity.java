@@ -38,9 +38,9 @@ public class MainScreenProjectActivity extends Activity{
 				switch(v.getId()){
 				case R.id.Equation:	
 					    	
-				//startActivity(new Intent("com.numbergame.PuzzleProjectActivity"));	
-				Intent msg = new Intent(MainScreenProjectActivity.this,PuzzleProjectActivity.class);	
-					MainScreenProjectActivity.this.startActivity(msg);	    	
+				startActivity(new Intent("com.numbergame.PuzzleProjectActivity"));	
+//				Intent msg = new Intent(MainScreenProjectActivity.this,PuzzleProjectActivity.class);	
+//					MainScreenProjectActivity.this.startActivity(msg);	    	
 					break;	    	
 			case R.id.Numbers:
 				Intent msg1 = new Intent(MainScreenProjectActivity.this,NumbersProjectActivity.class);	
