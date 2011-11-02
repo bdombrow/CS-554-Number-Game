@@ -1,7 +1,7 @@
 package com.numbergame;
 
 import com.numbergame.R;
-import com.numbergame.PuzzleView;
+import com.numbergame.MathPuzzleView;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-public class CrazyPuzzleActivity extends Activity implements View.OnTouchListener
+public class MathPuzzleActivity extends Activity implements View.OnTouchListener
 {
-    private PuzzleView mPuzzleView;
+    private MathPuzzleView mPuzzleView;
     
     private static String ICICLE_KEY = "puzzle-view";
 
@@ -22,7 +22,7 @@ public class CrazyPuzzleActivity extends Activity implements View.OnTouchListene
 
         setContentView(com.numbergame.R.layout.puzzle);
         
-        mPuzzleView = (PuzzleView) findViewById(R.id.puzzle);
+        mPuzzleView = (MathPuzzleView) findViewById(R.id.puzzle);
         mPuzzleView.setTextView((TextView) findViewById(R.id.score));
         mPuzzleView.setOnTouchListener(this);
 

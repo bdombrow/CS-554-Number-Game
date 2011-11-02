@@ -1,6 +1,6 @@
 package com.numbergame;
 
-public class Puzzle 
+public class MathPuzzle 
 {
     private static final int NUM_0 = 0;
     private static final int NUM_1 = 1;

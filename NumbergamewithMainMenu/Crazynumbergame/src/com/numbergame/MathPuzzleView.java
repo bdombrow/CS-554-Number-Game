@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PuzzleView extends View
+public class MathPuzzleView extends View
 {
     private static final int NUM_0 = 0;
     private static final int NUM_1 = 1;
@@ -64,7 +64,7 @@ public class PuzzleView extends View
 
     private final Paint mPaint = new Paint();
     
-    private final Puzzle mPuzzle = new Puzzle();
+    private final MathPuzzle mPuzzle = new MathPuzzle();
     
     // Movement tracking
 	private float upX = 0.0f;
@@ -75,13 +75,13 @@ public class PuzzleView extends View
 	// Math game
 	private MathGame currentGame = new MathGame();
 	
-    public PuzzleView(Context context, AttributeSet attrs) 
+    public MathPuzzleView(Context context, AttributeSet attrs) 
 	{
 		super(context, attrs);
 		initPuzzleView();
 	}
 	
-	public PuzzleView(Context context, AttributeSet attrs, int defStyle)
+	public MathPuzzleView(Context context, AttributeSet attrs, int defStyle)
 	{
 		super(context, attrs, defStyle);
 		initPuzzleView();
@@ -102,6 +102,8 @@ public class PuzzleView extends View
 
         mXBrickCount = 5;
         mYBrickCount = 5;
+        
+        mBrickGrid = mPuzzle.CreateNewPuzzle(mYBrickCount, mYBrickCount);
     
     }
     
@@ -168,7 +170,8 @@ public class PuzzleView extends View
         mXOffset = ((w - (mBrickSize * mXBrickCount)) / 2);
         mYOffset = ((h - (mBrickSize * mYBrickCount)) / 2);
 
-        mBrickGrid = mPuzzle.CreateNewPuzzle(mXBrickCount, mYBrickCount);
+        //mBrickGrid = mPuzzle.CreateNewPuzzle(mXBrickCount, mYBrickCount);
+        mPuzzle.GetPuzzle();
     }
     
     private Index CoordinateToIndex(float x, float y)
