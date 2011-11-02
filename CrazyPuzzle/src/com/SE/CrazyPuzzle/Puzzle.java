@@ -35,35 +35,38 @@ public class Puzzle
 		
         clearBricks();
         
-        setBrick(NUM_0, 0, 0);
-        setBrick(NUM_1, 0, 1);
+        setBrick(NUM_4, 0, 0);
+        setBrick(OP_MT, 0, 1);
         setBrick(NUM_2, 0, 2);
-        setBrick(NUM_3, 0, 3);
-        setBrick(NUM_4, 0, 4);
-        setBrick(NUM_5, 1, 0);
-        setBrick(NUM_6, 1, 1);
-        setBrick(NUM_7, 1, 2);
-        setBrick(NUM_8, 1, 3);
-        setBrick(NUM_9, 1, 4);
-        setBrick(OP_PL, 2, 0);
+        setBrick(OP_EQ, 0, 3);
+        setBrick(NUM_8, 0, 4);
+        setBrick(OP_PL, 1, 0);
+        setBrick(NUM_7, 1, 1);
+        setBrick(OP_PL, 1, 2);
+        setBrick(NUM_6, 1, 3);
+        setBrick(OP_MN, 1, 4);
+        setBrick(NUM_5, 2, 0);
         setBrick(OP_MN, 2, 1);
-        setBrick(OP_MT, 2, 2);
+        setBrick(NUM_2, 2, 2);
         setBrick(OP_EQ, 2, 3);
-        setBrick(NUM_0, 2, 4);
-        setBrick(NUM_1, 3, 0);
-        setBrick(NUM_2, 3, 1);
-        setBrick(NUM_3, 3, 2);
-        setBrick(NUM_4, 3, 3);
-        setBrick(NUM_5, 3, 4);
-        setBrick(NUM_6, 4, 0);
-        setBrick(NUM_7, 4, 1);
-        setBrick(NUM_8, 4, 2);
-        setBrick(NUM_9, 4, 3);
-        setBrick(BLANK, 4, 4);
+        setBrick(NUM_3, 2, 4);
+        setBrick(OP_EQ, 3, 0);
+        setBrick(NUM_1, 3, 1);
+        setBrick(OP_EQ, 3, 2);
+        setBrick(BLANK, 3, 3);
+        setBrick(OP_EQ, 3, 4);
+        setBrick(NUM_9, 4, 0);
+        setBrick(OP_MN, 4, 1);
+        setBrick(NUM_4, 4, 2);
+        setBrick(OP_EQ, 4, 3);
+        setBrick(NUM_5, 4, 4);
         
-        mXBlankBrick = 4;
-        mYBlankBrick = 4;
+        mXBlankBrick = 3;
+        mYBlankBrick = 3;
+        
         numScrambles = 0;
+        numRandomMoves = 0;
+        numPlayerMoves = 0;
 
         return mPuzzleGrid;
 	}
@@ -92,7 +95,6 @@ public class Puzzle
     public boolean ChangePuzzle(int x, int y)
     {
     	int i;
-	    playerMovedTile = true;
     	if((x == mXBlankBrick) && (y != mYBlankBrick))
     	{
     		if(y < mYBlankBrick)
@@ -100,6 +102,8 @@ public class Puzzle
     			for(i=mYBlankBrick; i>y; i=i-1)
     			{
     				mPuzzleGrid[x][i] = mPuzzleGrid[x][i-1];
+    				PlayerMoves[numPlayerMoves] = 3;
+    				numPlayerMoves++;
     			}
     			setBrick(BLANK, x, i);
     			mXBlankBrick = x;
@@ -110,6 +114,8 @@ public class Puzzle
     			for(i=mYBlankBrick; i<y; i=i+1)
     			{
     				mPuzzleGrid[x][i] = mPuzzleGrid[x][i+1];
+    				PlayerMoves[numPlayerMoves] = 4;
+    				numPlayerMoves++;
     			}
     			setBrick(BLANK, x, i);
     			mXBlankBrick = x;
@@ -123,7 +129,9 @@ public class Puzzle
     			for(i=mXBlankBrick; i>x; i=i-1)
     			{
     				mPuzzleGrid[i][y] = mPuzzleGrid[i-1][y];
-    			}
+    				PlayerMoves[numPlayerMoves] = 1;
+    				numPlayerMoves++;
+   			}
     			setBrick(BLANK, i, y);
     			mXBlankBrick = x;
     			mYBlankBrick = y;
@@ -133,6 +141,8 @@ public class Puzzle
     			for(i=mXBlankBrick; i<x; i=i+1)
     			{
     				mPuzzleGrid[i][y] = mPuzzleGrid[i+1][y];
+    				PlayerMoves[numPlayerMoves] = 2;
+    				numPlayerMoves++;
     			}
     			setBrick(BLANK, i, y);
     			mXBlankBrick = x;
@@ -149,13 +159,21 @@ public class Puzzle
      * Added the ScramblePuzzle() and UnScramblePuzzle() methods
      * 
     */
-    protected static boolean playerMovedTile = true;  // player moves are not tracked yet 
-    protected static int numScrambles = 0;  // only 1 scramble per unscramble currently allowed 
-    protected static int numRandomMoves = 100;  // 100 random moves arbitrarily chosen  
-    protected static int[] RandomMoves = new int[numRandomMoves];
+    //protected static boolean playerMovedTile = true;  // player moves are not tracked yet 
+    protected static int maxScrambles = 10;  // only 10 scrambles allowed 
+    protected static int numScrambleMoves = 100;  // 100 random moves per scramble    
+    protected static int maxPlayerMoves = 1000;  // 1000 player moves before unscramble required
+    protected static int maxRandomMoves = maxScrambles * numScrambleMoves;
+    protected static int[] RandomMoves = new int[maxRandomMoves];
+    protected static int[] PlayerMoves = new int[maxPlayerMoves];
+    
+    protected static int numScrambles; 
+    protected static int numRandomMoves; 
+    protected static int numPlayerMoves; 
+
     public void ScramblePuzzle()
     {
-    	if (numScrambles > 0)  //only 1 scramble per unscramble currently allowed 
+    	if ( (numRandomMoves >= maxRandomMoves) || (numPlayerMoves > 0) )
     		return;
 		   
 	    // generate random moves of the blank space 
@@ -165,7 +183,9 @@ public class Puzzle
 	    //   down  = 4
 	    int low = 1;
 	    int high = 4;
-	    for (int i=0; i<numRandomMoves; i++)
+	    int firstIndex = numScrambles * numScrambleMoves;
+	    int lastIndex = firstIndex + numScrambleMoves;
+	    for (int i=firstIndex; i<lastIndex; i++)
 	    	RandomMoves[i] = (int)(Math.random() * 100) % high + low;
 	    
 	    // calculate single number for the index of the blank space
@@ -175,7 +195,7 @@ public class Puzzle
 	    // and it is also the current index of the tile that will move
 	    int newIndex = 0;
 	   
-	    for (int i=0; i<numRandomMoves; i++)
+	    for (int i=firstIndex; i<lastIndex; i++)
 	    {
 	    	switch (RandomMoves[i])
 	    	{
@@ -218,29 +238,38 @@ public class Puzzle
 	    	  	int x = newIndex % mXBrickCount;  // calculate x or column index
 	    	  	int y = (newIndex - x)/ mYBrickCount;  // calculate y or row index
 				ChangePuzzle(x,y);
+				numPlayerMoves--;
 	    	}
 	    }
-	    numScrambles = 1;  // increment scramble count
-	    playerMovedTile = false;  // enable unscramble
+	    numScrambles++;
+	    numRandomMoves += numScrambleMoves;
 	    return;
 	}
 	    
     
     public void UnScramblePuzzle()
     {
-    	if (numScrambles == 0)  //only 1 unscramble per scramble currently allowed
-    		return;
-    	if (playerMovedTile)  // player moves are not tracked yet
+		if (numPlayerMoves > 0)
+		{
+	    	PlayBackMoves(PlayerMoves, numPlayerMoves);
+	    	numPlayerMoves = 0;
+		}
+    	if (numRandomMoves > 0)
     	{
+    		PlayBackMoves(RandomMoves, numRandomMoves);
     		numScrambles = 0;
-    		return;
+    		numRandomMoves = 0;
     	}
+		return;
+    }
     	
+    private void PlayBackMoves(int[] moves, int numMoves)
+    {
 	    int BlankIndex =  (mYBlankBrick * mYBrickCount) + mXBlankBrick;
 	    int newIndex = 0;
-        for (int i=(numRandomMoves-1); i>=0; i--)  // read the random moves in reverse order
+        for (int i=(numMoves-1); i>=0; i--)  // read the moves in reverse order
         {
-        	switch (RandomMoves[i])
+        	switch (moves[i])
         	{
             	// blank space left for the original move right
             	case 2:
@@ -267,16 +296,15 @@ public class Puzzle
             		break;
         	}
         	
-	    	if (RandomMoves[i] != 5)
+	    	if (moves[i] != 5)
 	    	{
 	    		BlankIndex = newIndex;  // set the new index of the blank space
 	    	  	int x = newIndex % mXBrickCount;  // calculate x or column index
 	    	  	int y = (newIndex - x)/ mYBrickCount;  // calculate y or row index
 				ChangePuzzle(x,y);
+				numPlayerMoves--;
 	    	}
         }
-        
-    	numScrambles = 0;  // decrement scramble count
         return;
     }
 
