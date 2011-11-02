@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	
+	<com.numbergame.NumberPuzzleView
+		android:id="@+id/numberpuzzle"
+		android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	tileSize="24" />
+	
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" >
+		
+		<TextView
+			android:id="@+id/score"
+			android:text="@string/score"
+			android:visibility="visible"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="20dp"
+			android:textColor="#ffffffff"
+			android:textSize="24sp"/>
+
+		<Button
+		    android:id="@+id/scramble"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentBottom="true"
+		    android:layout_centerHorizontal="true"
+		    android:layout_marginBottom="20dp"
+		    android:text="Scramble" />
+
+	</RelativeLayout>
+</FrameLayout>
