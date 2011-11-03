@@ -3,6 +3,7 @@ package com.numbergame;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ public class MainScreenProjectActivity extends Activity{
     private Button bExit = null;
     private Button bEquations = null;
     private Button bNumbers = null;
+	MediaPlayer mpSplash;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -19,6 +21,17 @@ public class MainScreenProjectActivity extends Activity{
 		setContentView(R.layout.mainmenu);
 		// Button bHelp = (Button) findViewById(R.id.Help);
 				// bHelp.setOnClickListener(new View.OnClickListener() {
+        mpSplash = MediaPlayer.create(this, R.raw.daybreak);
+        mpSplash.setOnCompletionListener(
+        		new MediaPlayer.OnCompletionListener() {
+					
+					@Override
+					public void onCompletion(MediaPlayer mp) {
+						// TODO Auto-generated method stub
+						mp.start();
+					}
+				});
+        mpSplash.start();
 					
 					
 				//})
@@ -58,6 +71,14 @@ public class MainScreenProjectActivity extends Activity{
 			}
 		};
 		
+
+		@Override
+		protected void onDestroy() {
+			// TODO Auto-generated method stub
+			super.onDestroy();
+			mpSplash.release();
+			
+		}
 
 	}
     
