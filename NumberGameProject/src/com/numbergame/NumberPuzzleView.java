@@ -113,9 +113,6 @@ public class NumberPuzzleView extends View
 		    private void initNumberPuzzleView() 
 		    {
 		        setFocusable(true);
-
-		        mXNumberBrickCount = 5;
-		        mYNumberBrickCount = 5;
 		    
 		    }
 		    
@@ -138,6 +135,11 @@ public class NumberPuzzleView extends View
 		    protected void onSizeChanged(int w, int h, int oldw, int oldh) 
 		    {
 		        Resources r = this.getContext().getResources();
+
+		        mXNumberBrickCount = mNumberPuzzle.getXBrickCount();
+		        mYNumberBrickCount = mNumberPuzzle.getYBrickCount();
+
+		        mNumberBrickGrid = mNumberPuzzle.GetNumberPuzzle();
 		        
 		    	if(w > h)
 		    	{
@@ -182,8 +184,6 @@ public class NumberPuzzleView extends View
 		        
 		        mXNumberOffset = ((w - (mNumberBrickSize * mXNumberBrickCount)) / 2);
 		        mYNumberOffset = ((h - (mNumberBrickSize * mYNumberBrickCount)) / 2);
-
-		        mNumberBrickGrid = mNumberPuzzle.CreateNewNumberPuzzle(mXNumberBrickCount, mYNumberBrickCount);
 		    }
 		    
 		    private Index CoordinateToIndex(float x, float y)
@@ -375,27 +375,6 @@ public class NumberPuzzleView extends View
 		                }
 		            }
 		        }
-		    }
-		    
-		    public Bundle saveState() 
-		    {
-		    	Bundle map = mNumberPuzzle.saveState();
-
-		        //map.putIntArray("mAppleList", coordArrayListToArray(mAppleList));
-		        //map.putInt("mDirection", Integer.valueOf(mDirection));
-		        //map.putLong("mScore", Long.valueOf(mScore));
-
-		        return map;
-		    }
-		    
-		    public void restoreState(Bundle icicle) 
-		    {
-		        //setMode(PAUSE);
-
-		        //mAppleList = coordArrayToArrayList(icicle.getIntArray("mAppleList"));
-		        //mDirection = icicle.getInt("mDirection");
-		        //mMoveDelay = icicle.getLong("mMoveDelay");
-		    	mNumberPuzzle.restoreState(icicle);
 		    }
 		    
 		    /*

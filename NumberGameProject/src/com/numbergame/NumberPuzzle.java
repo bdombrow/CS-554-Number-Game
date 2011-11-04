@@ -1,6 +1,14 @@
 package com.numbergame;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.AttributeSet;
 
 public class NumberPuzzle {
 	 
@@ -87,6 +95,16 @@ public class NumberPuzzle {
 		    	mNumberPuzzleGrid[x][y] = Numberbrickindex;
 		    }
 		    
+		    public int getXBrickCount()
+		    {
+		    	return mXNumberBrickCount;
+		    }
+		    
+		    public int getYBrickCount()
+		    {
+		    	return mYNumberBrickCount;
+		    }
+		    
 		    public int[][] GetNumberPuzzle()
 		    {
 		    	return mNumberPuzzleGrid;
@@ -146,24 +164,104 @@ public class NumberPuzzle {
 		    	return true;
 		    }
 		    
-		    public Bundle saveState() 
+		    
+		    public void saveState(Bundle map) 
 		    {
-		        Bundle map = new Bundle();
+		    	int i,j;
 
 		        //map.putIntArray("mAppleList", coordArrayListToArray(mAppleList));
-		        //map.putInt("mDirection", Integer.valueOf(mDirection));
+		        map.putInt("mXNumberBrickCount", Integer.valueOf(mXNumberBrickCount));
+		        map.putInt("mYNumberBrickCount", Integer.valueOf(mYNumberBrickCount));
+		        map.putInt("mXNumberBlankBrick", Integer.valueOf(mXNumberBlankBrick));
+		        map.putInt("mYNumberBlankBrick", Integer.valueOf(mYNumberBlankBrick));
 		        //map.putLong("mScore", Long.valueOf(mScore));
+				for(i=0;i<mXNumberBrickCount;i=i+1)
+				{
+					for(j=0;j<mYNumberBrickCount;j=j+1)
+					{
+						map.putInt(Integer.toString(i)+"-"+Integer.toString(j), Integer.valueOf(mNumberPuzzleGrid[i][j]));
+					}
+				}
 
-		        return map;
+		        return;
 		    }
 		    
 		    public void restoreState(Bundle icicle) 
 		    {
-		        //setMode(PAUSE);
+		    	int i,j;
+		    	boolean neadNewPuzzle = false;
+		    	
+		    	mXNumberBrickCount = icicle.getInt("mXNumberBrickCount");
+		    	mYNumberBrickCount = icicle.getInt("mYNumberBrickCount");
+		    	mXNumberBlankBrick = icicle.getInt("mXNumberBlankBrick");
+		    	mYNumberBlankBrick = icicle.getInt("mYNumberBlankBrick");
+		    	
+		    	mNumberPuzzleGrid = new int[mXNumberBrickCount][mYNumberBrickCount];
+				for(i=0;i<mXNumberBrickCount;i=i+1)
+				{
+					for(j=0;j<mYNumberBrickCount;j=j+1)
+					{
+						mNumberPuzzleGrid[i][j] = icicle.getInt(Integer.toString(i)+"-"+Integer.toString(j));
+						if(mNumberPuzzleGrid[i][j] == 2012)
+						{
+							neadNewPuzzle = true;
+						}
+					}
+				}
+				
+				if(neadNewPuzzle)
+				{
+					mNumberPuzzleGrid = CreateNewNumberPuzzle(mXNumberBrickCount, mYNumberBrickCount);;
+				}
+		    }
+		    
+		    public void saveState(SharedPreferences.Editor editor)
+		    {
+		    	int i,j;
 
-		        //mAppleList = coordArrayToArrayList(icicle.getIntArray("mAppleList"));
-		        //mDirection = icicle.getInt("mDirection");
-		        //mMoveDelay = icicle.getLong("mMoveDelay");
+		    	//editor.putString("name", name);
+		    	editor.putInt("mXNumberBrickCount", mXNumberBrickCount);
+		    	editor.putInt("mYNumberBrickCount", mYNumberBrickCount);
+		    	editor.putInt("mXNumberBlankBrick", mXNumberBlankBrick);
+		    	editor.putInt("mYNumberBlankBrick", mYNumberBlankBrick);
+				for(i=0;i<mXNumberBrickCount;i=i+1)
+				{
+					for(j=0;j<mYNumberBrickCount;j=j+1)
+					{
+						editor.putInt(Integer.toString(i)+"-"+Integer.toString(j),mNumberPuzzleGrid[i][j]);
+					}
+				}
+		    	editor.commit();
+		    }
+		    
+		    public void restoreState(SharedPreferences settings)
+		    {
+		    	int i,j;
+		    	boolean neadNewPuzzle = false;
+		    	
+		    	mXNumberBrickCount = settings.getInt("mXNumberBrickCount", 5);
+		    	mYNumberBrickCount = settings.getInt("mYNumberBrickCount", 5);
+		    	mXNumberBlankBrick = settings.getInt("mXNumberBlankBrick", 4);
+		    	mYNumberBlankBrick = settings.getInt("mYNumberBlankBrick", 4);
+		    	
+		    	mNumberPuzzleGrid = new int[mXNumberBrickCount][mYNumberBrickCount];
+				for(i=0;i<mXNumberBrickCount;i=i+1)
+				{
+					for(j=0;j<mYNumberBrickCount;j=j+1)
+					{
+						mNumberPuzzleGrid[i][j] = settings.getInt(Integer.toString(i)+"-"+Integer.toString(j),2012);
+						if(mNumberPuzzleGrid[i][j] == 2012)
+						{
+							neadNewPuzzle = true;
+						}
+					}
+				}
+				
+				if(neadNewPuzzle)
+				{
+					mNumberPuzzleGrid = CreateNewNumberPuzzle(mXNumberBrickCount, mYNumberBrickCount);;
+				}
+
 		    }
 		}
 
