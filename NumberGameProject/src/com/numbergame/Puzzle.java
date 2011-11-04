@@ -21,6 +21,8 @@ public class Puzzle
     private static final int OP_EQ = 13;
     private static final int BLANK = 14;
     
+    protected static int mLevel;
+    
     protected int mXBrickCount;
     protected int mYBrickCount;
     
@@ -330,6 +332,7 @@ public class Puzzle
         map.putInt("mYBrickCount", Integer.valueOf(mYBrickCount));
         map.putInt("mXBlankBrick", Integer.valueOf(mXBlankBrick));
         map.putInt("mYBlankBrick", Integer.valueOf(mYBlankBrick));
+        map.putInt("mLevel1", mLevel);
         //map.putLong("mScore", Long.valueOf(mScore));
 		for(i=0;i<mXBrickCount;i=i+1)
 		{
@@ -351,6 +354,7 @@ public class Puzzle
     	mYBrickCount = icicle.getInt("mYBrickCount");
     	mXBlankBrick = icicle.getInt("mXBlankBrick");
     	mYBlankBrick = icicle.getInt("mYBlankBrick");
+    	mLevel = icicle.getInt("mLevel1");
     	
 		mPuzzleGrid = new int[mXBrickCount][mYBrickCount];
 		for(i=0;i<mXBrickCount;i=i+1)
@@ -399,6 +403,7 @@ public class Puzzle
     	mYBrickCount = settings.getInt("mYBrickCount", 5);
     	mXBlankBrick = settings.getInt("mXBlankBrick", 3);
     	mYBlankBrick = settings.getInt("mYBlankBrick", 3);
+		mLevel = settings.getInt("mLevel1", 1);
     	
 		mPuzzleGrid = new int[mXBrickCount][mYBrickCount];
 		for(i=0;i<mXBrickCount;i=i+1)

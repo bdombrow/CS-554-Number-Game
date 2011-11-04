@@ -29,6 +29,8 @@ public class NumberPuzzle {
 		    private static final int NUM_13 = 13;//OP_EQ = 13;
 		    private static final int BLANK = 14;
 		    
+		    protected static int mLevel;
+		    
 		    protected static int mXNumberBrickCount;
 		    protected static int mYNumberBrickCount;
 		    
@@ -174,6 +176,7 @@ public class NumberPuzzle {
 		        map.putInt("mYNumberBrickCount", Integer.valueOf(mYNumberBrickCount));
 		        map.putInt("mXNumberBlankBrick", Integer.valueOf(mXNumberBlankBrick));
 		        map.putInt("mYNumberBlankBrick", Integer.valueOf(mYNumberBlankBrick));
+		        map.putInt("mLevel2", mLevel);
 		        //map.putLong("mScore", Long.valueOf(mScore));
 				for(i=0;i<mXNumberBrickCount;i=i+1)
 				{
@@ -195,6 +198,7 @@ public class NumberPuzzle {
 		    	mYNumberBrickCount = icicle.getInt("mYNumberBrickCount");
 		    	mXNumberBlankBrick = icicle.getInt("mXNumberBlankBrick");
 		    	mYNumberBlankBrick = icicle.getInt("mYNumberBlankBrick");
+		    	mLevel = icicle.getInt("mLevel2");
 		    	
 		    	mNumberPuzzleGrid = new int[mXNumberBrickCount][mYNumberBrickCount];
 				for(i=0;i<mXNumberBrickCount;i=i+1)
@@ -239,10 +243,11 @@ public class NumberPuzzle {
 		    	int i,j;
 		    	boolean neadNewPuzzle = false;
 		    	
-		    	mXNumberBrickCount = settings.getInt("mXNumberBrickCount", 5);
-		    	mYNumberBrickCount = settings.getInt("mYNumberBrickCount", 5);
-		    	mXNumberBlankBrick = settings.getInt("mXNumberBlankBrick", 4);
-		    	mYNumberBlankBrick = settings.getInt("mYNumberBlankBrick", 4);
+		    	mXNumberBrickCount = settings.getInt("mSize2", 2);
+		    	mYNumberBrickCount = mXNumberBrickCount;
+		    	mXNumberBlankBrick = settings.getInt("mXNumberBlankBrick", 0);
+		    	mYNumberBlankBrick = settings.getInt("mYNumberBlankBrick", 0);
+				mLevel = settings.getInt("mLevel2", 1);
 		    	
 		    	mNumberPuzzleGrid = new int[mXNumberBrickCount][mYNumberBrickCount];
 				for(i=0;i<mXNumberBrickCount;i=i+1)
