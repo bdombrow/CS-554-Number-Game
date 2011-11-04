@@ -63,12 +63,14 @@ public class OptionActivity extends Activity {
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
 				tv.setText("  level " + (position + 1));
-				// tv.setTextColor(0xfd8d8d);
+				tv.setTextColor(0xffffff00);
 				tv.setTextSize(24);
 				return tv;
 			}
 		};
 		levelsp1.setAdapter(levelba1);
+		levelsp1.setPrompt("select level");
+		levelsp1.setSelection(mLevel1-1,true);
 		levelsp1.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -103,12 +105,15 @@ public class OptionActivity extends Activity {
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
-				tv.setText("level " + position);
+				tv.setText("  level " + (position+1));
+				tv.setTextColor(0xff00ffff);
 				tv.setTextSize(24);
 				return tv;
 			}
 		};
 		levelsp2.setAdapter(levelba2);
+		levelsp2.setPrompt("select level");
+		levelsp2.setSelection(mLevel2-1,true);
 		levelsp2.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -144,11 +149,14 @@ public class OptionActivity extends Activity {
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
 				tv.setText("  size: " + (position+2) + "x" + (position+2));
+				tv.setTextColor(0xffff00ff);
 				tv.setTextSize(24);
 				return tv;
 			}
 		};
 		sizesp2.setAdapter(sizeba2);
+		sizesp2.setPrompt("select size");
+		sizesp2.setSelection(mSize2-2,true);
 		sizesp2.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -176,6 +184,7 @@ public class OptionActivity extends Activity {
 		editor.putInt("mLevel1", mLevel1);
 		editor.putInt("mLevel2", mLevel2);
 		editor.putInt("mSize2", mSize2);
+		editor.commit();
 	}
 
 	@Override

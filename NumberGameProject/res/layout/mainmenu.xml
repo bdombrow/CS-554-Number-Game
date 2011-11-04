@@ -38,7 +38,7 @@
                		     android:id="@+id/Exit" 
                		     android:layout_height="75dip" 
                		     android:layout_width="75dip"
-              		      android:text="exit"/>
+              		      android:text="option"/>
                		      	
                		    	     <Button  
                		    	     android:id="@+id/Help"	               		    	      
