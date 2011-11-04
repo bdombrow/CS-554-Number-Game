@@ -65,7 +65,7 @@ public class PuzzleView extends View
 
     private final Paint mPaint = new Paint();
     
-    private final Puzzle mPuzzle = new Puzzle();
+    private Puzzle mPuzzle;
     
     // Movement tracking
 	private float upX = 0.0f;
@@ -97,15 +97,15 @@ public class PuzzleView extends View
         mStatusText.setVisibility(View.VISIBLE);
     }
 	
+    public void setPuzzleControl(Puzzle _mPuzzle) 
+    {
+    	mPuzzle = _mPuzzle;
+    }
+	
     private void initPuzzleView() 
     {
         setFocusable(true);
 
-        mXBrickCount = 5;
-        mYBrickCount = 5;
-        
-        mBrickGrid = mPuzzle.CreateNewPuzzle(mYBrickCount, mYBrickCount);
-    
     }
     
     public void resetBricks(int brickcount) 
@@ -128,6 +128,12 @@ public class PuzzleView extends View
     {
         Resources r = this.getContext().getResources();
         
+        //mBrickGrid = mPuzzle.CreateNewPuzzle(mXBrickCount, mYBrickCount);
+        mXBrickCount = mPuzzle.getXBrickCount();
+        mYBrickCount = mPuzzle.getYBrickCount();
+        
+        mBrickGrid = mPuzzle.GetPuzzle();
+    
     	if(w > h)
     	{
     		mBrickSize = (int) Math.floor(h / mYBrickCount);
@@ -171,8 +177,6 @@ public class PuzzleView extends View
         mXOffset = ((w - (mBrickSize * mXBrickCount)) / 2);
         mYOffset = ((h - (mBrickSize * mYBrickCount)) / 2);
 
-        //mBrickGrid = mPuzzle.CreateNewPuzzle(mXBrickCount, mYBrickCount);
-        mPuzzle.GetPuzzle();
     }
     
     private Index CoordinateToIndex(float x, float y)
@@ -375,26 +379,6 @@ public class PuzzleView extends View
                 }
             }
         }
-    }
-    
-    public Bundle saveState() 
-    {
-        Bundle map = new Bundle();
-
-        //map.putIntArray("mAppleList", coordArrayListToArray(mAppleList));
-        //map.putInt("mDirection", Integer.valueOf(mDirection));
-        //map.putLong("mScore", Long.valueOf(mScore));
-
-        return map;
-    }
-    
-    public void restoreState(Bundle icicle) 
-    {
-        //setMode(PAUSE);
-
-        //mAppleList = coordArrayToArrayList(icicle.getIntArray("mAppleList"));
-        //mDirection = icicle.getInt("mDirection");
-        //mMoveDelay = icicle.getLong("mMoveDelay");
     }
     
     private void clearSelected() {

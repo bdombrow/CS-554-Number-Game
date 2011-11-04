@@ -13,7 +13,7 @@ import com.numbergame.R;
 	import android.view.MotionEvent;
 	import android.view.View;
 	import android.widget.TextView;
-	import android.widget.Toast;
+import android.widget.Toast;
 	
 public class NumberPuzzleView extends View
 		{
@@ -73,7 +73,7 @@ public class NumberPuzzleView extends View
 
 		    private final Paint mNumberPaint = new Paint();
 		    
-		    private final NumberPuzzle mNumberPuzzle = new NumberPuzzle();
+		    private NumberPuzzle mNumberPuzzle;
 		    
 		    // Movement tracking
 			private float upX = 0.0f;
@@ -103,6 +103,11 @@ public class NumberPuzzleView extends View
 		        // Set the StatusText to the current score.
 		        mStatusText.setText(currentNumberGame.getScore());
 		        mStatusText.setVisibility(View.VISIBLE);
+		    }
+			
+		    public void setNumberPuzzleControl(NumberPuzzle _mNumberPuzzle) 
+		    {
+		    	mNumberPuzzle = _mNumberPuzzle;
 		    }
 			
 		    private void initNumberPuzzleView() 
@@ -374,7 +379,7 @@ public class NumberPuzzleView extends View
 		    
 		    public Bundle saveState() 
 		    {
-		        Bundle map = new Bundle();
+		    	Bundle map = mNumberPuzzle.saveState();
 
 		        //map.putIntArray("mAppleList", coordArrayListToArray(mAppleList));
 		        //map.putInt("mDirection", Integer.valueOf(mDirection));
@@ -390,6 +395,7 @@ public class NumberPuzzleView extends View
 		        //mAppleList = coordArrayToArrayList(icicle.getIntArray("mAppleList"));
 		        //mDirection = icicle.getInt("mDirection");
 		        //mMoveDelay = icicle.getLong("mMoveDelay");
+		    	mNumberPuzzle.restoreState(icicle);
 		    }
 		    
 		    /*

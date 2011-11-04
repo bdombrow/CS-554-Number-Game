@@ -10,9 +10,10 @@ import android.widget.TextView;
 	
 public class NumbersProjectActivity  extends Activity implements View.OnTouchListener
 	{
-	    private NumberPuzzleView mNumberPuzzleView;
+	private final NumberPuzzle mNumberPuzzle = new NumberPuzzle();
+	private NumberPuzzleView mNumberPuzzleView;
 	    
-	    private static String ICICLE_KEY = "puzzle-view";
+	    private static String ICICLE_KEY = "numbers-view";
 
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) 
@@ -20,9 +21,9 @@ public class NumbersProjectActivity  extends Activity implements View.OnTouchLis
 	        super.onCreate(savedInstanceState);
 
 	        setContentView(R.layout.numberpuzzle);
-	        
 	        mNumberPuzzleView = (NumberPuzzleView) findViewById(R.id.numberpuzzle);
 	        mNumberPuzzleView.setTextView((TextView) findViewById(R.id.score));
+	        mNumberPuzzleView.setNumberPuzzleControl(mNumberPuzzle);
 	        
 	        mNumberPuzzleView.setOnTouchListener(this);
 

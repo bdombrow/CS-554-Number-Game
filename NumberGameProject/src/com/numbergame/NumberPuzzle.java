@@ -1,5 +1,7 @@
 package com.numbergame;
 
+import android.os.Bundle;
+
 public class NumberPuzzle {
 	 
 			
@@ -142,6 +144,26 @@ public class NumberPuzzle {
 		    	}
 		    	
 		    	return true;
+		    }
+		    
+		    public Bundle saveState() 
+		    {
+		        Bundle map = new Bundle();
+
+		        //map.putIntArray("mAppleList", coordArrayListToArray(mAppleList));
+		        //map.putInt("mDirection", Integer.valueOf(mDirection));
+		        //map.putLong("mScore", Long.valueOf(mScore));
+
+		        return map;
+		    }
+		    
+		    public void restoreState(Bundle icicle) 
+		    {
+		        //setMode(PAUSE);
+
+		        //mAppleList = coordArrayToArrayList(icicle.getIntArray("mAppleList"));
+		        //mDirection = icicle.getInt("mDirection");
+		        //mMoveDelay = icicle.getLong("mMoveDelay");
 		    }
 		}
 
