@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/widget43"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:stretchColumns="1" >
+
+            
+        <TableRow >
+            <TextView
+                android:id="@+id/mode1textid"
+                android:text="" />
+        </TableRow>
+            
+        <TableRow >
+            <TextView
+                android:id="@+id/mode1textid"
+                android:text="" />
+        </TableRow>
+            <TableRow >
+
+            <TextView
+                android:id="@+id/mode1textid"
+                android:text="@string/mode1text" />
+        </TableRow>
+            
+        <TableRow >
+
+            <TextView
+                android:id="@+id/leveltextid"
+                android:text="@string/leveltext" />
+
+            <Spinner
+                android:id="@+id/levelspin1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+            </Spinner>
+        </TableRow>
+            
+        <TableRow >
+            <TextView
+                android:id="@+id/mode1textid"
+                android:text="" />
+        </TableRow>
+            
+        <TableRow >
+            <TextView
+                android:id="@+id/mode1textid"
+                android:text="" />
+        </TableRow>
+            
+        <TableRow >
+            <TextView
+                android:id="@+id/mode1textid"
+                android:text="" />
+        </TableRow>
+            
+        <TableRow >
+            <TextView
+                android:id="@+id/mode1textid"
+                android:text="" />
+        </TableRow>
+            
+            <TableRow >
+
+            <TextView
+                android:id="@+id/mode2textid"
+                android:text="@string/mode2text" />
+        </TableRow>
+            
+        <TableRow >
+
+            <TextView
+                android:id="@+id/leveltextid"
+                android:text="@string/leveltext" />
+
+            <Spinner
+                android:id="@+id/levelspin2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+            </Spinner>
+        </TableRow>
+        
+        <TableRow >
+            <TextView
+                android:id="@+id/sizetextid"
+                android:text="@string/sizetext" />
+
+            <Spinner
+                android:id="@+id/sizespin2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+            </Spinner>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

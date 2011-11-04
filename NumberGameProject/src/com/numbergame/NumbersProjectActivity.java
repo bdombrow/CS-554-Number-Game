@@ -14,8 +14,8 @@ public class NumbersProjectActivity  extends Activity implements View.OnTouchLis
 	private final NumberPuzzle mNumberPuzzle = new NumberPuzzle();
 	private NumberPuzzleView mNumberPuzzleView;
 	    
-    private static String PUZZLE_PREFS = "numbers-prefs";
-	    private static String ICICLE_KEY = "numbers-view";
+    private static String PUZZLE_PREFS = "puzzle-prefs";
+	    private static String ICICLE_KEY = "puzzle-view";
 
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) 

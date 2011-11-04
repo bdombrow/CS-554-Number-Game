@@ -60,7 +60,8 @@ public class MainScreenProjectActivity extends Activity{
 				MainScreenProjectActivity.this.startActivity(msg1);	 
 				break;
 			case R.id.Exit:
-				finish();
+				//finish();
+				startActivity(new Intent("com.numbergame.OptionActivity"));	
 				break;
 			case R.id.Help:
 				AlertDialog.Builder alert = new AlertDialog.Builder(MainScreenProjectActivity.this);
