@@ -57,7 +57,7 @@ public class NumberPuzzle {
 		setNumberBrick(NUM_3, 2, 0);
 		setNumberBrick(NUM_4, 3, 0);
 		setNumberBrick(NUM_5, 4, 0);
-		setNumberBrick(NUM_5, 0, 1);
+		setNumberBrick(NUM_6, 0, 1);
 		setNumberBrick(NUM_7, 1, 1);
 		setNumberBrick(NUM_8, 2, 1);
 		setNumberBrick(NUM_9, 3, 1);
