@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 
 public class NumberGameProjectActivity extends Activity {
-	MediaPlayer mpSplash;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -16,8 +15,6 @@ public class NumberGameProjectActivity extends Activity {
         
        // this.bHelp = (Button) this.findViewById(R.id.Help); 
         //bHelp.setOnClickListener(myListener);
-         mpSplash = MediaPlayer.create(this, R.raw.daybreak);
-        mpSplash.start();
        
                 Thread logoTimer = new Thread(){
         	@Override
@@ -41,14 +38,6 @@ public class NumberGameProjectActivity extends Activity {
         logoTimer.start();
         
     }
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		mpSplash.release();
-		
-	}
     
     /*
     View.OnClickListener myListener = new View.OnClickListener(){

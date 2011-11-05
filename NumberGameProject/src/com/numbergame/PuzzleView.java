@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle; 
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -65,7 +66,7 @@ public class PuzzleView extends View
 
     private final Paint mPaint = new Paint();
     
-    private final Puzzle mPuzzle = new Puzzle();
+    private Puzzle mPuzzle;
     
     // Movement tracking
 	private float upX = 0.0f;
@@ -97,15 +98,15 @@ public class PuzzleView extends View
         mStatusText.setVisibility(View.VISIBLE);
     }
 	
+    public void setPuzzleControl(Puzzle _mPuzzle) 
+    {
+    	mPuzzle = _mPuzzle;
+    }
+	
     private void initPuzzleView() 
     {
         setFocusable(true);
 
-        mXBrickCount = 5;
-        mYBrickCount = 5;
-        
-        mBrickGrid = mPuzzle.CreateNewPuzzle(mYBrickCount, mYBrickCount);
-    
     }
     
     public void resetBricks(int brickcount) 
@@ -128,6 +129,12 @@ public class PuzzleView extends View
     {
         Resources r = this.getContext().getResources();
         
+        //mBrickGrid = mPuzzle.CreateNewPuzzle(mXBrickCount, mYBrickCount);
+        mXBrickCount = mPuzzle.getXBrickCount();
+        mYBrickCount = mPuzzle.getYBrickCount();
+        
+        mBrickGrid = mPuzzle.GetPuzzle();
+    
     	if(w > h)
     	{
     		mBrickSize = (int) Math.floor(h / mYBrickCount);
@@ -171,8 +178,6 @@ public class PuzzleView extends View
         mXOffset = ((w - (mBrickSize * mXBrickCount)) / 2);
         mYOffset = ((h - (mBrickSize * mYBrickCount)) / 2);
 
-        //mBrickGrid = mPuzzle.CreateNewPuzzle(mXBrickCount, mYBrickCount);
-        mPuzzle.GetPuzzle();
     }
     
     private Index CoordinateToIndex(float x, float y)
@@ -277,7 +282,7 @@ public class PuzzleView extends View
 			if ((upIndex.x == downIndex.x) && (Math.abs(upIndex.y - downIndex.y) == 4)) {
 				int points = currentGame.submit(columnToString(upIndex.x));
 				if (points > 0) {
-					Toast.makeText(v.getContext(), Integer.toString(points), Toast.LENGTH_SHORT).show();
+					popUpPoints(v, Integer.toString(points));
 		        	mStatusText.setText(currentGame.getScore());
 		        	mStatusText.setVisibility(View.VISIBLE);
 				} else {
@@ -292,7 +297,7 @@ public class PuzzleView extends View
 			if ((upIndex.y == downIndex.y) && (Math.abs(upIndex.x - downIndex.x) == 4)) {
 				int points = currentGame.submit(rowToString(upIndex.y));
 				if (points > 0) {
-					Toast.makeText(v.getContext(), Integer.toString(points), Toast.LENGTH_SHORT).show();
+					popUpPoints(v, Integer.toString(points));
 		        	mStatusText.setText(currentGame.getScore());
 		        	mStatusText.setVisibility(View.VISIBLE);
 				}
@@ -324,31 +329,7 @@ public class PuzzleView extends View
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent msg) 
-    {
-        if (keyCode == KeyEvent.KEYCODE_DPAD_UP) 
-        {
-        	mStatusText.setText("KEYCODE_DPAD_UP");
-        	mStatusText.setVisibility(View.VISIBLE);
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) 
-        {
-        	mStatusText.setText("KEYCODE_DPAD_DOWN");
-        	mStatusText.setVisibility(View.VISIBLE);
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) 
-        {
-        	mStatusText.setText("KEYCODE_DPAD_LEFT");
-        	mStatusText.setVisibility(View.VISIBLE);
-        }
-
-        if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) 
-        {
-        	mStatusText.setText("KEYCODE_DPAD_RIGHT");
-        	mStatusText.setVisibility(View.VISIBLE);
-        }
-        
+    {        
         if (keyCode == KeyEvent.KEYCODE_MENU)
         {
         	mStatusText.setText("KEYCODE_MENU");
@@ -377,24 +358,14 @@ public class PuzzleView extends View
         }
     }
     
-    public Bundle saveState() 
-    {
-        Bundle map = new Bundle();
-
-        //map.putIntArray("mAppleList", coordArrayListToArray(mAppleList));
-        //map.putInt("mDirection", Integer.valueOf(mDirection));
-        //map.putLong("mScore", Long.valueOf(mScore));
-
-        return map;
-    }
+    /*
+     * BD: Private function to display points scored in a toast pop up
+     */
     
-    public void restoreState(Bundle icicle) 
-    {
-        //setMode(PAUSE);
-
-        //mAppleList = coordArrayToArrayList(icicle.getIntArray("mAppleList"));
-        //mDirection = icicle.getInt("mDirection");
-        //mMoveDelay = icicle.getLong("mMoveDelay");
+    private void popUpPoints(View v, String msg) {
+    	Toast toast = Toast.makeText(v.getContext(),msg, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP|Gravity.RIGHT, 30, 30);
+		toast.show();
     }
     
     private void clearSelected() {
