@@ -25,7 +25,6 @@ public class MainScreenProjectActivity extends Activity{
         mpSplash.setOnCompletionListener(
         		new MediaPlayer.OnCompletionListener() {
 					
-					@Override
 					public void onCompletion(MediaPlayer mp) {
 						// TODO Auto-generated method stub
 						mp.start();

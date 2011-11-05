@@ -59,7 +59,6 @@ public class OptionActivity extends Activity {
 				return 0;
 			}
 
-			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
 				tv.setText("  level " + (position + 1));
@@ -73,14 +72,12 @@ public class OptionActivity extends Activity {
 		levelsp1.setSelection(mLevel1-1,true);
 		levelsp1.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				//TextView tv = (TextView) view;
 				mLevel1 = position + 1;
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
 
@@ -102,7 +99,6 @@ public class OptionActivity extends Activity {
 				return 0;
 			}
 
-			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
 				tv.setText("  level " + (position+1));
@@ -116,14 +112,12 @@ public class OptionActivity extends Activity {
 		levelsp2.setSelection(mLevel2-1,true);
 		levelsp2.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				//TextView tv = (TextView) view;
 				mLevel2 = position + 1;
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
 
@@ -145,7 +139,6 @@ public class OptionActivity extends Activity {
 				return 0;
 			}
 
-			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
 				tv.setText("  size: " + (position+2) + "x" + (position+2));
@@ -159,14 +152,12 @@ public class OptionActivity extends Activity {
 		sizesp2.setSelection(mSize2-2,true);
 		sizesp2.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				TextView tv = (TextView) view;
 				mSize2 = position + 2;
 			}
 
-			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
 
