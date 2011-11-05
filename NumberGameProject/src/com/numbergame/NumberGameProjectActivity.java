@@ -20,7 +20,8 @@ public class NumberGameProjectActivity extends Activity {
         mpSplash.start();
        
                 Thread logoTimer = new Thread(){
-        	public void run(){
+        	@Override
+			public void run(){
         		try{
         			int logoTimer = 0;
         			while(logoTimer <5000){

@@ -35,7 +35,7 @@ public class MathGame {
 		}
 		
 		public int submit(CharSequence inputString) {
-			Integer result = (Integer)equationTable.get(NormalizeEquation(inputString));
+			Integer result = equationTable.get(NormalizeEquation(inputString));
 			if (result != null) {
 				// We have a winner. Increment score and remove it from the table
 				score += result;
