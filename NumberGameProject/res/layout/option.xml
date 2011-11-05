@@ -28,7 +28,7 @@
             <TextView
                 android:id="@+id/mode1textid"
                 android:text="@string/mode1text"
-                android:textColor="#f00ff0"
+                android:textColor="#ffffff"
                 android:textSize="24dp" />
         </TableRow>
             
@@ -37,7 +37,7 @@
             <TextView
                 android:id="@+id/leveltextid"
                 android:text="@string/leveltext"
-                android:textColor="#0000ff"
+                android:textColor="#ffffff"
                 android:textSize="24dp" />
             
             <Spinner
@@ -76,7 +76,7 @@
             <TextView
                 android:id="@+id/mode2textid"
                 android:text="@string/mode2text"
-                android:textColor="#f0f00f"
+                android:textColor="#ffffff"
                 android:textSize="24dp" />
             </TableRow>
             
@@ -85,7 +85,7 @@
             <TextView
                 android:id="@+id/leveltextid"
                 android:text="@string/leveltext"
-                android:textColor="#ff0000"
+                android:textColor="#ffffff"
                 android:textSize="24dp" />
             
             <Spinner
@@ -99,7 +99,7 @@
             <TextView
                 android:id="@+id/sizetextid"
                 android:text="@string/sizetext"
-                android:textColor="#00ff00"
+                android:textColor="#ffffff"
                 android:textSize="24dp" />
             
             <Spinner
@@ -108,6 +108,7 @@
                 android:layout_height="wrap_content" >
             </Spinner>
         </TableRow>
+
     </TableLayout>
 
 </LinearLayout>

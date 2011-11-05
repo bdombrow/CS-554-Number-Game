@@ -42,23 +42,23 @@ public class NumberPuzzleView extends View
 	private static final int NUM_24 = 24;
 	private static final int BLANK = 25;
 
-	private TextView mStatusText;
+	private TextView nStatusText;
 
-	protected static int mNumberBrickSize;
+	protected static int nNumberBrickSize;
 
-	protected static int mXNumberBrickCount;
+	protected static int nXNumberBrickCount;
 	protected static int mYNumberBrickCount;
 
-	private static int mXNumberOffset;
-	private static int mYNumberOffset;
+	private static int nXNumberOffset;
+	private static int nYNumberOffset;
 
-	private Bitmap[] mNumberBrickArray; 
+	private Bitmap[] nNumberBrickArray; 
 
-	private int[][] mNumberBrickGrid;
+	private int[][] nNumberBrickGrid;
 
-	private final Paint mNumberPaint = new Paint();
+	private final Paint nNumberPaint = new Paint();
 
-	private NumberPuzzle mNumberPuzzle;
+	private NumberPuzzle nNumberPuzzle;
 
 	// Math game
 	private MathGame currentNumberGame = new MathGame();
@@ -77,16 +77,16 @@ public class NumberPuzzleView extends View
 
 	public void setTextView(TextView newView) 
 	{
-		mStatusText = newView;
+		nStatusText = newView;
 
 		// Set the StatusText to the current score.
-		mStatusText.setText(currentNumberGame.getScore());
-		mStatusText.setVisibility(View.VISIBLE);
+		nStatusText.setText(currentNumberGame.getScore());
+		nStatusText.setVisibility(View.VISIBLE);
 	}
 
-	public void setNumberPuzzleControl(NumberPuzzle _mNumberPuzzle) 
+	public void setNumberPuzzleControl(NumberPuzzle _nNumberPuzzle) 
 	{
-		mNumberPuzzle = _mNumberPuzzle;
+		nNumberPuzzle = _nNumberPuzzle;
 	}
 
 	private void initNumberPuzzleView() 
@@ -97,17 +97,17 @@ public class NumberPuzzleView extends View
 
 	public void resetNumberBricks(int Numberbrickcount) 
 	{
-		mNumberBrickArray = new Bitmap[Numberbrickcount];
+		nNumberBrickArray = new Bitmap[Numberbrickcount];
 	}
 
 	public void loadNumberBrick(int key, Drawable Numberbrick) 
 	{
-		Bitmap Numberbitmap = Bitmap.createBitmap(mNumberBrickSize, mNumberBrickSize, Bitmap.Config.ARGB_8888);
+		Bitmap Numberbitmap = Bitmap.createBitmap(nNumberBrickSize, nNumberBrickSize, Bitmap.Config.ARGB_8888);
 		Canvas Numbercanvas = new Canvas(Numberbitmap);
-		Numberbrick.setBounds(0, 0, mNumberBrickSize, mNumberBrickSize);
+		Numberbrick.setBounds(0, 0, nNumberBrickSize, nNumberBrickSize);
 		Numberbrick.draw(Numbercanvas);
 
-		mNumberBrickArray[key] = Numberbitmap; // Crashing here.
+		nNumberBrickArray[key] = Numberbitmap;
 	}
 
 	@Override
@@ -115,18 +115,18 @@ public class NumberPuzzleView extends View
 	{
 		Resources r = this.getContext().getResources();
 
-		mXNumberBrickCount = mNumberPuzzle.getXBrickCount();
-		mYNumberBrickCount = mNumberPuzzle.getYBrickCount();
+		nXNumberBrickCount = nNumberPuzzle.getXBrickCount();
+		mYNumberBrickCount = nNumberPuzzle.getYBrickCount();
 
-		mNumberBrickGrid = mNumberPuzzle.GetNumberPuzzle();
+		nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
 
 		if(w > h)
 		{
-			mNumberBrickSize = (int) Math.floor(h / mYNumberBrickCount);
+			nNumberBrickSize = (int) Math.floor(h / mYNumberBrickCount);
 		}
 		else
 		{
-			mNumberBrickSize = (int) Math.floor(w / mXNumberBrickCount);
+			nNumberBrickSize = (int) Math.floor(w / nXNumberBrickCount);
 		}
 
 		resetNumberBricks(26);
@@ -159,19 +159,19 @@ public class NumberPuzzleView extends View
 		loadNumberBrick(BLANK, r.getDrawable(R.drawable.pic_blk));        
 
 
-		mXNumberOffset = ((w - (mNumberBrickSize * mXNumberBrickCount)) / 2);
-		mYNumberOffset = ((h - (mNumberBrickSize * mYNumberBrickCount)) / 2);
+		nXNumberOffset = ((w - (nNumberBrickSize * nXNumberBrickCount)) / 2);
+		nYNumberOffset = ((h - (nNumberBrickSize * mYNumberBrickCount)) / 2);
 	}
 
 	private Index CoordinateToIndex(float x, float y)
 	{
 		int i, j;
 
-		for (i = 0; i < mXNumberBrickCount; i += 1) 
+		for (i = 0; i < nXNumberBrickCount; i += 1) 
 		{
 			for (j = 0; j < mYNumberBrickCount; j += 1) 
 			{
-				if ((x > (mXNumberOffset + i * mNumberBrickSize)) && (x <  (mXNumberOffset + (i+1) * mNumberBrickSize)) && (y > (mYNumberOffset + j * mNumberBrickSize)) && (y < (mYNumberOffset + (j+1) * mNumberBrickSize))) 
+				if ((x > (nXNumberOffset + i * nNumberBrickSize)) && (x <  (nXNumberOffset + (i+1) * nNumberBrickSize)) && (y > (nYNumberOffset + j * nNumberBrickSize)) && (y < (nYNumberOffset + (j+1) * nNumberBrickSize))) 
 				{
 					return new Index(i, j);
 				}
@@ -197,7 +197,7 @@ public class NumberPuzzleView extends View
 			return true;
 		}
 
-		//	View mStatusText;
+		//	View nStatusText;
 		// The initial touch downward
 		switch (event.getAction()) 
 		{
@@ -208,16 +208,16 @@ public class NumberPuzzleView extends View
 		case MotionEvent.ACTION_UP:
 
 			// No drag, then it should be a tile press.
-			if (mNumberBrickGrid[index.x][index.y] < 2012) 
+			if (nNumberBrickGrid[index.x][index.y] < 2012) 
 			{
-				if(mNumberBrickGrid[index.x][index.y] > BLANK)
+				if(nNumberBrickGrid[index.x][index.y] > BLANK)
 				{
-					mNumberBrickGrid[index.x][index.y] = mNumberBrickGrid[index.x][index.y] - 15;
+					nNumberBrickGrid[index.x][index.y] = nNumberBrickGrid[index.x][index.y] - 15;
 					invalidate();
 				}
 			}
-			mNumberPuzzle.ChangeNumberPuzzle(index.x, index.y);
-			mNumberBrickGrid = mNumberPuzzle.GetNumberPuzzle();
+			nNumberPuzzle.ChangeNumberPuzzle(index.x, index.y);
+			nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
 			invalidate();
 
 			break;
@@ -233,8 +233,8 @@ public class NumberPuzzleView extends View
 	{		        
 		if (keyCode == KeyEvent.KEYCODE_MENU)
 		{
-			mStatusText.setText("KEYCODE_MENU");
-			mStatusText.setVisibility(View.VISIBLE);
+			nStatusText.setText("KEYCODE_MENU");
+			nStatusText.setVisibility(View.VISIBLE);
 		}
 
 		return super.onKeyDown(keyCode, msg);
@@ -244,16 +244,16 @@ public class NumberPuzzleView extends View
 	public void onDraw(Canvas Numbercanvas) 
 	{
 		super.onDraw(Numbercanvas);
-		for (int x = 0; x < mXNumberBrickCount; x += 1) 
+		for (int x = 0; x < nXNumberBrickCount; x += 1) 
 		{
 			for (int y = 0; y < mYNumberBrickCount; y += 1) 
 			{
-				if (mNumberBrickGrid[x][y] < 2012) 
+				if (nNumberBrickGrid[x][y] < 2012) 
 				{
-					Numbercanvas.drawBitmap(mNumberBrickArray[mNumberBrickGrid[x][y]], 
-							mXNumberOffset + x * mNumberBrickSize,
-							mYNumberOffset + y * mNumberBrickSize,
-							mNumberPaint);
+					Numbercanvas.drawBitmap(nNumberBrickArray[nNumberBrickGrid[x][y]], 
+							nXNumberOffset + x * nNumberBrickSize,
+							nYNumberOffset + y * nNumberBrickSize,
+							nNumberPaint);
 				}
 			}
 		}

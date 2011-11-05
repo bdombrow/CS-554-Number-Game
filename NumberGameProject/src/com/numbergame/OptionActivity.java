@@ -62,7 +62,7 @@ public class OptionActivity extends Activity {
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
 				tv.setText("  level " + (position + 1));
-				tv.setTextColor(0xffffff00);
+				tv.setTextColor(0xff000000);
 				tv.setTextSize(24);
 				return tv;
 			}
@@ -102,7 +102,7 @@ public class OptionActivity extends Activity {
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
 				tv.setText("  level " + (position+1));
-				tv.setTextColor(0xff00ffff);
+				tv.setTextColor(0xff000000);
 				tv.setTextSize(24);
 				return tv;
 			}
@@ -142,7 +142,7 @@ public class OptionActivity extends Activity {
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
 				tv.setText("  size: " + (position+2) + "x" + (position+2));
-				tv.setTextColor(0xffff00ff);
+				tv.setTextColor(0xff000000);
 				tv.setTextSize(24);
 				return tv;
 			}
