@@ -9,6 +9,7 @@ public class NumberPuzzle {
 
 	private static final int BLANK = 25;
 
+    private boolean mNumberOptionChanged;
 	protected static int nLevel;
 	
 	protected static int nXNumberBrickCount;
@@ -142,6 +143,7 @@ public class NumberPuzzle {
 		map.putInt("nYNumberBrickCount", Integer.valueOf(nYNumberBrickCount));
 		map.putInt("nXNumberBlankBrick", Integer.valueOf(nXNumberBlankBrick));
 		map.putInt("nYNumberBlankBrick", Integer.valueOf(nYNumberBlankBrick));
+        map.putBoolean("mNumberOptionChanged", mNumberOptionChanged);
 		map.putInt("nLevel2", nLevel);
 		//map.putLong("mScore", Long.valueOf(mScore));
 		for(i=0;i<nXNumberBrickCount;i=i+1)
@@ -164,6 +166,7 @@ public class NumberPuzzle {
 		nYNumberBrickCount = icicle.getInt("nYNumberBrickCount");
 		nXNumberBlankBrick = icicle.getInt("nXNumberBlankBrick");
 		nYNumberBlankBrick = icicle.getInt("nYNumberBlankBrick");
+		mNumberOptionChanged = icicle.getBoolean("mNumberOptionChanged");
 		nLevel = icicle.getInt("nLevel2");
 
 		nNumberPuzzleGrid = new int[nXNumberBrickCount][nYNumberBrickCount];
@@ -194,6 +197,7 @@ public class NumberPuzzle {
 		editor.putInt("nYNumberBrickCount", nYNumberBrickCount);
 		editor.putInt("nXNumberBlankBrick", nXNumberBlankBrick);
 		editor.putInt("nYNumberBlankBrick", nYNumberBlankBrick);
+    	editor.putBoolean("mNumberOptionChanged", mNumberOptionChanged);
 		for(i=0;i<nXNumberBrickCount;i=i+1)
 		{
 			for(j=0;j<nYNumberBrickCount;j=j+1)
@@ -213,6 +217,7 @@ public class NumberPuzzle {
 		nYNumberBrickCount = nXNumberBrickCount;
 		nXNumberBlankBrick = settings.getInt("nXNumberBlankBrick", 0);
 		nYNumberBlankBrick = settings.getInt("nYNumberBlankBrick", 0);
+		mNumberOptionChanged = settings.getBoolean("mNumberOptionChanged", true);
 		nLevel = settings.getInt("nLevel2", 1);
 
 		nNumberPuzzleGrid = new int[nXNumberBrickCount][nYNumberBrickCount];
@@ -228,9 +233,10 @@ public class NumberPuzzle {
 			}
 		}
 
-		if(neadNewPuzzle)
+		if(neadNewPuzzle || mNumberOptionChanged)
 		{
 			nNumberPuzzleGrid = CreateNewNumberPuzzle(nXNumberBrickCount, nYNumberBrickCount);;
+			mNumberOptionChanged = false;
 		}
 
 	}

@@ -21,6 +21,7 @@ public class Puzzle
     private static final int OP_EQ = 13;
     private static final int BLANK = 14;
     
+    private boolean mPuzzleOptionChanged;
     protected static int mLevel;
     
     protected int mXBrickCount;
@@ -180,7 +181,7 @@ public class Puzzle
     protected static int maxPlayerMoves = 1000;  // 1000 player moves before unscramble required
     protected static int maxRandomMoves = maxScrambles * numScrambleMoves;
     protected static int[] RandomMoves = new int[maxRandomMoves];
-    protected static int[] PlayerMoves = new int[maxPlayerMoves];
+    private static int[] PlayerMoves = new int[maxPlayerMoves];
     
     protected static int numScrambles; 
     protected static int numRandomMoves; 
@@ -332,6 +333,7 @@ public class Puzzle
         map.putInt("mYBrickCount", Integer.valueOf(mYBrickCount));
         map.putInt("mXBlankBrick", Integer.valueOf(mXBlankBrick));
         map.putInt("mYBlankBrick", Integer.valueOf(mYBlankBrick));
+        map.putBoolean("mPuzzleOptionChanged", mPuzzleOptionChanged);
         map.putInt("mLevel1", mLevel);
         //map.putLong("mScore", Long.valueOf(mScore));
 		for(i=0;i<mXBrickCount;i=i+1)
@@ -354,6 +356,7 @@ public class Puzzle
     	mYBrickCount = icicle.getInt("mYBrickCount");
     	mXBlankBrick = icicle.getInt("mXBlankBrick");
     	mYBlankBrick = icicle.getInt("mYBlankBrick");
+    	mPuzzleOptionChanged = icicle.getBoolean("mPuzzleOptionChanged");
     	mLevel = icicle.getInt("mLevel1");
     	
 		mPuzzleGrid = new int[mXBrickCount][mYBrickCount];
@@ -384,6 +387,7 @@ public class Puzzle
     	editor.putInt("mYBrickCount", mYBrickCount);
     	editor.putInt("mXBlankBrick", mXBlankBrick);
     	editor.putInt("mYBlankBrick", mYBlankBrick);
+    	editor.putBoolean("mPuzzleOptionChanged", mPuzzleOptionChanged);
 		for(i=0;i<mXBrickCount;i=i+1)
 		{
 			for(j=0;j<mYBrickCount;j=j+1)
@@ -403,6 +407,7 @@ public class Puzzle
     	mYBrickCount = settings.getInt("mYBrickCount", 5);
     	mXBlankBrick = settings.getInt("mXBlankBrick", 3);
     	mYBlankBrick = settings.getInt("mYBlankBrick", 3);
+    	mPuzzleOptionChanged = settings.getBoolean("mPuzzleOptionChanged", true);
 		mLevel = settings.getInt("mLevel1", 1);
     	
 		mPuzzleGrid = new int[mXBrickCount][mYBrickCount];
@@ -418,9 +423,10 @@ public class Puzzle
 			}
 		}
 		
-		if(neadNewPuzzle)
+		if(neadNewPuzzle || mPuzzleOptionChanged)
 		{
-			mPuzzleGrid = CreateNewPuzzle(mXBrickCount, mYBrickCount);;
+			mPuzzleGrid = CreateNewPuzzle(mXBrickCount, mYBrickCount);
+			mPuzzleOptionChanged = false;
 		}
 
     }

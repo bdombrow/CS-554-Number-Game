@@ -4,7 +4,7 @@ import java.util.Hashtable;
 public class MathGame {
 	
 		
-		private int score;
+	private static int score = 0;
 
 		// Hash table to hold the valid equations
 		private Hashtable<String, Integer> equationTable = new Hashtable<String, Integer>();
@@ -14,7 +14,7 @@ public class MathGame {
 		}
 
 		public void reset() {
-			score = 0;
+			//score = 0;
 
 			// Load the hash table with valid equations
 			for (int i = 0; i < 10; ++i) {
