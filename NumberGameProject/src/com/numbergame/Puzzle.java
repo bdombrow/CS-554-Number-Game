@@ -388,7 +388,7 @@ public class Puzzle
 		{
 			for(j=0;j<mYBrickCount;j=j+1)
 			{
-				editor.putInt(Integer.toString(i)+"-"+Integer.toString(j),mPuzzleGrid[i][j]);
+				editor.putInt("mPuzzleGrid-"+Integer.toString(i)+"-"+Integer.toString(j),mPuzzleGrid[i][j]);
 			}
 		}
     	editor.commit();
@@ -410,7 +410,7 @@ public class Puzzle
 		{
 			for(j=0;j<mYBrickCount;j=j+1)
 			{
-				mPuzzleGrid[i][j] = settings.getInt(Integer.toString(i)+"-"+Integer.toString(j),2012);
+				mPuzzleGrid[i][j] = settings.getInt("mPuzzleGrid-"+Integer.toString(i)+"-"+Integer.toString(j),2012);
 				if(mPuzzleGrid[i][j] == 2012)
 				{
 					neadNewPuzzle = true;

@@ -198,7 +198,7 @@ public class NumberPuzzle {
 		{
 			for(j=0;j<nYNumberBrickCount;j=j+1)
 			{
-				editor.putInt(Integer.toString(i)+"-"+Integer.toString(j),nNumberPuzzleGrid[i][j]);
+				editor.putInt("nNumberPuzzleGrid-"+Integer.toString(i)+"-"+Integer.toString(j),nNumberPuzzleGrid[i][j]);
 			}
 		}
 		editor.commit();
@@ -220,7 +220,7 @@ public class NumberPuzzle {
 		{
 			for(j=0;j<nYNumberBrickCount;j=j+1)
 			{
-				nNumberPuzzleGrid[i][j] = settings.getInt(Integer.toString(i)+"-"+Integer.toString(j),2012);
+				nNumberPuzzleGrid[i][j] = settings.getInt("nNumberPuzzleGrid-"+Integer.toString(i)+"-"+Integer.toString(j),2012);
 				if(nNumberPuzzleGrid[i][j] == 2012)
 				{
 					neadNewPuzzle = true;
