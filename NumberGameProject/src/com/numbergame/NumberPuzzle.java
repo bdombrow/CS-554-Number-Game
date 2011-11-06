@@ -1,5 +1,7 @@
 package com.numbergame;
 
+import java.util.Hashtable;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -133,6 +135,27 @@ public class NumberPuzzle {
 		return true;
 	}
 
+	
+	private static int score = 0;
+
+		public void reset() {
+			score = 0;
+		}
+
+		public String getScore() {
+			return Integer.toString(score);
+		}
+		
+		public int submit(CharSequence inputString) {
+			Integer result = 1;
+			if (result != null) {
+				// We have a winner. Increment score and remove it from the table
+				score += result;
+				return result;
+			}
+			return -1;
+
+		}
 
 	public void saveState(Bundle map) 
 	{

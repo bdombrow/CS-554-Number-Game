@@ -1,5 +1,7 @@
 package com.numbergame;
 
+import java.util.Hashtable;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -70,9 +72,11 @@ public class Puzzle
         mXBlankBrick = 3;
         mYBlankBrick = 3;
         
-        numScrambles = 0;
-        numRandomMoves = 0;
-        numPlayerMoves = 0;
+        numPuzzleScrambles = 0;
+        numPuzzleRandomMoves = 0;
+        numPuzzlePlayerMoves = 0;
+        
+        reset();
 
         return mPuzzleGrid;
 	}
@@ -118,8 +122,8 @@ public class Puzzle
     			for(i=mYBlankBrick; i>y; i=i-1)
     			{
     				mPuzzleGrid[x][i] = mPuzzleGrid[x][i-1];
-    				PlayerMoves[numPlayerMoves] = 3;
-    				numPlayerMoves++;
+    				PuzzlePlayerMoves[numPuzzlePlayerMoves] = 3;
+    				numPuzzlePlayerMoves++;
     			}
     			setBrick(BLANK, x, i);
     			mXBlankBrick = x;
@@ -130,8 +134,8 @@ public class Puzzle
     			for(i=mYBlankBrick; i<y; i=i+1)
     			{
     				mPuzzleGrid[x][i] = mPuzzleGrid[x][i+1];
-    				PlayerMoves[numPlayerMoves] = 4;
-    				numPlayerMoves++;
+    				PuzzlePlayerMoves[numPuzzlePlayerMoves] = 4;
+    				numPuzzlePlayerMoves++;
     			}
     			setBrick(BLANK, x, i);
     			mXBlankBrick = x;
@@ -145,8 +149,8 @@ public class Puzzle
     			for(i=mXBlankBrick; i>x; i=i-1)
     			{
     				mPuzzleGrid[i][y] = mPuzzleGrid[i-1][y];
-    				PlayerMoves[numPlayerMoves] = 1;
-    				numPlayerMoves++;
+    				PuzzlePlayerMoves[numPuzzlePlayerMoves] = 1;
+    				numPuzzlePlayerMoves++;
    			}
     			setBrick(BLANK, i, y);
     			mXBlankBrick = x;
@@ -157,8 +161,8 @@ public class Puzzle
     			for(i=mXBlankBrick; i<x; i=i+1)
     			{
     				mPuzzleGrid[i][y] = mPuzzleGrid[i+1][y];
-    				PlayerMoves[numPlayerMoves] = 2;
-    				numPlayerMoves++;
+    				PuzzlePlayerMoves[numPuzzlePlayerMoves] = 2;
+    				numPuzzlePlayerMoves++;
     			}
     			setBrick(BLANK, i, y);
     			mXBlankBrick = x;
@@ -168,6 +172,72 @@ public class Puzzle
     	
     	return true;
     }
+	
+	private int mScore = 0;
+
+		// Hash table to hold the valid equations
+		private Hashtable<String, Integer> equationTable = new Hashtable<String, Integer>();
+
+		public void reset() {
+			mScore = 0;
+
+			// Load the hash table with valid equations
+			for (int i = 0; i < 10; ++i) {
+				for (int j = 0; j < 10; ++j) {
+					if ((i + j < 10) && (i <= j)) {
+						equationTable.put((i + "+" + j + "=" + (i + j)) , (i+j));
+					}
+					if (i - j >= 0) {
+						equationTable.put((i + "-" + j + "=" + (i - j)) , (i+j+10));	        		}
+					if ((i * j < 10) && (i < j)) {
+						equationTable.put((i + "*" + j + "=" + (i * j)) , (i+j+20));	        		}
+				}
+			}
+		}
+
+		public String getScore() {
+			return Integer.toString(mScore);
+		}
+		
+		public int submit(CharSequence inputString) {
+			Integer result = (Integer)equationTable.get(NormalizeEquation(inputString));
+			if (result != null) {
+				// We have a winner. Increment mScore and remove it from the table
+				mScore += result;
+				equationTable.remove(NormalizeEquation(inputString));
+				return result;
+			}
+			return -1;
+
+		}
+
+		private String NormalizeEquation(CharSequence inputCharSequence) {
+			// CharSequences are read only, convert to a string to manipulate.
+			String inputString = inputCharSequence.toString();
+			
+			// Make sure it's the right length
+			if (inputCharSequence.length() != 5) {
+				return inputString;
+			}
+
+			// Is there an = at position 2?
+			if (inputString.charAt(1) == '=') {
+				// Need to flip it
+				inputString = inputString.substring(2) + "=" + inputString.charAt(0);
+			}
+			// Is it addition or multiplication?
+			if ( (inputString.charAt(1) == '+') || (inputString.charAt(1) == '*')) {
+				// Make sure the smaller number is on the left.
+				char x = inputString.charAt(0);
+				char y = inputString.charAt(2);
+				if (x > y) { // Hope this part works.
+					inputString = Character.toString(y) + inputString.charAt(1) + Character.toString(x) + inputString.substring(3, 5);
+					//Toast.makeText(getApplicationContext(), "N:" + inputString, Toast.LENGTH_SHORT).show();
+				}
+			}
+
+			return inputString;
+		}
     
     /*
      * 
@@ -179,17 +249,17 @@ public class Puzzle
     protected static int maxScrambles = 10;  // only 10 scrambles allowed 
     protected static int numScrambleMoves = 100;  // 100 random moves per scramble    
     protected static int maxPlayerMoves = 1000;  // 1000 player moves before unscramble required
-    protected static int maxRandomMoves = maxScrambles * numScrambleMoves;
-    protected static int[] RandomMoves = new int[maxRandomMoves];
-    private static int[] PlayerMoves = new int[maxPlayerMoves];
+    protected int maxRandomMoves = maxScrambles * numScrambleMoves;
+    protected int[] PuzzleRandomMoves = new int[maxRandomMoves];
+    private int[] PuzzlePlayerMoves = new int[maxPlayerMoves];
     
-    protected static int numScrambles; 
-    protected static int numRandomMoves; 
-    protected static int numPlayerMoves; 
+    protected int numPuzzleScrambles; 
+    protected int numPuzzleRandomMoves; 
+    protected int numPuzzlePlayerMoves; 
 
     public void ScramblePuzzle()
     {
-    	if ( (numRandomMoves >= maxRandomMoves) || (numPlayerMoves > 0) )
+    	if ( (numPuzzleRandomMoves >= maxRandomMoves) || (numPuzzlePlayerMoves > 0) )
     		return;
 		   
 	    // generate random moves of the blank space 
@@ -199,10 +269,10 @@ public class Puzzle
 	    //   down  = 4
 	    int low = 1;
 	    int high = 4;
-	    int firstIndex = numScrambles * numScrambleMoves;
+	    int firstIndex = numPuzzleScrambles * numScrambleMoves;
 	    int lastIndex = firstIndex + numScrambleMoves;
 	    for (int i=firstIndex; i<lastIndex; i++)
-	    	RandomMoves[i] = (int)(Math.random() * 100) % high + low;
+	    	PuzzleRandomMoves[i] = (int)(Math.random() * 100) % high + low;
 	    
 	    // calculate single number for the index of the blank space
 	    int BlankIndex =  (mYBlankBrick * mYBrickCount) + mXBlankBrick;
@@ -213,14 +283,14 @@ public class Puzzle
 	   
 	    for (int i=firstIndex; i<lastIndex; i++)
 	    {
-	    	switch (RandomMoves[i])
+	    	switch (PuzzleRandomMoves[i])
 	    	{
 	        	// blank space left
 	        	case 1:
 	        		if (mXBlankBrick != 0) // cannot move left from leftmost column
 	        			newIndex = BlankIndex - 1;
 	        		else
-	        			RandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
+	        			PuzzleRandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
 	        		break;
 
 	        	// blank space right
@@ -228,7 +298,7 @@ public class Puzzle
 	        		if (mXBlankBrick != mXBrickCount-1)  // cannot move right from rightmost column
 	        			newIndex = BlankIndex + 1;
 	        		else
-	        			RandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
+	        			PuzzleRandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
 	        		break;
 	          
 	        	// blank space up
@@ -236,7 +306,7 @@ public class Puzzle
 	        		if (mYBlankBrick != 0)  // cannot move up from the topmost row
 	        			newIndex = BlankIndex - mXBrickCount;
 	        		else
-	        			RandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
+	        			PuzzleRandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
 	        		break;
 	          
 	        	// blank space down
@@ -244,37 +314,37 @@ public class Puzzle
 	        		if (mYBlankBrick != mYBrickCount-1)  // cannot move down from the bottom most row
 	        			newIndex = BlankIndex + mXBrickCount;
 	        		else
-	        			RandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
+	        			PuzzleRandomMoves[i] = 5;  // 5 is a dummy place holder meaning no move possible
 	        		break;
 	    	}
 	      
-	    	if (RandomMoves[i] != 5)
+	    	if (PuzzleRandomMoves[i] != 5)
 	    	{
 	    		BlankIndex = newIndex;  // set the new index of the blank space
 	    	  	int x = newIndex % mXBrickCount;  // calculate x or column index
 	    	  	int y = (newIndex - x)/ mYBrickCount;  // calculate y or row index
 				ChangePuzzle(x,y);
-				numPlayerMoves--;
+				numPuzzlePlayerMoves--;
 	    	}
 	    }
-	    numScrambles++;
-	    numRandomMoves += numScrambleMoves;
+	    numPuzzleScrambles++;
+	    numPuzzleRandomMoves += numScrambleMoves;
 	    return;
 	}
 	    
     
     public void UnScramblePuzzle()
     {
-		if (numPlayerMoves > 0)
+		if (numPuzzlePlayerMoves > 0)
 		{
-	    	PlayBackMoves(PlayerMoves, numPlayerMoves);
-	    	numPlayerMoves = 0;
+	    	PlayBackMoves(PuzzlePlayerMoves, numPuzzlePlayerMoves);
+	    	numPuzzlePlayerMoves = 0;
 		}
-    	if (numRandomMoves > 0)
+    	if (numPuzzleRandomMoves > 0)
     	{
-    		PlayBackMoves(RandomMoves, numRandomMoves);
-    		numScrambles = 0;
-    		numRandomMoves = 0;
+    		PlayBackMoves(PuzzleRandomMoves, numPuzzleRandomMoves);
+    		numPuzzleScrambles = 0;
+    		numPuzzleRandomMoves = 0;
     	}
 		return;
     }
@@ -318,7 +388,7 @@ public class Puzzle
 	    	  	int x = newIndex % mXBrickCount;  // calculate x or column index
 	    	  	int y = (newIndex - x)/ mYBrickCount;  // calculate y or row index
 				ChangePuzzle(x,y);
-				numPlayerMoves--;
+				numPuzzlePlayerMoves--;
 	    	}
         }
         return;
@@ -327,6 +397,7 @@ public class Puzzle
     public void saveState(Bundle map) 
     {
     	int i,j;
+    	Integer score;
 
         //map.putIntArray("mAppleList", coordArrayListToArray(mAppleList));
         map.putInt("mXBrickCount", Integer.valueOf(mXBrickCount));
@@ -335,13 +406,59 @@ public class Puzzle
         map.putInt("mYBlankBrick", Integer.valueOf(mYBlankBrick));
         map.putBoolean("mPuzzleOptionChanged", mPuzzleOptionChanged);
         map.putInt("mLevel1", mLevel);
-        //map.putLong("mScore", Long.valueOf(mScore));
 		for(i=0;i<mXBrickCount;i=i+1)
 		{
 			for(j=0;j<mYBrickCount;j=j+1)
 			{
 				map.putInt(Integer.toString(i)+"-"+Integer.toString(j), Integer.valueOf(mPuzzleGrid[i][j]));
 			}
+		}
+        map.putInt("mScore", Integer.valueOf(mScore));
+		for (i = 0; i < 10; ++i) {
+			for (j = 0; j < 10; ++j) {
+				if ((i + j < 10) && (i <= j)) 
+				{
+					score = (Integer)equationTable.get((i + "+" + j + "=" + (i + j)));
+					if (score != null) {
+						map.putInt((i + "+" + j + "=" + (i + j)), score);
+					}
+					else
+					{
+						map.putInt((i + "+" + j + "=" + (i + j)), 2012);
+					}
+				}
+				if (i - j >= 0) 
+				{
+					score = (Integer)equationTable.get((i + "-" + j + "=" + (i - j)));
+					if (score != null) {
+						map.putInt((i + "-" + j + "=" + (i - j)), score);
+					}
+					else
+					{
+						map.putInt((i + "-" + j + "=" + (i - j)), 2012);
+					}
+				}
+				if ((i * j < 10) && (i < j)) {
+					score = (Integer)equationTable.get((i + "*" + j + "=" + (i * j)));
+					if (score != null) {
+						map.putInt((i + "*" + j + "=" + (i * j)), score);
+					}
+					else
+					{
+						map.putInt((i + "*" + j + "=" + (i * j)), 2012);
+					}
+				}
+			}
+		}
+		
+		map.putInt("numPuzzleScrambles", numPuzzleScrambles);
+		map.putInt("numPuzzleRandomMoves", numPuzzleRandomMoves);
+		map.putInt("numPuzzlePlayerMoves", numPuzzlePlayerMoves);
+		for (i = 0; i < numPuzzleRandomMoves; i = i + 1) {
+			map.putInt(("PuzzleRandomMoves" + i), PuzzleRandomMoves[i]);
+		}
+		for (i = 0; i < numPuzzlePlayerMoves; i = i + 1) {
+			map.putInt(("PuzzlePlayerMoves" + i), PuzzlePlayerMoves[i]);
 		}
 
         return;
@@ -350,6 +467,7 @@ public class Puzzle
     public void restoreState(Bundle icicle) 
     {
     	int i,j;
+    	int score;
     	boolean neadNewPuzzle = false;
     	
     	mXBrickCount = icicle.getInt("mXBrickCount");
@@ -371,6 +489,45 @@ public class Puzzle
 				}
 			}
 		}
+
+    	mScore = icicle.getInt("mScore");
+		for (i = 0; i < 10; ++i) {
+			for (j = 0; j < 10; ++j) {
+				if ((i + j < 10) && (i <= j)) {
+					score = icicle.getInt((i + "+" + j + "=" + (i + j)));
+					if (score != 2012) {
+						equationTable.put((i + "+" + j + "=" + (i + j)),
+								(i + j));
+					}
+				}
+				if (i - j >= 0) {
+					score = icicle.getInt((i + "-" + j + "=" + (i - j)), 2012);
+					if (score != 2012) {
+						equationTable.put((i + "-" + j + "=" + (i - j)),
+								(i + j + 10));
+					}
+				}
+				if ((i * j < 10) && (i < j)) {
+					score = icicle.getInt((i + "*" + j + "=" + (i * j)),
+							2012);
+					if (score != 2012) {
+						equationTable.put((i + "*" + j + "=" + (i * j)), (i
+								+ j + 20));
+					}
+				}
+			}
+
+		}
+		
+		numPuzzleScrambles = icicle.getInt("numPuzzleScrambles", 0);
+		numPuzzleRandomMoves = icicle.getInt("numPuzzleRandomMoves", 0);
+		numPuzzlePlayerMoves = icicle.getInt("numPuzzlePlayerMoves", 0);
+		for (i = 0; i < numPuzzleRandomMoves; i = i + 1) {
+			PuzzleRandomMoves[i] = icicle.getInt(("PuzzleRandomMoves" + i), 5);
+		}
+		for (i = 0; i < numPuzzlePlayerMoves; i = i + 1) {
+			PuzzlePlayerMoves[i] = icicle.getInt(("PuzzlePlayerMoves" + i), 5);
+		}
 		
 		if(neadNewPuzzle)
 		{
@@ -381,6 +538,7 @@ public class Puzzle
     public void saveState(SharedPreferences.Editor editor)
     {
     	int i,j;
+    	Integer score;
 
     	//editor.putString("name", name);
     	editor.putInt("mXBrickCount", mXBrickCount);
@@ -395,40 +553,126 @@ public class Puzzle
 				editor.putInt("mPuzzleGrid-"+Integer.toString(i)+"-"+Integer.toString(j),mPuzzleGrid[i][j]);
 			}
 		}
-    	editor.commit();
-    }
-    
-    public void restoreState(SharedPreferences settings)
-    {
-    	int i,j;
-    	boolean neadNewPuzzle = false;
-    	
-    	mXBrickCount = settings.getInt("mXBrickCount", 5);
-    	mYBrickCount = settings.getInt("mYBrickCount", 5);
-    	mXBlankBrick = settings.getInt("mXBlankBrick", 3);
-    	mYBlankBrick = settings.getInt("mYBlankBrick", 3);
-    	mPuzzleOptionChanged = settings.getBoolean("mPuzzleOptionChanged", true);
-		mLevel = settings.getInt("mLevel1", 1);
-    	
-		mPuzzleGrid = new int[mXBrickCount][mYBrickCount];
-		for(i=0;i<mXBrickCount;i=i+1)
-		{
-			for(j=0;j<mYBrickCount;j=j+1)
-			{
-				mPuzzleGrid[i][j] = settings.getInt("mPuzzleGrid-"+Integer.toString(i)+"-"+Integer.toString(j),2012);
-				if(mPuzzleGrid[i][j] == 2012)
+    	editor.putInt("mScore", mScore);
+		for (i = 0; i < 10; ++i) {
+			for (j = 0; j < 10; ++j) {
+				if ((i + j < 10) && (i <= j)) 
 				{
-					neadNewPuzzle = true;
+					score = (Integer)equationTable.get((i + "+" + j + "=" + (i + j)));
+					if (score != null) {
+						editor.putInt((i + "+" + j + "=" + (i + j)), score);
+					}
+					else
+					{
+						editor.putInt((i + "+" + j + "=" + (i + j)), 2012);
+					}
+				}
+				if (i - j >= 0) 
+				{
+					score = (Integer)equationTable.get((i + "-" + j + "=" + (i - j)));
+					if (score != null) {
+						editor.putInt((i + "-" + j + "=" + (i - j)), score);
+					}
+					else
+					{
+						editor.putInt((i + "-" + j + "=" + (i - j)), 2012);
+					}
+				}
+				if ((i * j < 10) && (i < j)) {
+					score = (Integer)equationTable.get((i + "*" + j + "=" + (i * j)));
+					if (score != null) {
+						editor.putInt((i + "*" + j + "=" + (i * j)), score);
+					}
+					else
+					{
+						editor.putInt((i + "*" + j + "=" + (i * j)), 2012);
+					}
 				}
 			}
 		}
 		
-		if(neadNewPuzzle || mPuzzleOptionChanged)
-		{
+		editor.putInt("numPuzzleScrambles", numPuzzleScrambles);
+		editor.putInt("numPuzzleRandomMoves", numPuzzleRandomMoves);
+		editor.putInt("numPuzzlePlayerMoves", numPuzzlePlayerMoves);
+		for (i = 0; i < numPuzzleRandomMoves; i = i + 1) {
+			editor.putInt(("PuzzleRandomMoves" + i), PuzzleRandomMoves[i]);
+		}
+		for (i = 0; i < numPuzzlePlayerMoves; i = i + 1) {
+			editor.putInt(("PuzzlePlayerMoves" + i), PuzzlePlayerMoves[i]);
+		}
+
+		editor.commit();
+    }
+    
+	public void restoreState(SharedPreferences settings) {
+		int i, j;
+		int score;
+		boolean neadNewPuzzle = false;
+
+		mXBrickCount = settings.getInt("mXBrickCount", 5);
+		mYBrickCount = settings.getInt("mYBrickCount", 5);
+		mXBlankBrick = settings.getInt("mXBlankBrick", 3);
+		mYBlankBrick = settings.getInt("mYBlankBrick", 3);
+		mPuzzleOptionChanged = settings
+				.getBoolean("mPuzzleOptionChanged", true);
+		mLevel = settings.getInt("mLevel1", 1);
+
+		mPuzzleGrid = new int[mXBrickCount][mYBrickCount];
+		for (i = 0; i < mXBrickCount; i = i + 1) {
+			for (j = 0; j < mYBrickCount; j = j + 1) {
+				mPuzzleGrid[i][j] = settings.getInt(
+						"mPuzzleGrid-" + Integer.toString(i) + "-"
+								+ Integer.toString(j), 2012);
+				if (mPuzzleGrid[i][j] == 2012) {
+					neadNewPuzzle = true;
+				}
+			}
+		}
+
+		mScore = settings.getInt("mScore", 0);
+		for (i = 0; i < 10; ++i) {
+			for (j = 0; j < 10; ++j) {
+				if ((i + j < 10) && (i <= j)) {
+					score = settings
+							.getInt((i + "+" + j + "=" + (i + j)), 2012);
+					if (score != 2012) {
+						equationTable.put((i + "+" + j + "=" + (i + j)),
+								(i + j));
+					}
+				}
+				if (i - j >= 0) {
+					score = settings
+							.getInt((i + "-" + j + "=" + (i - j)), 2012);
+					if (score != 2012) {
+						equationTable.put((i + "-" + j + "=" + (i - j)),
+								(i + j + 10));
+					}
+				}
+				if ((i * j < 10) && (i < j)) {
+					score = settings.getInt((i + "*" + j + "=" + (i * j)),
+							2012);
+					if (score != 2012) {
+						equationTable.put((i + "*" + j + "=" + (i * j)), (i
+								+ j + 20));
+					}
+				}
+			}
+		}
+		
+		numPuzzleScrambles = settings.getInt("numPuzzleScrambles", 0);
+		numPuzzleRandomMoves = settings.getInt("numPuzzleRandomMoves", 0);
+		numPuzzlePlayerMoves = settings.getInt("numPuzzlePlayerMoves", 0);
+		for (i = 0; i < numPuzzleRandomMoves; i = i + 1) {
+			PuzzleRandomMoves[i] = settings.getInt(("PuzzleRandomMoves" + i), 5);
+		}
+		for (i = 0; i < numPuzzlePlayerMoves; i = i + 1) {
+			PuzzlePlayerMoves[i] = settings.getInt(("PuzzlePlayerMoves" + i), 5);
+		}
+
+		if (neadNewPuzzle || mPuzzleOptionChanged) {
 			mPuzzleGrid = CreateNewPuzzle(mXBrickCount, mYBrickCount);
 			mPuzzleOptionChanged = false;
 		}
 
-    }
-
+	}
 }

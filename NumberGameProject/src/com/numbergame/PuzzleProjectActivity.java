@@ -49,8 +49,8 @@ public class PuzzleProjectActivity extends Activity implements View.OnTouchListe
 
         setContentView(R.layout.puzzle);
         mPuzzleView = (PuzzleView) findViewById(R.id.puzzle);
-        mPuzzleView.setTextView((TextView) findViewById(R.id.score));
         mPuzzleView.setPuzzleControl(mPuzzle);
+        mPuzzleView.setTextView((TextView) findViewById(R.id.score));
         mPuzzleView.setOnTouchListener(this);
         
         /*

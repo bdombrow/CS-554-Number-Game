@@ -44,8 +44,8 @@ public class NumbersProjectActivity  extends Activity implements View.OnTouchLis
 
 	        setContentView(R.layout.numberpuzzle);
 	        mNumberPuzzleView = (NumberPuzzleView) findViewById(R.id.numberpuzzle);
-	        mNumberPuzzleView.setTextView((TextView) findViewById(R.id.score));
 	        mNumberPuzzleView.setNumberPuzzleControl(mNumberPuzzle);
+	        mNumberPuzzleView.setTextView((TextView) findViewById(R.id.score));
 	        
 	        mNumberPuzzleView.setOnTouchListener(this);
 	    }

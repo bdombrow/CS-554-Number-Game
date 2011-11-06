@@ -60,9 +60,6 @@ public class NumberPuzzleView extends View
 
 	private NumberPuzzle nNumberPuzzle;
 
-	// Math game
-	private MathGame currentNumberGame = new MathGame();
-
 	public NumberPuzzleView(Context context, AttributeSet attrs) 
 	{
 		super(context, attrs);
@@ -80,7 +77,7 @@ public class NumberPuzzleView extends View
 		nStatusText = newView;
 
 		// Set the StatusText to the current score.
-		nStatusText.setText(currentNumberGame.getScore());
+		nStatusText.setText(nNumberPuzzle.getScore());
 		nStatusText.setVisibility(View.VISIBLE);
 	}
 
