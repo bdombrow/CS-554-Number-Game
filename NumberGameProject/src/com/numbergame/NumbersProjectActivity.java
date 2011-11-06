@@ -21,7 +21,7 @@ public class NumbersProjectActivity  extends Activity implements View.OnTouchLis
 	    public void onCreate(Bundle savedInstanceState) 
 	    {
 	        super.onCreate(savedInstanceState);
-
+	        
 	        if (savedInstanceState == null) 
 	        {
 	            // We were just launched -- set up a new game
@@ -48,22 +48,13 @@ public class NumbersProjectActivity  extends Activity implements View.OnTouchLis
 	        mNumberPuzzleView.setNumberPuzzleControl(mNumberPuzzle);
 	        
 	        mNumberPuzzleView.setOnTouchListener(this);
-
-		/*	View.OnTouchListener mylistener = new View.OnTouchListener() {
-				
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					// TODO Auto-generated method stub
-					 return false;//mPuzzleView.onTouch(v, event);//false;
-				}
-			};*/
-	        //mPuzzleView.setOnTouchListener(PuzzleProjectActivity.this);
 	    }
 	    
 		@Override
 		protected void onDestroy() {
 			// TODO Auto-generated method stub
 			super.onDestroy();
+
 			
 			SharedPreferences settings = getSharedPreferences(PUZZLE_PREFS, 0);
 			SharedPreferences.Editor editor = settings.edit();
@@ -77,18 +68,11 @@ public class NumbersProjectActivity  extends Activity implements View.OnTouchLis
 	        // Pause the game along with the activity
 	        //mPuzzleView.setMode(PuzzleView.PAUSE);
 	    }
-	    
-
-	  //  @Override
-	/*	public boolean onTouchEvent(MotionEvent event) {
-			super.onTouchEvent(event);
-			return mPuzzleView.onTouch(, event);
-			
-		}*/
 
 		@Override
 	    public void onSaveInstanceState(Bundle outState) 
 	    {
+			
 	        //Store the game state
 	    	Bundle map = new Bundle();
 	    	mNumberPuzzle.saveState(map);
