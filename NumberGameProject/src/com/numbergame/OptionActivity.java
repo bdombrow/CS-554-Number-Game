@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class OptionActivity extends Activity {
+	private boolean mPuzzleOptionChanged;
+	private boolean mNumberOptionChanged;
 	private int mLevel1;
 	private int mLevel2;
 	private int mSize2;
@@ -27,6 +29,8 @@ public class OptionActivity extends Activity {
 		if (savedInstanceState == null) {
 			// We were just launched -- set up a new game
 			SharedPreferences settings = getSharedPreferences(PUZZLE_PREFS, 0);
+			mPuzzleOptionChanged = settings.getBoolean("mPuzzleOptionChanged", true);
+			mNumberOptionChanged = settings.getBoolean("mNumberOptionChanged", true);
 			mLevel1 = settings.getInt("mLevel1", 1);
 			mLevel2 = settings.getInt("mLevel2", 1);
 			mSize2 = settings.getInt("mSize2", 2);
@@ -34,6 +38,8 @@ public class OptionActivity extends Activity {
 			// We are being restored
 			Bundle numbermap = savedInstanceState.getBundle(ICICLE_KEY);
 			if (numbermap != null) {
+				mPuzzleOptionChanged = numbermap.getBoolean("mPuzzleOptionChanged");
+				mNumberOptionChanged = numbermap.getBoolean("mNumberOptionChanged");
 				mLevel1 = numbermap.getInt("mLevel1");
 				mLevel2 = numbermap.getInt("mLevel2");
 				mSize2 = numbermap.getInt("mSize2");
@@ -76,6 +82,7 @@ public class OptionActivity extends Activity {
 					int position, long id) {
 				//TextView tv = (TextView) view;
 				mLevel1 = position + 1;
+				mPuzzleOptionChanged = true;
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -116,6 +123,7 @@ public class OptionActivity extends Activity {
 					int position, long id) {
 				//TextView tv = (TextView) view;
 				mLevel2 = position + 1;
+				mNumberOptionChanged = true;
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -156,6 +164,7 @@ public class OptionActivity extends Activity {
 					int position, long id) {
 				TextView tv = (TextView) view;
 				mSize2 = position + 2;
+				mNumberOptionChanged = true;
 			}
 
 			public void onNothingSelected(AdapterView<?> arg0) {
@@ -172,6 +181,8 @@ public class OptionActivity extends Activity {
 
 		SharedPreferences settings = getSharedPreferences(PUZZLE_PREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean("mPuzzleOptionChanged", mPuzzleOptionChanged);
+		editor.putBoolean("mNumberOptionChanged", mNumberOptionChanged);
 		editor.putInt("mLevel1", mLevel1);
 		editor.putInt("mLevel2", mLevel2);
 		editor.putInt("mSize2", mSize2);
@@ -197,6 +208,8 @@ public class OptionActivity extends Activity {
 	public void onSaveInstanceState(Bundle outState) {
 		// Store the game state
 		Bundle map = new Bundle();
+		map.putBoolean("mPuzzleOptionChanged", Boolean.valueOf(mPuzzleOptionChanged));
+		map.putBoolean("mNumberOptionChanged", Boolean.valueOf(mNumberOptionChanged));
 		map.putInt("mLevel1", Integer.valueOf(mLevel1));
 		map.putInt("mLevel2", Integer.valueOf(mLevel2));
 		map.putInt("mSize2", Integer.valueOf(mSize2));
