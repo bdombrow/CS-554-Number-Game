@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"   
- android:background="@drawable/puzzle1" 
+ android:background="@drawable/pic_crazypuzzle" 
  android:layout_height="fill_parent"   
   android:layout_width="fill_parent" 
   android:padding="30dip"   
@@ -14,19 +14,27 @@
         android:layout_width="wrap_content" 
         android:id="@+id/tableRow1" 
         android:gravity="bottom">    	
-        <Button  	  
-        android:id="@+id/Equation"	 
-         android:layout_width="100dip"	
-           android:layout_height="75dip" 
+
+        <Button
+            android:id="@+id/Equation"
+            android:layout_width="75dip"
+            android:layout_height="75dip"
+            android:layout_gravity="bottom"
+            android:background="@drawable/pic_math_button"
             android:paddingLeft="10dip"
-               android:layout_gravity="bottom" android:text="+ - * /" android:textColor="#FF0000" android:textSize="20dip"/>
-               	<Button  	  
-               	android:id="@+id/Numbers"
-               	           		  android:layout_width="100dip"	 
-               		   android:layout_height="75dip"  
-               		   android:paddingLeft="10dip" 
-               		   android:layout_marginLeft="70dip"
-               		    android:text="1 2 3 4" android:textColor="#ff0000" android:textColorHighlight="#00FF00"/>	
+            android:textColor="#FF0000"
+            android:textSize="20dip" />
+
+               	<Button
+               	    android:id="@+id/Numbers"
+               	    android:layout_width="75dip"
+               	    android:layout_height="75dip"
+               	    android:layout_marginLeft="70dip"
+               	    android:background="@drawable/pic_number_button"
+               	    android:paddingLeft="10dip"
+               	    android:textColor="#ff0000"
+               	    android:textColorHighlight="#00FF00" />
+	
                		    </TableRow>	
                		    <TableRow android:layout_height="wrap_content" 
                		    android:layout_width="wrap_content" 
