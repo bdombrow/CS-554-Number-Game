@@ -2,6 +2,7 @@ package com.numbergame;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -64,7 +65,18 @@ public class MainScreenProjectActivity extends Activity{
 				break;
 			case R.id.Help:
 				AlertDialog.Builder alert = new AlertDialog.Builder(MainScreenProjectActivity.this);
-				alert.setMessage("DUMMY DUMMY DUMMY DUMMY DUMMY DUMMYDUMMY DUMMY DUMMYDUMMY DUMMY DUMMY");
+				alert.setMessage("The Crazy Game has two modes.\nThe first allows users to define basic mathematic equations using digits 0 to 9 and the addition, subtraction and multiplication operators.\n" +
+										"Equations can be formed either horizontally from left to right or vertically from top to bottom.\n" +
+										" A candidate equation is submitted by dragging a finger across the screen.\n" +
+										 "\nIn the second mode, the users are presented with a random board of numbers from 1 to 24.\nIn this mode, the board also contains the empty black tile.\n" +
+						               "The users must order the numbers sequentially in ascending order." ) ;
+										 CharSequence ok = "Ok";	
+										 alert.setPositiveButton(ok, new DialogInterface.OnClickListener() {	
+											                 public void onClick(DialogInterface arg0, int
+						arg1) {
+											                	 arg0.dismiss();	
+											                	 }	            });	
+				
 				alert.show();
 				break;
 				}
