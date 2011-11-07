@@ -74,9 +74,6 @@ public class PuzzleView extends View
 	private float downX = 0.0f;
 	private float downY = 0.0f;
 	
-	// Math game
-	private MathGame currentGame = new MathGame();
-	
     public PuzzleView(Context context, AttributeSet attrs) 
 	{
 		super(context, attrs);
@@ -94,7 +91,7 @@ public class PuzzleView extends View
         mStatusText = newView;
         
         // Set the StatusText to the current score.
-        mStatusText.setText(currentGame.getScore());
+        mStatusText.setText(mPuzzle.getScore());
         mStatusText.setVisibility(View.VISIBLE);
     }
 	
@@ -280,10 +277,10 @@ public class PuzzleView extends View
 			
 			// Check for drag on column
 			if ((upIndex.x == downIndex.x) && (Math.abs(upIndex.y - downIndex.y) == 4)) {
-				int points = currentGame.submit(columnToString(upIndex.x));
+				int points = mPuzzle.submit(columnToString(upIndex.x));
 				if (points > 0) {
 					popUpPoints(v, Integer.toString(points));
-		        	mStatusText.setText(currentGame.getScore());
+		        	mStatusText.setText(mPuzzle.getScore());
 		        	mStatusText.setVisibility(View.VISIBLE);
 				} else {
 					// Play a sound and vibrate?
@@ -295,10 +292,10 @@ public class PuzzleView extends View
 			
 			// Check for drag on row
 			if ((upIndex.y == downIndex.y) && (Math.abs(upIndex.x - downIndex.x) == 4)) {
-				int points = currentGame.submit(rowToString(upIndex.y));
+				int points = mPuzzle.submit(rowToString(upIndex.y));
 				if (points > 0) {
 					popUpPoints(v, Integer.toString(points));
-		        	mStatusText.setText(currentGame.getScore());
+		        	mStatusText.setText(mPuzzle.getScore());
 		        	mStatusText.setVisibility(View.VISIBLE);
 				}
 				

@@ -7,7 +7,7 @@
 		android:id="@+id/numberpuzzle"
 		android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:background="@drawable/baboon"
+    	android:background="@drawable/pic_big1"
     	tileSize="24" />
 	
 	<RelativeLayout
@@ -22,18 +22,19 @@
 			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
 			android:layout_centerHorizontal="true"
-			android:layout_marginTop="20dp"
+			android:layout_alignLeft="@+id/scrambleButton" 
+			android:layout_marginTop="28dp"
 			android:textColor="#ffffffff"
 			android:textSize="24sp"/>
 
-		<Button
-		    android:id="@+id/scramble"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentBottom="true"
-		    android:layout_centerHorizontal="true"
-		    android:layout_marginBottom="20dp"
-		    android:text="Scramble" />
+		<Button 
+			android:id="@+id/scrambleButton" 
+			android:text="Scramble" 
+			android:layout_height="wrap_content" 
+			android:layout_width="wrap_content" 
+			android:layout_marginBottom="5dp" 
+			android:layout_marginLeft="5dp" 
+			android:layout_alignParentBottom="true"/>
 
 	</RelativeLayout>
 </FrameLayout>
