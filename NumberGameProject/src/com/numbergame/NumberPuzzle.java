@@ -1,7 +1,5 @@
 package com.numbergame;
 
-import java.util.Hashtable;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -11,9 +9,9 @@ public class NumberPuzzle {
 
 	private static final int BLANK = 25;
 
-    private boolean mNumberOptionChanged;
+	private boolean mNumberOptionChanged;
 	protected static int nLevel;
-	
+
 	protected static int nXNumberBrickCount;
 	protected static int nYNumberBrickCount;
 
@@ -21,6 +19,7 @@ public class NumberPuzzle {
 	protected static int nYNumberBlankBrick;
 
 	private int[][] nNumberPuzzleGrid;
+	private static int score = 0;
 
 	public int[][] CreateNewNumberPuzzle(int xCount, int yCount)
 	{
@@ -30,9 +29,9 @@ public class NumberPuzzle {
 		nNumberPuzzleGrid = new int[nXNumberBrickCount][nYNumberBrickCount];
 
 		clearNumberBricks();
-		
+
 		int counter = 1;
-		
+
 		for (int i = 0; i < nXNumberBrickCount; ++i) {
 			for (int j = 0; j < nYNumberBrickCount; ++j) {
 				setNumberBrick(counter++, j, i);
@@ -41,11 +40,11 @@ public class NumberPuzzle {
 
 		nXNumberBlankBrick = nXNumberBrickCount - 1;
 		nYNumberBlankBrick = nYNumberBrickCount - 1;
-		
-		
-		setNumberBrick(BLANK, nXNumberBlankBrick, nYNumberBlankBrick);
-		
 
+
+		setNumberBrick(BLANK, nXNumberBlankBrick, nYNumberBlankBrick);
+
+		score = 0;
 
 		return nNumberPuzzleGrid;
 	}
@@ -135,27 +134,14 @@ public class NumberPuzzle {
 		return true;
 	}
 
-	
-	private static int score = 0;
 
-		public void reset() {
-			score = 0;
-		}
+	public String getScore() {
+		return Integer.toString(score);
+	}
 
-		public String getScore() {
-			return Integer.toString(score);
-		}
-		
-		public int submit(CharSequence inputString) {
-			Integer result = 1;
-			if (result != null) {
-				// We have a winner. Increment score and remove it from the table
-				score += result;
-				return result;
-			}
-			return -1;
-
-		}
+	public void submit() {
+		++score;
+	}
 
 	public void saveState(Bundle map) 
 	{
@@ -166,7 +152,7 @@ public class NumberPuzzle {
 		map.putInt("nYNumberBrickCount", Integer.valueOf(nYNumberBrickCount));
 		map.putInt("nXNumberBlankBrick", Integer.valueOf(nXNumberBlankBrick));
 		map.putInt("nYNumberBlankBrick", Integer.valueOf(nYNumberBlankBrick));
-        map.putBoolean("mNumberOptionChanged", mNumberOptionChanged);
+		map.putBoolean("mNumberOptionChanged", mNumberOptionChanged);
 		map.putInt("nLevel2", nLevel);
 		//map.putLong("mScore", Long.valueOf(mScore));
 		for(i=0;i<nXNumberBrickCount;i=i+1)
@@ -220,7 +206,7 @@ public class NumberPuzzle {
 		editor.putInt("nYNumberBrickCount", nYNumberBrickCount);
 		editor.putInt("nXNumberBlankBrick", nXNumberBlankBrick);
 		editor.putInt("nYNumberBlankBrick", nYNumberBlankBrick);
-    	editor.putBoolean("mNumberOptionChanged", mNumberOptionChanged);
+		editor.putBoolean("mNumberOptionChanged", mNumberOptionChanged);
 		for(i=0;i<nXNumberBrickCount;i=i+1)
 		{
 			for(j=0;j<nYNumberBrickCount;j=j+1)

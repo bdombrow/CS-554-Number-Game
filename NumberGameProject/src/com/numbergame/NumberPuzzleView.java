@@ -204,17 +204,12 @@ public class NumberPuzzleView extends View
 			break;
 		case MotionEvent.ACTION_UP:
 
-			// No drag, then it should be a tile press.
-			if (nNumberBrickGrid[index.x][index.y] < 2012) 
-			{
-				if(nNumberBrickGrid[index.x][index.y] > BLANK)
-				{
-					nNumberBrickGrid[index.x][index.y] = nNumberBrickGrid[index.x][index.y] - 15;
-					invalidate();
-				}
-			}
 			nNumberPuzzle.ChangeNumberPuzzle(index.x, index.y);
 			nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
+			
+			nNumberPuzzle.submit();
+			nStatusText.setText(nNumberPuzzle.getScore());
+			
 			invalidate();
 
 			break;
