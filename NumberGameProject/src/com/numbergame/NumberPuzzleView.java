@@ -1,6 +1,5 @@
 package com.numbergame;
 import com.numbergame.R;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,10 +7,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class NumberPuzzleView extends View
 {
@@ -177,7 +178,40 @@ public class NumberPuzzleView extends View
 
 		return new Index(2012, 2012);
 	}
+	
+	
+    public void Scramble()
+    {
+		int numMoves = nNumberPuzzle.ScrambleNumberPuzzle();
+		Toast toast = Toast.makeText(this.getContext(),"scramble moves = " + numMoves, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP|Gravity.RIGHT,30, 30);
+		toast.show();
+		nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
+		invalidate();
+    }
+    
+    public void UnScramble()
+    {
+/*    	Toast toast = Toast.makeText(this.getContext(),"within UnScramble", Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP|Gravity.RIGHT,30, 30);
+		toast.show(); */
+		nNumberPuzzle.UnScrambleNumberPuzzle();
+		nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
+		invalidate();
+    }
 
+
+    
+    public void AIUnScramble()
+    {
+    	while(nNumberPuzzle.AIUnScrambleNumberPuzzle())
+    	{
+    		nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
+    		invalidate();
+    	}
+    }
+
+    
 	public boolean onTouch(View v, MotionEvent event)
 	{
 

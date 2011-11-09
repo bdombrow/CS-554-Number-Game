@@ -230,7 +230,7 @@ public class Puzzle {
 	// protected static boolean playerMovedTile = true; // player moves are not
 	// tracked yet
 	protected static int maxScrambles = 10; // only 10 scrambles allowed
-	protected static int numScrambleMoves = 100; // 100 random moves per
+	protected static int numScrambleMoves = 200; // 200 random moves per
 													// scramble
 	protected static int maxPlayerMoves = 1000; // 1000 player moves before
 												// unscramble required

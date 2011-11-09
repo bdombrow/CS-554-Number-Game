@@ -1,5 +1,6 @@
 package com.numbergame;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -45,6 +46,11 @@ public class NumberPuzzle {
 		setNumberBrick(BLANK, nXNumberBlankBrick, nYNumberBlankBrick);
 
 		score = 0;
+		numRandomPuzzleMoves = 0;
+		numPlayerPuzzleMoves = 0;
+		numRandomMoves = 3 * nXNumberBrickCount * nXNumberBrickCount;
+		if (nXNumberBrickCount==2)
+			numRandomMoves = 4;
 
 		return nNumberPuzzleGrid;
 	}
@@ -91,6 +97,8 @@ public class NumberPuzzle {
 				for(i=nYNumberBlankBrick; i>y; i=i-1)
 				{
 					nNumberPuzzleGrid[x][i] = nNumberPuzzleGrid[x][i-1];
+					playerPuzzleMoves[numPlayerPuzzleMoves] = 3;
+					numPlayerPuzzleMoves++;
 				}
 				setNumberBrick(BLANK, x, i);
 				nXNumberBlankBrick = x;
@@ -101,6 +109,8 @@ public class NumberPuzzle {
 				for(i=nYNumberBlankBrick; i<y; i=i+1)
 				{
 					nNumberPuzzleGrid[x][i] = nNumberPuzzleGrid[x][i+1];
+					playerPuzzleMoves[numPlayerPuzzleMoves] = 4;
+					numPlayerPuzzleMoves++;
 				}
 				setNumberBrick(BLANK, x, i);
 				nXNumberBlankBrick = x;
@@ -114,6 +124,8 @@ public class NumberPuzzle {
 				for(i=nXNumberBlankBrick; i>x; i=i-1)
 				{
 					nNumberPuzzleGrid[i][y] = nNumberPuzzleGrid[i-1][y];
+					playerPuzzleMoves[numPlayerPuzzleMoves] = 1;
+					numPlayerPuzzleMoves++;
 				}
 				setNumberBrick(BLANK, i, y);
 				nXNumberBlankBrick = x;
@@ -124,6 +136,8 @@ public class NumberPuzzle {
 				for(i=nXNumberBlankBrick; i<x; i=i+1)
 				{
 					nNumberPuzzleGrid[i][y] = nNumberPuzzleGrid[i+1][y];
+					playerPuzzleMoves[numPlayerPuzzleMoves] = 2;
+					numPlayerPuzzleMoves++;
 				}
 				setNumberBrick(BLANK, i, y);
 				nXNumberBlankBrick = x;
@@ -134,7 +148,183 @@ public class NumberPuzzle {
 		return true;
 	}
 
+	protected static int numRandomMoves; 
+	protected static int maxMoves = 1000;
+	protected static int numRandomPuzzleMoves; 
+	protected static int numPlayerPuzzleMoves;
+	
+	protected int[] randomMoves = new int[maxMoves];
+	protected int[] randomPuzzleMoves = new int[maxMoves];
+	protected int[] playerPuzzleMoves = new int[maxMoves];
+	
+	public int ScrambleNumberPuzzle() {
+		if ((numRandomPuzzleMoves > 0) || (numPlayerPuzzleMoves > 0))
+			return numRandomPuzzleMoves;
 
+		// generate random moves of the blank space
+		// left = 1
+		// right = 2
+		// up = 3
+		// down = 4
+		int low = 1;
+		int high = 4;
+		for (int i = 0; i < numRandomMoves; i++)
+			randomMoves[i] = (int) (Math.random() * 100) % high + low;
+
+		// calculate single number for the index of the blank space
+		int BlankIndex = (nYNumberBlankBrick * nYNumberBrickCount) + nXNumberBlankBrick;
+
+		// newIndex will be the new index of the blank space
+		// and it is also the current index of the tile that will move
+		int newIndex = 0;
+
+		for (int i = 0; i < numRandomMoves; i++) {
+			switch (randomMoves[i]) {
+			// blank space left
+			case 1:
+				if (nXNumberBlankBrick != 0) // cannot move left from leftmost column
+					newIndex = BlankIndex - 1;
+				else
+					randomMoves[i] = 5; // 5 is a dummy place holder
+												// meaning no move possible
+				break;
+
+			// blank space right
+			case 2:
+				if (nXNumberBlankBrick != nXNumberBrickCount - 1) // cannot move right from
+														// rightmost column
+					newIndex = BlankIndex + 1;
+				else
+					randomMoves[i] = 5; // 5 is a dummy place holder
+												// meaning no move possible
+				break;
+
+			// blank space up
+			case 3:
+				if (nYNumberBlankBrick != 0) // cannot move up from the topmost row
+					newIndex = BlankIndex - nXNumberBrickCount;
+				else
+					randomMoves[i] = 5; // 5 is a dummy place holder
+												// meaning no move possible
+				break;
+
+			// blank space down
+			case 4:
+				if (nYNumberBlankBrick != nYNumberBrickCount - 1) // cannot move down from
+														// the bottom most row
+					newIndex = BlankIndex + nXNumberBrickCount;
+				else
+					randomMoves[i] = 5; // 5 is a dummy place holder
+												// meaning no move possible
+				break;
+			default:
+				randomMoves[i] = 5; // 5 is a dummy place holder
+				break;
+			}
+
+			if (randomMoves[i] != 5) {
+				BlankIndex = newIndex; // set the new index of the blank space
+				int x = newIndex % nXNumberBrickCount; // calculate x or column index
+				int y = (newIndex - x) / nYNumberBrickCount; // calculate y or row
+														// index
+				ChangeNumberPuzzle(x, y);
+				randomPuzzleMoves[numRandomPuzzleMoves] = randomMoves[i];
+				numRandomPuzzleMoves++;
+				numPlayerPuzzleMoves--;
+			}
+		}
+		return numRandomPuzzleMoves; 
+	} 
+	
+	private void PlayBackMoves(int[] moves, int numMoves, boolean singleStep) {
+		int BlankIndex = (nYNumberBlankBrick * nYNumberBrickCount) + nXNumberBlankBrick;
+		int newIndex = 0;
+		for (int i = (numMoves - 1); i >= 0; i--) // read the moves in reverse
+													// order
+		{
+			switch (moves[i]) {
+			// blank space left for the original move right
+			case 2:
+				newIndex = BlankIndex - 1;
+				break;
+
+			// blank space right for the original move left
+			case 1:
+				newIndex = BlankIndex + 1;
+				break;
+
+			// blank space up for the original move down
+			case 4:
+				newIndex = BlankIndex - nXNumberBrickCount;
+				break;
+
+			// blank space down for the original move up
+			case 3:
+				newIndex = BlankIndex + nXNumberBrickCount;
+				break;
+
+			// no move
+			case 5:
+				break;
+			}
+
+			if (moves[i] != 5) {
+				BlankIndex = newIndex; // set the new index of the blank space
+				int x = newIndex % nXNumberBrickCount; // calculate x or column index
+				int y = (newIndex - x) / nYNumberBrickCount; // calculate y or row
+														// index
+				ChangeNumberPuzzle(x, y);
+				if (singleStep)
+					return;
+			}
+		}
+		return;
+	}
+
+	
+
+	
+	public boolean AIUnScrambleNumberPuzzle()
+	{
+		boolean singlestep;
+		score = 0;
+		if (numPlayerPuzzleMoves > 0) {
+			singlestep = false;
+			PlayBackMoves(playerPuzzleMoves, numPlayerPuzzleMoves,singlestep);
+			numPlayerPuzzleMoves = 0;
+		}
+		if (numRandomPuzzleMoves > 0)
+		{
+			singlestep = true;
+			PlayBackMoves(randomPuzzleMoves, numRandomPuzzleMoves,singlestep);
+			numRandomPuzzleMoves--;
+			numPlayerPuzzleMoves = 0;
+		}
+		if (numRandomPuzzleMoves > 0)
+			return true;
+		else
+			return false;
+	}
+	
+	
+	
+	public void UnScrambleNumberPuzzle()
+	{
+		boolean singlestep = false;
+		if (numPlayerPuzzleMoves > 0) 
+			PlayBackMoves(playerPuzzleMoves, numPlayerPuzzleMoves,singlestep);
+		if (numRandomPuzzleMoves > 0) 
+			PlayBackMoves(randomPuzzleMoves, numRandomPuzzleMoves,singlestep);
+		numPlayerPuzzleMoves = 0;
+		numRandomPuzzleMoves = 0;
+		score = 0;
+		return;
+	}
+
+	
+	
+	
+	
 	public String getScore() {
 		return Integer.toString(score);
 	}
