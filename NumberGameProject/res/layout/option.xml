@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3642c3" >
+    android:background="#3642c3"
+    android:orientation="vertical" >
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,19 +13,7 @@
         android:orientation="vertical"
         android:stretchColumns="1" >
 
-            
         <TableRow >
-            <TextView
-                android:id="@+id/mode1textid"
-                android:text="" />
-        </TableRow>
-            
-        <TableRow >
-            <TextView
-                android:id="@+id/mode1textid"
-                android:text="" />
-        </TableRow>
-            <TableRow >
 
             <TextView
                 android:id="@+id/mode1textid"
@@ -32,7 +21,7 @@
                 android:textColor="#ffffff"
                 android:textSize="24dp" />
         </TableRow>
-            
+
         <TableRow >
 
             <TextView
@@ -40,47 +29,51 @@
                 android:text="@string/leveltext"
                 android:textColor="#ffffff"
                 android:textSize="24dp" />
-            
+
             <Spinner
                 android:id="@+id/levelspin1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
             </Spinner>
         </TableRow>
-            
+
         <TableRow >
+
             <TextView
                 android:id="@+id/mode1textid"
                 android:text="" />
         </TableRow>
-            
+
         <TableRow >
+
             <TextView
                 android:id="@+id/mode1textid"
                 android:text="" />
         </TableRow>
-            
+
         <TableRow >
+
             <TextView
                 android:id="@+id/mode1textid"
                 android:text="" />
         </TableRow>
-            
+
         <TableRow >
+
             <TextView
                 android:id="@+id/mode1textid"
                 android:text="" />
         </TableRow>
-            
-            <TableRow >
+
+        <TableRow >
 
             <TextView
                 android:id="@+id/mode2textid"
                 android:text="@string/mode2text"
                 android:textColor="#ffffff"
                 android:textSize="24dp" />
-            </TableRow>
-            
+        </TableRow>
+
         <TableRow >
 
             <TextView
@@ -88,28 +81,28 @@
                 android:text="@string/leveltext"
                 android:textColor="#ffffff"
                 android:textSize="24dp" />
-            
+
             <Spinner
                 android:id="@+id/levelspin2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
             </Spinner>
         </TableRow>
-        
+
         <TableRow >
+
             <TextView
                 android:id="@+id/sizetextid"
                 android:text="@string/sizetext"
                 android:textColor="#ffffff"
                 android:textSize="24dp" />
-            
+
             <Spinner
                 android:id="@+id/sizespin2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" >
             </Spinner>
         </TableRow>
-
     </TableLayout>
 
 </LinearLayout>
