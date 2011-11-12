@@ -34,6 +34,7 @@ public class Puzzle {
 	private int[][] mPuzzleGrid;
 	
 	private int mScore = 0;
+	private int mEquations = 0;
 
 	// Hash table to hold the valid equations
 	private Hashtable<String, Integer> equationTable = new Hashtable<String, Integer>();
@@ -46,34 +47,34 @@ public class Puzzle {
 
 		clearBricks();
 
-		setBrick(NUM_4, 0, 0);
-		setBrick(OP_MT, 0, 1);
-		setBrick(NUM_2, 0, 2);
+		setBrick(NUM_1, 0, 0);
+		setBrick(OP_PL, 0, 1);
+		setBrick(NUM_1, 0, 2);
 		setBrick(OP_EQ, 0, 3);
-		setBrick(NUM_8, 0, 4);
-		setBrick(OP_PL, 1, 0);
-		setBrick(NUM_7, 1, 1);
-		setBrick(OP_PL, 1, 2);
-		setBrick(NUM_6, 1, 3);
-		setBrick(OP_MN, 1, 4);
-		setBrick(NUM_5, 2, 0);
-		setBrick(OP_MN, 2, 1);
-		setBrick(NUM_2, 2, 2);
-		setBrick(OP_EQ, 2, 3);
-		setBrick(NUM_3, 2, 4);
-		setBrick(OP_EQ, 3, 0);
-		setBrick(NUM_1, 3, 1);
-		setBrick(OP_EQ, 3, 2);
-		setBrick(BLANK, 3, 3);
-		setBrick(OP_EQ, 3, 4);
-		setBrick(NUM_9, 4, 0);
-		setBrick(OP_MN, 4, 1);
-		setBrick(NUM_4, 4, 2);
-		setBrick(OP_EQ, 4, 3);
-		setBrick(NUM_5, 4, 4);
+		setBrick(NUM_2, 0, 4);
+		setBrick(NUM_9, 1, 0);
+		setBrick(OP_MN, 1, 1);
+		setBrick(NUM_2, 1, 2);
+		setBrick(NUM_7, 1, 3);
+		setBrick(NUM_0, 1, 4);
+		setBrick(NUM_3, 2, 0);
+		setBrick(OP_MT, 2, 1);
+		setBrick(NUM_3, 2, 2);
+		setBrick(NUM_9, 2, 3);
+		setBrick(NUM_0, 2, 4);
+		setBrick(NUM_4, 3, 0);
+		setBrick(NUM_5, 3, 1);
+		setBrick(NUM_6, 3, 2);
+		setBrick(NUM_7, 3, 3);
+		setBrick(NUM_8, 3, 4);
+		setBrick(NUM_4, 4, 0);
+		setBrick(NUM_5, 4, 1);
+		setBrick(NUM_6, 4, 2);
+		setBrick(NUM_8, 4, 3);
+		setBrick(BLANK, 4, 4);
 
-		mXBlankBrick = 3;
-		mYBlankBrick = 3;
+		mXBlankBrick = 4;
+		mYBlankBrick = 4;
 
 		numPuzzleScrambles = 0;
 		numPuzzleRandomMoves = 0;
@@ -154,9 +155,15 @@ public class Puzzle {
 
 		return true;
 	}
+	/*
+	 * BD 11/11/2011
+	 * 
+	 * Reset scoring and hash table.
+	 */
 
 	public void reset() {
 		mScore = 0;
+		mEquations = 0;
 
 		// Load the hash table with valid equations
 		for (int i = 0; i < 10; ++i) {
@@ -177,17 +184,21 @@ public class Puzzle {
 	}
 
 	public String getScore() {
-		return Integer.toString(mScore);
+		return Integer.toString(mScore) + "\n" + Integer.toString(mEquations) + " of " + Integer.toString(mLevel);
 	}
 
 	public int submit(CharSequence inputString) {
-		Integer result = (Integer) equationTable
-				.get(NormalizeEquation(inputString));
+		Integer result = (Integer) equationTable.get(NormalizeEquation(inputString));
 		if (result != null) {
 			// We have a winner. Increment mScore and remove it from the table
 			mScore += result;
+			mEquations += 1;
 			equationTable.remove(NormalizeEquation(inputString));
-			return result;
+			if (mEquations == mLevel) {
+				return -2;
+			} else {
+				return result;
+			}
 		}
 		return -1;
 
@@ -322,6 +333,9 @@ public class Puzzle {
 	}
 
 	public void UnScramblePuzzle() {
+		// Make it a reset
+		reset();
+		
 		if (numPuzzlePlayerMoves > 0) {
 			PlayBackMoves(PuzzlePlayerMoves, numPuzzlePlayerMoves);
 			numPuzzlePlayerMoves = 0;
@@ -331,6 +345,8 @@ public class Puzzle {
 			numPuzzleScrambles = 0;
 			numPuzzleRandomMoves = 0;
 		}
+		
+
 		return;
 	}
 
@@ -396,6 +412,7 @@ public class Puzzle {
 			}
 		}
 		map.putInt("mScore", Integer.valueOf(mScore));
+		map.putInt("mEquations", Integer.valueOf(mEquations));
 		for (i = 0; i < 10; ++i) {
 			for (j = 0; j < 10; ++j) {
 				if ((i + j < 10) && (i <= j)) {
@@ -465,6 +482,7 @@ public class Puzzle {
 		}
 
 		mScore = icicle.getInt("mScore");
+		mEquations = icicle.getInt("mEquations");
 		for (i = 0; i < 10; ++i) {
 			for (j = 0; j < 10; ++j) {
 				if ((i + j < 10) && (i <= j)) {
@@ -525,6 +543,7 @@ public class Puzzle {
 			}
 		}
 		editor.putInt("mScore", mScore);
+		editor.putInt("mEquations", mEquations);
 		for (i = 0; i < 10; ++i) {
 			for (j = 0; j < 10; ++j) {
 				if ((i + j < 10) && (i <= j)) {
@@ -596,6 +615,7 @@ public class Puzzle {
 		}
 
 		mScore = settings.getInt("mScore", 0);
+		mEquations = settings.getInt("mEquations", 0);
 		for (i = 0; i < 10; ++i) {
 			for (j = 0; j < 10; ++j) {
 				if ((i + j < 10) && (i <= j)) {
