@@ -48,9 +48,28 @@ public class NumberPuzzle {
 		score = 0;
 		numRandomPuzzleMoves = 0;
 		numPlayerPuzzleMoves = 0;
-		numRandomMoves = 3 * nXNumberBrickCount * nXNumberBrickCount;
-		if (nXNumberBrickCount==2)
-			numRandomMoves = 4;
+		switch (nXNumberBrickCount) {
+		
+		// 2x2 puzzle always has 5 random moves for scramble
+		case 2:
+			numRandomMoves = 5;
+			break;
+			
+		// 3x3 puzzle only has 53-80 random moves for scramble
+		case 3:
+			numRandomMoves = 50 + (3 * nLevel);
+			break;
+			
+		// 4x4 puzzle only has 79-115 random moves for scramble
+		case 4:
+			numRandomMoves = 75 + (4 * nLevel);
+			break;
+			
+		// 5x5 puzzle only has 105-150 random moves for scramble
+		case 5: default:
+			numRandomMoves = 100 + (5 * nLevel);
+			break;
+		}
 
 		return nNumberPuzzleGrid;
 	}
@@ -168,7 +187,7 @@ public class NumberPuzzle {
 		// down = 4
 		int low = 1;
 		int high = 4;
-		for (int i = 0; i < numRandomMoves; i++)
+		for (int i = 0; i < maxMoves; i++)
 			randomMoves[i] = (int) (Math.random() * 100) % high + low;
 
 		// calculate single number for the index of the blank space
@@ -178,7 +197,7 @@ public class NumberPuzzle {
 		// and it is also the current index of the tile that will move
 		int newIndex = 0;
 
-		for (int i = 0; i < numRandomMoves; i++) {
+		for (int i = 0; i < maxMoves; i++) {
 			switch (randomMoves[i]) {
 			// blank space left
 			case 1:
@@ -231,6 +250,28 @@ public class NumberPuzzle {
 				randomPuzzleMoves[numRandomPuzzleMoves] = randomMoves[i];
 				numRandomPuzzleMoves++;
 				numPlayerPuzzleMoves--;
+				if (numRandomPuzzleMoves == numRandomMoves)
+				{
+					if ( nXNumberBrickCount == 2 )
+					{
+						int adjust = (int) (Math.random() * 100) % 4;
+						for (int k=0; k<adjust; k++)
+						{
+							boolean singlestep = true;
+							PlayBackMoves(randomPuzzleMoves, numRandomPuzzleMoves, singlestep);
+							numRandomPuzzleMoves--;
+							numPlayerPuzzleMoves--;
+						}
+						if (IsPuzzleSolved())
+						{
+							boolean singlestep = true;
+							PlayBackMoves(randomPuzzleMoves, numRandomPuzzleMoves, singlestep);
+							numRandomPuzzleMoves--;
+							numPlayerPuzzleMoves--;
+						}
+					}
+					return numRandomPuzzleMoves; 
+				}
 			}
 		}
 		return numRandomPuzzleMoves; 
@@ -321,6 +362,27 @@ public class NumberPuzzle {
 		return;
 	}
 
+	public boolean IsPuzzleSolved()
+	{
+		int counter = 1;
+		for (int y = 0; y < nYNumberBrickCount; y++) 
+		{
+			for (int x = 0; x < nXNumberBrickCount; x++) 
+			{
+				if (nNumberPuzzleGrid[x][y] != counter)
+				{
+					if (nNumberPuzzleGrid[x][y] == BLANK && (x==(nXNumberBrickCount-1))
+						&& (y==(nYNumberBrickCount-1)))
+						return true;
+					else
+						return false;
+				}
+				else
+					counter++;
+			}
+		}
+		return true;
+	}
 	
 	
 	
