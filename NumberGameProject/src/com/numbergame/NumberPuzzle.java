@@ -388,7 +388,7 @@ public class NumberPuzzle {
 	
 	
 	public String getScore() {
-		return Integer.toString(score);
+		return "Moves:\n" + Integer.toString(score);
 	}
 
 	public void submit() {

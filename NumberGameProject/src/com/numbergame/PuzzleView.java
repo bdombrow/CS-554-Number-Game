@@ -74,7 +74,7 @@ public class PuzzleView extends View
 	private float upY = 0.0f;
 	private float downX = 0.0f;
 	private float downY = 0.0f;
-	
+
 	// Start tracking
 	private boolean enabled = false;
 
@@ -228,7 +228,7 @@ public class PuzzleView extends View
 	{
 		// Don't do anything until started.
 		if (!enabled) return true;
-		
+
 		Index index;
 
 		float x = event.getX();
@@ -288,11 +288,18 @@ public class PuzzleView extends View
 			// Check for drag on column
 			if ((upIndex.x == downIndex.x) && (Math.abs(upIndex.y - downIndex.y) == 4)) {
 				int points = mPuzzle.submit(columnToString(upIndex.x));
-				
+
 				if (points == -2) {
+					AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+					alert.setMessage("You Win!") ;
+					CharSequence ok = "Ok";	
+					alert.setPositiveButton(ok, new DialogInterface.OnClickListener() {	
+						public void onClick(DialogInterface arg0, int arg1) {
+							arg0.dismiss();	
+						}	            
+					});	
+					alert.show();
 					mStatusText.setText(mPuzzle.getScore());
-					mStatusText.setVisibility(View.VISIBLE);
-					Toast.makeText(v.getContext(),"Winner!!", Toast.LENGTH_LONG).show();
 				} else if (points > 0) {
 					popUpPoints(v, Integer.toString(points));
 					mStatusText.setText(mPuzzle.getScore());
@@ -369,99 +376,99 @@ public class PuzzleView extends View
 	 * BD: Private function to display points scored in a toast pop up
 	 */
 
-	 private void popUpPoints(View v, String msg) {
+	private void popUpPoints(View v, String msg) {
 		Toast toast = Toast.makeText(v.getContext(),msg, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.TOP|Gravity.RIGHT, 30, 30);
 		toast.show();
-	 }
+	}
 
-	 private void clearSelected() {
-		 // Un-highlight tiles
-		 for (int i = 0; i < mXBrickCount; ++i) {
-			 for (int j = 0; j < mYBrickCount; ++j) {
-				 if (mBrickGrid[i][j] > BLANK) {
-					 mBrickGrid[i][j] -= 15;
-				 }
-			 }
+	private void clearSelected() {
+		// Un-highlight tiles
+		for (int i = 0; i < mXBrickCount; ++i) {
+			for (int j = 0; j < mYBrickCount; ++j) {
+				if (mBrickGrid[i][j] > BLANK) {
+					mBrickGrid[i][j] -= 15;
+				}
+			}
 
-		 }
-		 invalidate();
-	 }
+		}
+		invalidate();
+	}
 
-	 /*
-	  * Functions for converting the brick grid into a string
-	  */
+	/*
+	 * Functions for converting the brick grid into a string
+	 */
 
-	 private String columnToString(int x){
-		 String equation = "";
-		 for (int i = 0; i < 5; ++i) {
-			 equation += brickToString(mBrickGrid[x][i]);
-		 }
-		 return equation;
-	 }
+	private String columnToString(int x){
+		String equation = "";
+		for (int i = 0; i < 5; ++i) {
+			equation += brickToString(mBrickGrid[x][i]);
+		}
+		return equation;
+	}
 
-	 private String rowToString(int y){
-		 String equation = "";
-		 for (int i = 0; i < 5; ++i) {
-			 equation += brickToString(mBrickGrid[i][y]);
-		 }
-		 return equation;
-	 }
+	private String rowToString(int y){
+		String equation = "";
+		for (int i = 0; i < 5; ++i) {
+			equation += brickToString(mBrickGrid[i][y]);
+		}
+		return equation;
+	}
 
-	 // Convert a brick grid element to its corresponding text
-	 // There might be a better way to do this
-	 private String brickToString(int x) {
-		 switch(x) {
-		 case NUM_0:
-			 return "0";
-		 case NUM_1:
-			 return "1";
-		 case NUM_2:
-			 return "2";
-		 case NUM_3:
-			 return "3";
-		 case NUM_4:
-			 return "4";
-		 case NUM_5:
-			 return "5";
-		 case NUM_6:
-			 return "6";
-		 case NUM_7:
-			 return "7";
-		 case NUM_8:
-			 return "8";
-		 case NUM_9:
-			 return "9";
-		 case OP_PL:
-			 return "+";
-		 case OP_MN:
-			 return "-";
-		 case OP_MT:
-			 return "*";
-		 case OP_EQ:
-			 return "=";
-		 default:
-			 return "";
-		 }
-	 }
-	 private class Index 
-	 {
-		 public int x;
-		 public int y;
+	// Convert a brick grid element to its corresponding text
+	// There might be a better way to do this
+	private String brickToString(int x) {
+		switch(x) {
+		case NUM_0:
+			return "0";
+		case NUM_1:
+			return "1";
+		case NUM_2:
+			return "2";
+		case NUM_3:
+			return "3";
+		case NUM_4:
+			return "4";
+		case NUM_5:
+			return "5";
+		case NUM_6:
+			return "6";
+		case NUM_7:
+			return "7";
+		case NUM_8:
+			return "8";
+		case NUM_9:
+			return "9";
+		case OP_PL:
+			return "+";
+		case OP_MN:
+			return "-";
+		case OP_MT:
+			return "*";
+		case OP_EQ:
+			return "=";
+		default:
+			return "";
+		}
+	}
+	private class Index 
+	{
+		public int x;
+		public int y;
 
-		 public Index(int newX, int newY) 
-		 {
-			 x = newX;
-			 y = newY;
-		 }
+		public Index(int newX, int newY) 
+		{
+			x = newX;
+			y = newY;
+		}
 
-		 public boolean equals(Index other) 
-		 {
-			 if (x == other.x && y == other.y) 
-			 {
-				 return true;
-			 }
-			 return false;
-		 }
-	 }
+		public boolean equals(Index other) 
+		{
+			if (x == other.x && y == other.y) 
+			{
+				return true;
+			}
+			return false;
+		}
+	}
 }

@@ -185,9 +185,9 @@ public class Puzzle {
 
 	public String getScore() {
 		if (mEquations < mLevel) {
-			return Integer.toString(mScore) + "\n" + Integer.toString(mEquations) + " of " + Integer.toString(mLevel);
+			return "Points:\n" + Integer.toString(mScore) + "\nEqs:\n" + Integer.toString(mEquations) + " of " + Integer.toString(mLevel);
 		} 
-		return Integer.toString(mScore) + "\n" + Integer.toString(mEquations);
+		return "Points:\n" + Integer.toString(mScore) + "\nEqs:\n" + Integer.toString(mEquations);
 	}
 
 	public int submit(CharSequence inputString) {
