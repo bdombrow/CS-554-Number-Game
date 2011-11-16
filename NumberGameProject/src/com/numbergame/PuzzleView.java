@@ -289,23 +289,15 @@ public class PuzzleView extends View
 			if ((upIndex.x == downIndex.x) && (Math.abs(upIndex.y - downIndex.y) == 4)) {
 				int points = mPuzzle.submit(columnToString(upIndex.x));
 				
-				popUpPoints(v, Integer.toString(points));
-				
 				if (points == -2) {
 					mStatusText.setText(mPuzzle.getScore());
 					mStatusText.setVisibility(View.VISIBLE);
-					
-					AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-					alert.setMessage("Winner!!" );	
-					alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {	
-						public void onClick(DialogInterface arg0, int arg1) {arg0.dismiss();}	            
-					});	
-					alert.show();
-				}
-				if (points > 0) {
+					Toast.makeText(v.getContext(),"Winner!!", Toast.LENGTH_LONG).show();
+				} else if (points > 0) {
 					popUpPoints(v, Integer.toString(points));
 					mStatusText.setText(mPuzzle.getScore());
 					mStatusText.setVisibility(View.VISIBLE);
+					popUpPoints(v, Integer.toString(points));
 				} else {
 					// Play a sound and vibrate?
 				}
