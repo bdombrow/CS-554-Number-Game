@@ -32,7 +32,7 @@ public class Puzzle {
 	protected static int mYBlankBrick;
 
 	private int[][] mPuzzleGrid;
-
+	
 	private int mScore = 0;
 	private int mEquations = 0;
 
@@ -184,10 +184,7 @@ public class Puzzle {
 	}
 
 	public String getScore() {
-		if (mEquations < mLevel) {
-			return Integer.toString(mScore) + "\n" + Integer.toString(mEquations) + " of " + Integer.toString(mLevel);
-		} 
-		return Integer.toString(mScore) + "\n" + Integer.toString(mEquations);
+		return Integer.toString(mScore) + "\n" + Integer.toString(mEquations) + " of " + Integer.toString(mLevel);
 	}
 
 	public int submit(CharSequence inputString) {
@@ -245,9 +242,9 @@ public class Puzzle {
 	// tracked yet
 	protected static int maxScrambles = 10; // only 10 scrambles allowed
 	protected static int numScrambleMoves = 200; // 200 random moves per
-	// scramble
+													// scramble
 	protected static int maxPlayerMoves = 1000; // 1000 player moves before
-	// unscramble required
+												// unscramble required
 	protected int maxRandomMoves = maxScrambles * numScrambleMoves;
 	protected int[] PuzzleRandomMoves = new int[maxRandomMoves];
 	private int[] PuzzlePlayerMoves = new int[maxPlayerMoves];
@@ -288,36 +285,36 @@ public class Puzzle {
 					newIndex = BlankIndex - 1;
 				else
 					PuzzleRandomMoves[i] = 5; // 5 is a dummy place holder
-				// meaning no move possible
+												// meaning no move possible
 				break;
 
-				// blank space right
+			// blank space right
 			case 2:
 				if (mXBlankBrick != mXBrickCount - 1) // cannot move right from
-					// rightmost column
+														// rightmost column
 					newIndex = BlankIndex + 1;
 				else
 					PuzzleRandomMoves[i] = 5; // 5 is a dummy place holder
-				// meaning no move possible
+												// meaning no move possible
 				break;
 
-				// blank space up
+			// blank space up
 			case 3:
 				if (mYBlankBrick != 0) // cannot move up from the topmost row
 					newIndex = BlankIndex - mXBrickCount;
 				else
 					PuzzleRandomMoves[i] = 5; // 5 is a dummy place holder
-				// meaning no move possible
+												// meaning no move possible
 				break;
 
-				// blank space down
+			// blank space down
 			case 4:
 				if (mYBlankBrick != mYBrickCount - 1) // cannot move down from
-					// the bottom most row
+														// the bottom most row
 					newIndex = BlankIndex + mXBrickCount;
 				else
 					PuzzleRandomMoves[i] = 5; // 5 is a dummy place holder
-				// meaning no move possible
+												// meaning no move possible
 				break;
 			}
 
@@ -325,7 +322,7 @@ public class Puzzle {
 				BlankIndex = newIndex; // set the new index of the blank space
 				int x = newIndex % mXBrickCount; // calculate x or column index
 				int y = (newIndex - x) / mYBrickCount; // calculate y or row
-				// index
+														// index
 				ChangePuzzle(x, y);
 				numPuzzlePlayerMoves--;
 			}
@@ -338,7 +335,7 @@ public class Puzzle {
 	public void UnScramblePuzzle() {
 		// Make it a reset
 		reset();
-
+		
 		if (numPuzzlePlayerMoves > 0) {
 			PlayBackMoves(PuzzlePlayerMoves, numPuzzlePlayerMoves);
 			numPuzzlePlayerMoves = 0;
@@ -348,7 +345,7 @@ public class Puzzle {
 			numPuzzleScrambles = 0;
 			numPuzzleRandomMoves = 0;
 		}
-
+		
 
 		return;
 	}
@@ -357,7 +354,7 @@ public class Puzzle {
 		int BlankIndex = (mYBlankBrick * mYBrickCount) + mXBlankBrick;
 		int newIndex = 0;
 		for (int i = (numMoves - 1); i >= 0; i--) // read the moves in reverse
-			// order
+													// order
 		{
 			switch (moves[i]) {
 			// blank space left for the original move right
@@ -365,22 +362,22 @@ public class Puzzle {
 				newIndex = BlankIndex - 1;
 				break;
 
-				// blank space right for the original move left
+			// blank space right for the original move left
 			case 1:
 				newIndex = BlankIndex + 1;
 				break;
 
-				// blank space up for the original move down
+			// blank space up for the original move down
 			case 4:
 				newIndex = BlankIndex - mXBrickCount;
 				break;
 
-				// blank space down for the original move up
+			// blank space down for the original move up
 			case 3:
 				newIndex = BlankIndex + mXBrickCount;
 				break;
 
-				// no move
+			// no move
 			case 5:
 				break;
 			}
@@ -389,7 +386,7 @@ public class Puzzle {
 				BlankIndex = newIndex; // set the new index of the blank space
 				int x = newIndex % mXBrickCount; // calculate x or column index
 				int y = (newIndex - x) / mYBrickCount; // calculate y or row
-				// index
+														// index
 				ChangePuzzle(x, y);
 				numPuzzlePlayerMoves--;
 			}

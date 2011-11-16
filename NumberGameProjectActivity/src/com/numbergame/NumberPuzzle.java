@@ -168,7 +168,7 @@ public class NumberPuzzle {
 	}
 
 	protected static int numRandomMoves; 
-	protected static int maxMoves = 3000;
+	protected static int maxMoves = 1000;
 	protected static int numRandomPuzzleMoves; 
 	protected static int numPlayerPuzzleMoves;
 	
@@ -196,9 +196,6 @@ public class NumberPuzzle {
 		// newIndex will be the new index of the blank space
 		// and it is also the current index of the tile that will move
 		int newIndex = 0;
-		
-		int previous = 10;
-		int current;
 
 		for (int i = 0; i < maxMoves; i++) {
 			switch (randomMoves[i]) {
@@ -243,14 +240,6 @@ public class NumberPuzzle {
 				randomMoves[i] = 5; // 5 is a dummy place holder
 				break;
 			}
-
-			if (randomMoves[i] != 5) {
-				current = randomMoves[i];
-				if (Math.abs(previous - current) == 1)
-					randomMoves[i] = 5;
-				else
-					previous = current;	
-			}  
 
 			if (randomMoves[i] != 5) {
 				BlankIndex = newIndex; // set the new index of the blank space
@@ -351,8 +340,9 @@ public class NumberPuzzle {
 			PlayBackMoves(randomPuzzleMoves, numRandomPuzzleMoves,singlestep);
 			numRandomPuzzleMoves--;
 			numPlayerPuzzleMoves = 0;
-			return true;
 		}
+		if (numRandomPuzzleMoves > 0)
+			return true;
 		else
 			return false;
 	}
