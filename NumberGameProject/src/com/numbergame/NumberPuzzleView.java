@@ -201,8 +201,39 @@ public class NumberPuzzleView extends View
     }
 
 
-    
+    public class DelayedUnScrambleThread extends Thread
+    {
+        	public void run()
+        	{
+        		try
+        		{
+        	    	while(nNumberPuzzle.AIUnScrambleNumberPuzzle())
+        	    	{
+        	    		nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
+        	    		postInvalidate();
+        	    		long currentTime = System.currentTimeMillis();
+        	    		long desiredDelay = currentTime + 500;
+        	    		while (desiredDelay > currentTime)
+        	    		{
+        	    			Thread.sleep(100);
+        	    			currentTime = System.currentTimeMillis();
+        	    		}
+            		}
+        		}
+        		catch (InterruptedException e)
+        		{
+        		}
+    	}
+    }   
+
+     
     public void AIUnScramble()
+    {
+    	Thread delay = new DelayedUnScrambleThread();
+		delay.start();
+    }
+    
+    public void AIUnScramble2()
     {
     	while(nNumberPuzzle.AIUnScrambleNumberPuzzle())
     	{
