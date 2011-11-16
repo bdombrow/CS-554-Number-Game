@@ -405,7 +405,7 @@ public class NumberPuzzle {
 		map.putInt("nXNumberBlankBrick", Integer.valueOf(nXNumberBlankBrick));
 		map.putInt("nYNumberBlankBrick", Integer.valueOf(nYNumberBlankBrick));
 		map.putBoolean("mNumberOptionChanged", mNumberOptionChanged);
-		map.putInt("nLevel2", nLevel);
+		map.putInt("mLevel2", nLevel);
 		//map.putLong("mScore", Long.valueOf(mScore));
 		for(i=0;i<nXNumberBrickCount;i=i+1)
 		{
@@ -428,7 +428,7 @@ public class NumberPuzzle {
 		nXNumberBlankBrick = icicle.getInt("nXNumberBlankBrick");
 		nYNumberBlankBrick = icicle.getInt("nYNumberBlankBrick");
 		mNumberOptionChanged = icicle.getBoolean("mNumberOptionChanged");
-		nLevel = icicle.getInt("nLevel2");
+		nLevel = icicle.getInt("mLevel2");
 
 		nNumberPuzzleGrid = new int[nXNumberBrickCount][nYNumberBrickCount];
 		for(i=0;i<nXNumberBrickCount;++i)
@@ -479,7 +479,7 @@ public class NumberPuzzle {
 		nXNumberBlankBrick = settings.getInt("nXNumberBlankBrick", 0);
 		nYNumberBlankBrick = settings.getInt("nYNumberBlankBrick", 0);
 		mNumberOptionChanged = settings.getBoolean("mNumberOptionChanged", true);
-		nLevel = settings.getInt("nLevel2", 1);
+		nLevel = settings.getInt("mLevel2", 1);
 
 		nNumberPuzzleGrid = new int[nXNumberBrickCount][nYNumberBrickCount];
 		for(i=0;i<nXNumberBrickCount;i=i+1)
