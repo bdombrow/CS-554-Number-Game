@@ -18,6 +18,7 @@ public class NumbersProjectActivity  extends Activity implements View.OnTouchLis
     
     private Button button1;
     private Button button2;
+    private Button button3;
 
 	    
     private static String PUZZLE_PREFS = "puzzle-prefs";
@@ -61,6 +62,9 @@ public class NumbersProjectActivity  extends Activity implements View.OnTouchLis
 			button2 = (Button)findViewById(R.id.unscrambleButton);
 			button2.setOnClickListener(this);
 
+			button3 = (Button)findViewById(R.id.wizardButton);
+			button3.setOnClickListener(this);
+
 	    }
 	    
 		@Override
@@ -103,6 +107,8 @@ public class NumbersProjectActivity  extends Activity implements View.OnTouchLis
 				mNumberPuzzleView.Scramble();
 			else if (v == button2)
 				mNumberPuzzleView.UnScramble();
+			else if (v == button3)
+				mNumberPuzzleView.AIUnScramble();
 			
 		}
 
