@@ -19,8 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PuzzleView extends View
-{
+public class PuzzleView extends View {
 	private static final int NUM_0 = 0;
 	private static final int NUM_1 = 1;
 	private static final int NUM_2 = 2;
@@ -61,37 +60,42 @@ public class PuzzleView extends View
 	private static int mXOffset;
 	private static int mYOffset;
 
-	private Bitmap[] mBrickArray; 
+	private Bitmap[] mBrickArray;
 
 	private int[][] mBrickGrid;
 
 	private final Paint mPaint = new Paint();
 
 	private Puzzle mPuzzle;
+	
+
 
 	// Movement tracking
 	private float upX = 0.0f;
 	private float upY = 0.0f;
 	private float downX = 0.0f;
 	private float downY = 0.0f;
+	
 
 	// Start tracking
 	private boolean enabled = false;
+	
 
-	public PuzzleView(Context context, AttributeSet attrs) 
-	{
+	public PuzzleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initPuzzleView();
+		
+		
 	}
 
-	public PuzzleView(Context context, AttributeSet attrs, int defStyle)
-	{
+	public PuzzleView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initPuzzleView();
+		
+		
 	}
 
-	public void setTextView(TextView newView) 
-	{
+	public void setTextView(TextView newView) {
 		mStatusText = newView;
 
 		// Set the StatusText to the current score.
@@ -99,25 +103,24 @@ public class PuzzleView extends View
 		mStatusText.setVisibility(View.VISIBLE);
 	}
 
-	public void setPuzzleControl(Puzzle _mPuzzle) 
-	{
+	public void setPuzzleControl(Puzzle _mPuzzle) {
 		mPuzzle = _mPuzzle;
 	}
 
-	private void initPuzzleView() 
-	{
+	private void initPuzzleView() {
 		setFocusable(true);
+		
+		
 
 	}
 
-	public void resetBricks(int brickcount) 
-	{
+	public void resetBricks(int brickcount) {
 		mBrickArray = new Bitmap[brickcount];
 	}
 
-	public void loadBrick(int key, Drawable brick) 
-	{
-		Bitmap bitmap = Bitmap.createBitmap(mBrickSize, mBrickSize, Bitmap.Config.ARGB_8888);
+	public void loadBrick(int key, Drawable brick) {
+		Bitmap bitmap = Bitmap.createBitmap(mBrickSize, mBrickSize,
+				Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		brick.setBounds(0, 0, mBrickSize, mBrickSize);
 		brick.draw(canvas);
@@ -126,26 +129,24 @@ public class PuzzleView extends View
 	}
 
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) 
-	{
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		Resources r = this.getContext().getResources();
 
-		//mBrickGrid = mPuzzle.CreateNewPuzzle(mXBrickCount, mYBrickCount);
+		// mBrickGrid = mPuzzle.CreateNewPuzzle(mXBrickCount, mYBrickCount);
+		
 		mXBrickCount = mPuzzle.getXBrickCount();
 		mYBrickCount = mPuzzle.getYBrickCount();
 
 		mBrickGrid = mPuzzle.GetPuzzle();
 
-		if(w > h)
-		{
+		if (w > h) {
 			mBrickSize = (int) Math.floor(h / mYBrickCount);
-		}
-		else
-		{
+		} else {
 			mBrickSize = (int) Math.floor(w / mXBrickCount);
 		}
 
 		resetBricks(29);
+	
 		loadBrick(NUM_0, r.getDrawable(R.drawable.pic_0_def));
 		loadBrick(NUM_1, r.getDrawable(R.drawable.pic_1_def));
 		loadBrick(NUM_2, r.getDrawable(R.drawable.pic_2_def));
@@ -160,7 +161,7 @@ public class PuzzleView extends View
 		loadBrick(OP_MN, r.getDrawable(R.drawable.pic_min_def));
 		loadBrick(OP_MT, r.getDrawable(R.drawable.pic_mul_def));
 		loadBrick(OP_EQ, r.getDrawable(R.drawable.pic_eq_def));
-		loadBrick(BLANK, r.getDrawable(R.drawable.pic_blk));        
+		loadBrick(BLANK, r.getDrawable(R.drawable.pic_blk));
 		loadBrick(NUM_0_D, r.getDrawable(R.drawable.pic_0_d));
 		loadBrick(NUM_1_D, r.getDrawable(R.drawable.pic_1_d));
 		loadBrick(NUM_2_D, r.getDrawable(R.drawable.pic_2_d));
@@ -181,16 +182,15 @@ public class PuzzleView extends View
 
 	}
 
-	private Index CoordinateToIndex(float x, float y)
-	{
+	private Index CoordinateToIndex(float x, float y) {
 		int i, j;
 
-		for (i = 0; i < mXBrickCount; i += 1) 
-		{
-			for (j = 0; j < mYBrickCount; j += 1) 
-			{
-				if ((x > (mXOffset + i * mBrickSize)) && (x <  (mXOffset + (i+1) * mBrickSize)) && (y > (mYOffset + j * mBrickSize)) && (y < (mYOffset + (j+1) * mBrickSize))) 
-				{
+		for (i = 0; i < mXBrickCount; i += 1) {
+			for (j = 0; j < mYBrickCount; j += 1) {
+				if ((x > (mXOffset + i * mBrickSize))
+						&& (x < (mXOffset + (i + 1) * mBrickSize))
+						&& (y > (mYOffset + j * mBrickSize))
+						&& (y < (mYOffset + (j + 1) * mBrickSize))) {
 					return new Index(i, j);
 				}
 			}
@@ -201,20 +201,16 @@ public class PuzzleView extends View
 
 	/*
 	 * 
-	 * 28 October 2011 - FWS
-	 * Added the Scramble() and UnScramble() methods
-	 * 
+	 * 28 October 2011 - FWS Added the Scramble() and UnScramble() methods
 	 */
-	public void Scramble()
-	{
+	public void Scramble() {
 		enabled = true;
 		mPuzzle.ScramblePuzzle();
 		mBrickGrid = mPuzzle.GetPuzzle();
 		invalidate();
 	}
 
-	public void UnScramble()
-	{
+	public void UnScramble() {
 		mPuzzle.UnScramblePuzzle();
 		mBrickGrid = mPuzzle.GetPuzzle();
 		enabled = false;
@@ -223,29 +219,25 @@ public class PuzzleView extends View
 		invalidate();
 	}
 
-
-	public boolean onTouch(View v, MotionEvent event)
-	{
+	public boolean onTouch(View v, MotionEvent event) {
 		// Don't do anything until started.
-		if (!enabled) return true;
+		if (!enabled)
+			return true;
 
 		Index index;
 
 		float x = event.getX();
 		float y = event.getY();
 
-
 		// The touch was outside the grid, ignore it
 		index = CoordinateToIndex(x, y);
-		if(index.x == 2012 || index.y == 2012)
-		{	
+		if (index.x == 2012 || index.y == 2012) {
 			clearSelected();
 			return true;
 		}
 
 		// The initial touch downward
-		switch (event.getAction()) 
-		{
+		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 
 			// Record the initial down coordinates
@@ -260,11 +252,10 @@ public class PuzzleView extends View
 
 			// This will change the tiles while moving.
 			// Need to undo this on ACTION_UP
-			if (mBrickGrid[index.x][index.y] < 2012) 
-			{
-				if(mBrickGrid[index.x][index.y] < BLANK)
-				{
+			if (mBrickGrid[index.x][index.y] < 2012) {
+				if (mBrickGrid[index.x][index.y] < BLANK) {
 					mBrickGrid[index.x][index.y] = mBrickGrid[index.x][index.y] + 15;
+					
 					invalidate();
 				}
 			}
@@ -277,7 +268,7 @@ public class PuzzleView extends View
 			upX = event.getX();
 			upY = event.getY();
 
-			//((TextView)findViewById(R.id.score)).setText("Up");
+			// ((TextView)findViewById(R.id.score)).setText("Up");
 
 			Index downIndex;
 			Index upIndex;
@@ -286,18 +277,25 @@ public class PuzzleView extends View
 			upIndex = CoordinateToIndex(upX, upY);
 
 			// Check for drag on column
-			if ((upIndex.x == downIndex.x) && (Math.abs(upIndex.y - downIndex.y) == 4)) {
+			if ((upIndex.x == downIndex.x)
+					&& (Math.abs(upIndex.y - downIndex.y) == 4)) {
 				int points = mPuzzle.submit(columnToString(upIndex.x));
 
 				if (points == -2) {
-					AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
-					alert.setMessage("You Win!") ;
-					CharSequence ok = "Ok";	
-					alert.setPositiveButton(ok, new DialogInterface.OnClickListener() {	
-						public void onClick(DialogInterface arg0, int arg1) {
-							arg0.dismiss();	
-						}	            
-					});	
+					AlertDialog.Builder alert = new AlertDialog.Builder(
+							v.getContext());
+					
+					
+					alert.setMessage("You Win!");
+					CharSequence ok = "Ok";
+					alert.setPositiveButton(ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+									arg0.dismiss();
+									
+								}
+							});
 					alert.show();
 					mStatusText.setText(mPuzzle.getScore());
 				} else if (points > 0) {
@@ -314,7 +312,8 @@ public class PuzzleView extends View
 			}
 
 			// Check for drag on row
-			if ((upIndex.y == downIndex.y) && (Math.abs(upIndex.x - downIndex.x) == 4)) {
+			if ((upIndex.y == downIndex.y)
+					&& (Math.abs(upIndex.x - downIndex.x) == 4)) {
 				int points = mPuzzle.submit(rowToString(upIndex.y));
 				if (points > 0) {
 					popUpPoints(v, Integer.toString(points));
@@ -327,10 +326,8 @@ public class PuzzleView extends View
 			}
 
 			// No drag, then it should be a tile press.
-			if (mBrickGrid[index.x][index.y] < 2012) 
-			{
-				if(mBrickGrid[index.x][index.y] > BLANK)
-				{
+			if (mBrickGrid[index.x][index.y] < 2012) {
+				if (mBrickGrid[index.x][index.y] > BLANK) {
 					mBrickGrid[index.x][index.y] = mBrickGrid[index.x][index.y] - 15;
 					invalidate();
 				}
@@ -348,25 +345,18 @@ public class PuzzleView extends View
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent msg) 
-	{      
+	public boolean onKeyDown(int keyCode, KeyEvent msg) {
 		return super.onKeyDown(keyCode, msg);
 	}
 
 	@Override
-	public void onDraw(Canvas canvas) 
-	{
+	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		for (int x = 0; x < mXBrickCount; x += 1) 
-		{
-			for (int y = 0; y < mYBrickCount; y += 1) 
-			{
-				if (mBrickGrid[x][y] < 2012) 
-				{
-					canvas.drawBitmap(mBrickArray[mBrickGrid[x][y]], 
-							mXOffset + x * mBrickSize,
-							mYOffset + y * mBrickSize,
-							mPaint);
+		for (int x = 0; x < mXBrickCount; x += 1) {
+			for (int y = 0; y < mYBrickCount; y += 1) {
+				if (mBrickGrid[x][y] < 2012) {
+					canvas.drawBitmap(mBrickArray[mBrickGrid[x][y]], mXOffset
+							+ x * mBrickSize, mYOffset + y * mBrickSize, mPaint);
 				}
 			}
 		}
@@ -377,8 +367,8 @@ public class PuzzleView extends View
 	 */
 
 	private void popUpPoints(View v, String msg) {
-		Toast toast = Toast.makeText(v.getContext(),msg, Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.TOP|Gravity.RIGHT, 30, 30);
+		Toast toast = Toast.makeText(v.getContext(), msg, Toast.LENGTH_SHORT);
+		toast.setGravity(Gravity.TOP | Gravity.RIGHT, 30, 30);
 		toast.show();
 	}
 
@@ -399,7 +389,7 @@ public class PuzzleView extends View
 	 * Functions for converting the brick grid into a string
 	 */
 
-	private String columnToString(int x){
+	private String columnToString(int x) {
 		String equation = "";
 		for (int i = 0; i < 5; ++i) {
 			equation += brickToString(mBrickGrid[x][i]);
@@ -407,7 +397,7 @@ public class PuzzleView extends View
 		return equation;
 	}
 
-	private String rowToString(int y){
+	private String rowToString(int y) {
 		String equation = "";
 		for (int i = 0; i < 5; ++i) {
 			equation += brickToString(mBrickGrid[i][y]);
@@ -418,7 +408,7 @@ public class PuzzleView extends View
 	// Convert a brick grid element to its corresponding text
 	// There might be a better way to do this
 	private String brickToString(int x) {
-		switch(x) {
+		switch (x) {
 		case NUM_0:
 			return "0";
 		case NUM_1:
@@ -451,21 +441,18 @@ public class PuzzleView extends View
 			return "";
 		}
 	}
-	private class Index 
-	{
+
+	private class Index {
 		public int x;
 		public int y;
 
-		public Index(int newX, int newY) 
-		{
+		public Index(int newX, int newY) {
 			x = newX;
 			y = newY;
 		}
 
-		public boolean equals(Index other) 
-		{
-			if (x == other.x && y == other.y) 
-			{
+		public boolean equals(Index other) {
+			if (x == other.x && y == other.y) {
 				return true;
 			}
 			return false;

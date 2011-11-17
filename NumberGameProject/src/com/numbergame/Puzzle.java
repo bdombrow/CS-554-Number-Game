@@ -155,6 +155,7 @@ public class Puzzle {
 
 		return true;
 	}
+
 	/*
 	 * BD 11/11/2011
 	 * 
@@ -185,13 +186,17 @@ public class Puzzle {
 
 	public String getScore() {
 		if (mEquations < mLevel) {
-			return "Points:\n" + Integer.toString(mScore) + "\nEqs:\n" + Integer.toString(mEquations) + " of " + Integer.toString(mLevel);
-		} 
-		return "Points:\n" + Integer.toString(mScore) + "\nEqs:\n" + Integer.toString(mEquations);
+			return "Points:\n" + Integer.toString(mScore) + "\nEqs:\n"
+					+ Integer.toString(mEquations) + " of "
+					+ Integer.toString(mLevel);
+		}
+		return "Points:\n" + Integer.toString(mScore) + "\nEqs:\n"
+				+ Integer.toString(mEquations);
 	}
 
 	public int submit(CharSequence inputString) {
-		Integer result = (Integer) equationTable.get(NormalizeEquation(inputString));
+		Integer result = (Integer) equationTable
+				.get(NormalizeEquation(inputString));
 		if (result != null) {
 			// We have a winner. Increment mScore and remove it from the table
 			mScore += result;
@@ -291,7 +296,7 @@ public class Puzzle {
 				// meaning no move possible
 				break;
 
-				// blank space right
+			// blank space right
 			case 2:
 				if (mXBlankBrick != mXBrickCount - 1) // cannot move right from
 					// rightmost column
@@ -301,7 +306,7 @@ public class Puzzle {
 				// meaning no move possible
 				break;
 
-				// blank space up
+			// blank space up
 			case 3:
 				if (mYBlankBrick != 0) // cannot move up from the topmost row
 					newIndex = BlankIndex - mXBrickCount;
@@ -310,7 +315,7 @@ public class Puzzle {
 				// meaning no move possible
 				break;
 
-				// blank space down
+			// blank space down
 			case 4:
 				if (mYBlankBrick != mYBrickCount - 1) // cannot move down from
 					// the bottom most row
@@ -349,7 +354,6 @@ public class Puzzle {
 			numPuzzleRandomMoves = 0;
 		}
 
-
 		return;
 	}
 
@@ -357,7 +361,7 @@ public class Puzzle {
 		int BlankIndex = (mYBlankBrick * mYBrickCount) + mXBlankBrick;
 		int newIndex = 0;
 		for (int i = (numMoves - 1); i >= 0; i--) // read the moves in reverse
-			// order
+		// order
 		{
 			switch (moves[i]) {
 			// blank space left for the original move right
@@ -365,22 +369,22 @@ public class Puzzle {
 				newIndex = BlankIndex - 1;
 				break;
 
-				// blank space right for the original move left
+			// blank space right for the original move left
 			case 1:
 				newIndex = BlankIndex + 1;
 				break;
 
-				// blank space up for the original move down
+			// blank space up for the original move down
 			case 4:
 				newIndex = BlankIndex - mXBrickCount;
 				break;
 
-				// blank space down for the original move up
+			// blank space down for the original move up
 			case 3:
 				newIndex = BlankIndex + mXBrickCount;
 				break;
 
-				// no move
+			// no move
 			case 5:
 				break;
 			}
