@@ -374,6 +374,10 @@ public class NumberPuzzle {
 		return "Moves:\n" + Integer.toString(score);
 	}
 
+	public int getIntegerScore() {
+		return score;
+	}
+
 	public void submit() {
 		++score;
 	}

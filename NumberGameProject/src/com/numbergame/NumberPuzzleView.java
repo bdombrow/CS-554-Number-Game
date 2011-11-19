@@ -264,7 +264,7 @@ public class NumberPuzzleView extends View {
 			
 			if (nNumberPuzzle.IsPuzzleSolved())
 			{
-				int score = Integer.parseInt(nNumberPuzzle.getScore());
+				int score = nNumberPuzzle.getIntegerScore();
 				String congrats = "Puzzle Solved";
 				if (score > nScrambleMoves)
 					congrats = congrats + "\n\nYOU ARE FANTASTIC!";
