@@ -18,7 +18,7 @@ public class OptionActivity extends Activity {
 	private int mLevel1;
 	private int mLevel2;
 	private int mSize2;
-	
+
 	private static String PUZZLE_PREFS = "puzzle-prefs";
 	private static String ICICLE_KEY = "option-view";
 
@@ -29,8 +29,10 @@ public class OptionActivity extends Activity {
 		if (savedInstanceState == null) {
 			// We were just launched -- set up a new game
 			SharedPreferences settings = getSharedPreferences(PUZZLE_PREFS, 0);
-			mPuzzleOptionChanged = settings.getBoolean("mPuzzleOptionChanged", true);
-			mNumberOptionChanged = settings.getBoolean("mNumberOptionChanged", true);
+			mPuzzleOptionChanged = settings.getBoolean("mPuzzleOptionChanged",
+					true);
+			mNumberOptionChanged = settings.getBoolean("mNumberOptionChanged",
+					true);
 			mLevel1 = settings.getInt("mLevel1", 1);
 			mLevel2 = settings.getInt("mLevel2", 1);
 			mSize2 = settings.getInt("mSize2", 2);
@@ -38,8 +40,10 @@ public class OptionActivity extends Activity {
 			// We are being restored
 			Bundle numbermap = savedInstanceState.getBundle(ICICLE_KEY);
 			if (numbermap != null) {
-				mPuzzleOptionChanged = numbermap.getBoolean("mPuzzleOptionChanged");
-				mNumberOptionChanged = numbermap.getBoolean("mNumberOptionChanged");
+				mPuzzleOptionChanged = numbermap
+						.getBoolean("mPuzzleOptionChanged");
+				mNumberOptionChanged = numbermap
+						.getBoolean("mNumberOptionChanged");
 				mLevel1 = numbermap.getInt("mLevel1");
 				mLevel2 = numbermap.getInt("mLevel2");
 				mSize2 = numbermap.getInt("mSize2");
@@ -75,12 +79,12 @@ public class OptionActivity extends Activity {
 		};
 		levelsp1.setAdapter(levelba1);
 		levelsp1.setPrompt("select level");
-		levelsp1.setSelection(mLevel1-1,true);
+		levelsp1.setSelection(mLevel1 - 1, true);
 		levelsp1.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				//TextView tv = (TextView) view;
+				// TextView tv = (TextView) view;
 				mLevel1 = position + 1;
 				mPuzzleOptionChanged = true;
 			}
@@ -108,7 +112,7 @@ public class OptionActivity extends Activity {
 
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
-				tv.setText("  level " + (position+1));
+				tv.setText("  level " + (position + 1));
 				tv.setTextColor(0xff000000);
 				tv.setTextSize(24);
 				return tv;
@@ -116,12 +120,12 @@ public class OptionActivity extends Activity {
 		};
 		levelsp2.setAdapter(levelba2);
 		levelsp2.setPrompt("select level");
-		levelsp2.setSelection(mLevel2-1,true);
+		levelsp2.setSelection(mLevel2 - 1, true);
 		levelsp2.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				//TextView tv = (TextView) view;
+				// TextView tv = (TextView) view;
 				mLevel2 = position + 1;
 				mNumberOptionChanged = true;
 			}
@@ -149,7 +153,7 @@ public class OptionActivity extends Activity {
 
 			public View getView(int position, View convertView, ViewGroup parent) {
 				TextView tv = new TextView(OptionActivity.this);
-				tv.setText("  size: " + (position+2) + "x" + (position+2));
+				tv.setText("  size: " + (position + 2) + "x" + (position + 2));
 				tv.setTextColor(0xff000000);
 				tv.setTextSize(24);
 				return tv;
@@ -157,7 +161,7 @@ public class OptionActivity extends Activity {
 		};
 		sizesp2.setAdapter(sizeba2);
 		sizesp2.setPrompt("select size");
-		sizesp2.setSelection(mSize2-2,true);
+		sizesp2.setSelection(mSize2 - 2, true);
 		sizesp2.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View view,
@@ -208,8 +212,10 @@ public class OptionActivity extends Activity {
 	public void onSaveInstanceState(Bundle outState) {
 		// Store the game state
 		Bundle map = new Bundle();
-		map.putBoolean("mPuzzleOptionChanged", Boolean.valueOf(mPuzzleOptionChanged));
-		map.putBoolean("mNumberOptionChanged", Boolean.valueOf(mNumberOptionChanged));
+		map.putBoolean("mPuzzleOptionChanged",
+				Boolean.valueOf(mPuzzleOptionChanged));
+		map.putBoolean("mNumberOptionChanged",
+				Boolean.valueOf(mNumberOptionChanged));
 		map.putInt("mLevel1", Integer.valueOf(mLevel1));
 		map.putInt("mLevel2", Integer.valueOf(mLevel2));
 		map.putInt("mSize2", Integer.valueOf(mSize2));

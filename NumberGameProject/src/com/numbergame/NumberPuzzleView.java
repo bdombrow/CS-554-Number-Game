@@ -1,4 +1,5 @@
 package com.numbergame;
+
 import com.numbergame.R;
 import android.content.Context;
 import android.content.res.Resources;
@@ -14,8 +15,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class NumberPuzzleView extends View
-{
+public class NumberPuzzleView extends View {
 	private static final int NUM_0 = 0;
 	private static final int NUM_1 = 1;
 	private static final int NUM_2 = 2;
@@ -26,10 +26,10 @@ public class NumberPuzzleView extends View
 	private static final int NUM_7 = 7;
 	private static final int NUM_8 = 8;
 	private static final int NUM_9 = 9;
-	private static final int NUM_10 =10;
-	private static final int NUM_11 =11;
-	private static final int NUM_12 =12;
-	private static final int NUM_13 =13;
+	private static final int NUM_10 = 10;
+	private static final int NUM_11 = 11;
+	private static final int NUM_12 = 12;
+	private static final int NUM_13 = 13;
 	private static final int NUM_14 = 14;
 	private static final int NUM_15 = 15;
 	private static final int NUM_16 = 16;
@@ -53,7 +53,7 @@ public class NumberPuzzleView extends View
 	private static int nXNumberOffset;
 	private static int nYNumberOffset;
 
-	private Bitmap[] nNumberBrickArray; 
+	private Bitmap[] nNumberBrickArray;
 
 	private int[][] nNumberBrickGrid;
 
@@ -63,20 +63,17 @@ public class NumberPuzzleView extends View
 	
 	private int nScrambleMoves;
 
-	public NumberPuzzleView(Context context, AttributeSet attrs) 
-	{
+	public NumberPuzzleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initNumberPuzzleView();
 	}
 
-	public NumberPuzzleView(Context context, AttributeSet attrs, int defStyle)
-	{
+	public NumberPuzzleView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initNumberPuzzleView();
 	}
 
-	public void setTextView(TextView newView) 
-	{
+	public void setTextView(TextView newView) {
 		nStatusText = newView;
 
 		// Set the StatusText to the current score.
@@ -84,35 +81,32 @@ public class NumberPuzzleView extends View
 		nStatusText.setVisibility(View.VISIBLE);
 	}
 
-	public void setNumberPuzzleControl(NumberPuzzle _nNumberPuzzle) 
-	{
+	public void setNumberPuzzleControl(NumberPuzzle _nNumberPuzzle) {
 		nNumberPuzzle = _nNumberPuzzle;
 	}
 
-	private void initNumberPuzzleView() 
-	{
+	private void initNumberPuzzleView() {
 		setFocusable(true);
 
 	}
 
-	public void resetNumberBricks(int Numberbrickcount) 
-	{
+	public void resetNumberBricks(int Numberbrickcount) {
 		nNumberBrickArray = new Bitmap[Numberbrickcount];
 	}
 
-	public void loadNumberBrick(int key, Drawable Numberbrick) 
-	{
-		Bitmap Numberbitmap = Bitmap.createBitmap(nNumberBrickSize, nNumberBrickSize, Bitmap.Config.ARGB_8888);
+	public void loadNumberBrick(int key, Drawable Numberbrick) {
+		Bitmap Numberbitmap = Bitmap.createBitmap(nNumberBrickSize,
+				nNumberBrickSize, Bitmap.Config.ARGB_8888);
 		Canvas Numbercanvas = new Canvas(Numberbitmap);
 		Numberbrick.setBounds(0, 0, nNumberBrickSize, nNumberBrickSize);
 		Numberbrick.draw(Numbercanvas);
 
 		nNumberBrickArray[key] = Numberbitmap;
+		
 	}
 
 	@Override
-	protected void onSizeChanged(int w, int h, int oldw, int oldh) 
-	{
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		Resources r = this.getContext().getResources();
 
 		nXNumberBrickCount = nNumberPuzzle.getXBrickCount();
@@ -120,16 +114,14 @@ public class NumberPuzzleView extends View
 
 		nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
 
-		if(w > h)
-		{
+		if (w > h) {
 			nNumberBrickSize = (int) Math.floor(h / mYNumberBrickCount);
-		}
-		else
-		{
+		} else {
 			nNumberBrickSize = (int) Math.floor(w / nXNumberBrickCount);
 		}
 
 		resetNumberBricks(26);
+		
 		loadNumberBrick(NUM_0, r.getDrawable(R.drawable.pic_0_def));
 		loadNumberBrick(NUM_1, r.getDrawable(R.drawable.pic_1_def));
 		loadNumberBrick(NUM_2, r.getDrawable(R.drawable.pic_2_def));
@@ -140,7 +132,7 @@ public class NumberPuzzleView extends View
 		loadNumberBrick(NUM_7, r.getDrawable(R.drawable.pic_7_def));
 		loadNumberBrick(NUM_8, r.getDrawable(R.drawable.pic_8_def));
 		loadNumberBrick(NUM_9, r.getDrawable(R.drawable.pic_9_def));
-		loadNumberBrick(NUM_10, r.getDrawable(R.drawable.pic_10_def)); 
+		loadNumberBrick(NUM_10, r.getDrawable(R.drawable.pic_10_def));
 		loadNumberBrick(NUM_11, r.getDrawable(R.drawable.pic_11_def));
 		loadNumberBrick(NUM_12, r.getDrawable(R.drawable.pic_12_def));
 		loadNumberBrick(NUM_13, r.getDrawable(R.drawable.pic_13_def));
@@ -156,23 +148,22 @@ public class NumberPuzzleView extends View
 		loadNumberBrick(NUM_23, r.getDrawable(R.drawable.pic_23_def));
 		loadNumberBrick(NUM_24, r.getDrawable(R.drawable.pic_24_def));
 
-		loadNumberBrick(BLANK, r.getDrawable(R.drawable.pic_blk));        
-
+		loadNumberBrick(BLANK, r.getDrawable(R.drawable.pic_blk));
 
 		nXNumberOffset = ((w - (nNumberBrickSize * nXNumberBrickCount)) / 2);
 		nYNumberOffset = ((h - (nNumberBrickSize * mYNumberBrickCount)) / 2);
+
 	}
 
-	private Index CoordinateToIndex(float x, float y)
-	{
+	private Index CoordinateToIndex(float x, float y) {
 		int i, j;
 
-		for (i = 0; i < nXNumberBrickCount; i += 1) 
-		{
-			for (j = 0; j < mYNumberBrickCount; j += 1) 
-			{
-				if ((x > (nXNumberOffset + i * nNumberBrickSize)) && (x <  (nXNumberOffset + (i+1) * nNumberBrickSize)) && (y > (nYNumberOffset + j * nNumberBrickSize)) && (y < (nYNumberOffset + (j+1) * nNumberBrickSize))) 
-				{
+		for (i = 0; i < nXNumberBrickCount; i += 1) {
+			for (j = 0; j < mYNumberBrickCount; j += 1) {
+				if ((x > (nXNumberOffset + i * nNumberBrickSize))
+						&& (x < (nXNumberOffset + (i + 1) * nNumberBrickSize))
+						&& (y > (nYNumberOffset + j * nNumberBrickSize))
+						&& (y < (nYNumberOffset + (j + 1) * nNumberBrickSize))) {
 					return new Index(i, j);
 				}
 			}
@@ -248,18 +239,15 @@ public class NumberPuzzleView extends View
 		float x = event.getX();
 		float y = event.getY();
 
-
 		// The touch was outside the grid, ignore it
 		index = CoordinateToIndex(x, y);
-		if(index.x == 2012 || index.y == 2012)
-		{
+		if (index.x == 2012 || index.y == 2012) {
 			return true;
 		}
 
-		//	View nStatusText;
+		// View nStatusText;
 		// The initial touch downward
-		switch (event.getAction()) 
-		{
+		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			break;
 		case MotionEvent.ACTION_MOVE:
@@ -268,10 +256,10 @@ public class NumberPuzzleView extends View
 
 			nNumberPuzzle.ChangeNumberPuzzle(index.x, index.y);
 			nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
-			
+
 			nNumberPuzzle.submit();
 			nStatusText.setText(nNumberPuzzle.getScore());
-			
+
 			invalidate();
 			
 			if (nNumberPuzzle.IsPuzzleSolved())
@@ -298,10 +286,8 @@ public class NumberPuzzleView extends View
 	}
 
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent msg) 
-	{		        
-		if (keyCode == KeyEvent.KEYCODE_MENU)
-		{
+	public boolean onKeyDown(int keyCode, KeyEvent msg) {
+		if (keyCode == KeyEvent.KEYCODE_MENU) {
 			nStatusText.setText("KEYCODE_MENU");
 			nStatusText.setVisibility(View.VISIBLE);
 		}
@@ -310,39 +296,33 @@ public class NumberPuzzleView extends View
 	}
 
 	@Override
-	public void onDraw(Canvas Numbercanvas) 
-	{
+	public void onDraw(Canvas Numbercanvas) {
 		super.onDraw(Numbercanvas);
-		for (int x = 0; x < nXNumberBrickCount; x += 1) 
-		{
-			for (int y = 0; y < mYNumberBrickCount; y += 1) 
-			{
-				if (nNumberBrickGrid[x][y] < 2012) 
-				{
-					Numbercanvas.drawBitmap(nNumberBrickArray[nNumberBrickGrid[x][y]], 
-							nXNumberOffset + x * nNumberBrickSize,
-							nYNumberOffset + y * nNumberBrickSize,
-							nNumberPaint);
+		for (int x = 0; x < nXNumberBrickCount; x += 1) {
+			for (int y = 0; y < mYNumberBrickCount; y += 1) {
+				if (nNumberBrickGrid[x][y] < 2012) {
+					Numbercanvas
+							.drawBitmap(
+									nNumberBrickArray[nNumberBrickGrid[x][y]],
+									nXNumberOffset + x * nNumberBrickSize,
+									nYNumberOffset + y * nNumberBrickSize,
+									nNumberPaint);
 				}
 			}
 		}
 	}
 
-	private class Index 
-	{
+	private class Index {
 		public int x;
 		public int y;
 
-		public Index(int newX, int newY) 
-		{
+		public Index(int newX, int newY) {
 			x = newX;
 			y = newY;
 		}
 
-		public boolean equals(Index other) 
-		{
-			if (x == other.x && y == other.y) 
-			{
+		public boolean equals(Index other) {
+			if (x == other.x && y == other.y) {
 				return true;
 			}
 			return false;
@@ -350,5 +330,3 @@ public class NumberPuzzleView extends View
 	}
 
 }
-
-
