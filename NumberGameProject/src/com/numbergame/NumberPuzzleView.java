@@ -60,6 +60,8 @@ public class NumberPuzzleView extends View
 	private final Paint nNumberPaint = new Paint();
 
 	private NumberPuzzle nNumberPuzzle;
+	
+	private int nScrambleMoves;
 
 	public NumberPuzzleView(Context context, AttributeSet attrs) 
 	{
@@ -182,8 +184,8 @@ public class NumberPuzzleView extends View
 	
     public void Scramble()
     {
-		int numMoves = nNumberPuzzle.ScrambleNumberPuzzle();
-		Toast toast = Toast.makeText(this.getContext(),"scramble moves = " + numMoves, Toast.LENGTH_SHORT);
+    	nScrambleMoves = nNumberPuzzle.ScrambleNumberPuzzle();
+		Toast toast = Toast.makeText(this.getContext(),"scramble moves = " + nScrambleMoves, Toast.LENGTH_SHORT);
 		toast.setGravity(Gravity.TOP|Gravity.RIGHT,30, 30);
 		toast.show();
 		nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
@@ -192,15 +194,16 @@ public class NumberPuzzleView extends View
     
     public void UnScramble()
     {
-/*    	Toast toast = Toast.makeText(this.getContext(),"within UnScramble", Toast.LENGTH_SHORT);
-		toast.setGravity(Gravity.TOP|Gravity.RIGHT,30, 30);
-		toast.show(); */
 		nNumberPuzzle.UnScrambleNumberPuzzle();
 		nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
+		nStatusText.setText(nNumberPuzzle.getScore());
 		invalidate();
     }
 
-
+    // For the AI puzzle wizard, the scrambled moves are played
+    // back with a 500 milli-second delay between each move.
+    // postInvalidate() is called to notify the UI thread
+    // to redraw the tiles
     public class DelayedUnScrambleThread extends Thread
     {
         	public void run()
@@ -226,22 +229,16 @@ public class NumberPuzzleView extends View
     	}
     }   
 
-     
+    // For the AI puzzle wizard, a second thread is created
+    // to play back the scrambled moves
     public void AIUnScramble()
     {
     	Thread delay = new DelayedUnScrambleThread();
 		delay.start();
+		nStatusText.setText(nNumberPuzzle.getScore());
+		invalidate();
     }
     
-    public void AIUnScramble2()
-    {
-    	while(nNumberPuzzle.AIUnScrambleNumberPuzzle())
-    	{
-    		nNumberBrickGrid = nNumberPuzzle.GetNumberPuzzle();
-    		invalidate();
-    	}
-    }
-
     
 	public boolean onTouch(View v, MotionEvent event)
 	{
@@ -276,7 +273,22 @@ public class NumberPuzzleView extends View
 			nStatusText.setText(nNumberPuzzle.getScore());
 			
 			invalidate();
-
+			
+			if (nNumberPuzzle.IsPuzzleSolved())
+			{
+				int score = Integer.parseInt(nNumberPuzzle.getScore());
+				String congrats = "Puzzle Solved";
+				if (score > nScrambleMoves)
+					congrats = congrats + "\n\nYOU ARE FANTASTIC!";
+				else if (score == nScrambleMoves)
+					congrats = congrats + "\nyou equaled the wizard" + "\n\nYOU ARE AMAZING!!";
+				else if (score < nScrambleMoves)
+					congrats = congrats + "\nyou beat the wizard" + "\n\nYOU ARE AWESOME!!!";
+				Toast toast = Toast.makeText(this.getContext(),congrats, Toast.LENGTH_LONG);
+				toast.setGravity(Gravity.CENTER,0,0);
+				toast.show();
+				
+			}
 			break;
 		default:
 			break;

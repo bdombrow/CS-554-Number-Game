@@ -32,26 +32,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="50dp"
             android:layout_marginLeft="5dp"
-            android:text="Scramble" />
+            android:text="Start" />
          <Button
             android:id="@+id/unscrambleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
-            android:text="UnScramble" />
+            android:text="New" />
 
         <Button
             android:id="@+id/wizardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+			android:layout_alignParentRight="true" 
+            android:layout_alignBottom="@+id/unscrambleButton"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="Game\nWizard" />
+            android:text="Puzzle\nWizard" />
     </RelativeLayout>
 
 </FrameLayout>

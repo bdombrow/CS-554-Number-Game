@@ -55,19 +55,19 @@ public class NumberPuzzle {
 			numRandomMoves = 5;
 			break;
 			
-		// 3x3 puzzle only has 53-80 random moves for scramble
+		// 3x3 puzzle only has 48->30 random moves for scramble
 		case 3:
-			numRandomMoves = 50 + (3 * nLevel);
+			numRandomMoves = 50 - (2 * nLevel);
 			break;
 			
-		// 4x4 puzzle only has 79-115 random moves for scramble
+		// 4x4 puzzle only has 98->60 random moves for scramble
 		case 4:
-			numRandomMoves = 75 + (4 * nLevel);
+			numRandomMoves = 100 - (4 * nLevel);
 			break;
 			
-		// 5x5 puzzle only has 105-150 random moves for scramble
+		// 5x5 puzzle only has 120->75 random moves for scramble
 		case 5: default:
-			numRandomMoves = 100 + (5 * nLevel);
+			numRandomMoves = 125 - (5 * nLevel);
 			break;
 		}
 
@@ -168,7 +168,7 @@ public class NumberPuzzle {
 	}
 
 	protected static int numRandomMoves; 
-	protected static int maxMoves = 3000;
+	protected static int maxMoves = 1000;
 	protected static int numRandomPuzzleMoves; 
 	protected static int numPlayerPuzzleMoves;
 	
@@ -198,7 +198,6 @@ public class NumberPuzzle {
 		int newIndex = 0;
 		
 		int previous = 10;
-		int current;
 
 		for (int i = 0; i < maxMoves; i++) {
 			switch (randomMoves[i]) {
@@ -243,14 +242,17 @@ public class NumberPuzzle {
 				randomMoves[i] = 5; // 5 is a dummy place holder
 				break;
 			}
-
+			
+			// remove the random moves that are repeatedly
+			// left and then right or up and then down
 			if (randomMoves[i] != 5) {
-				current = randomMoves[i];
-				if (Math.abs(previous - current) == 1)
+				int current = randomMoves[i];
+				if ( (previous + current == 3) || (previous + current == 7) )
 					randomMoves[i] = 5;
 				else
-					previous = current;	
+					previous = current;
 			}  
+
 
 			if (randomMoves[i] != 5) {
 				BlankIndex = newIndex; // set the new index of the blank space
@@ -265,7 +267,7 @@ public class NumberPuzzle {
 				{
 					if ( nXNumberBrickCount == 2 )
 					{
-						int adjust = (int) (Math.random() * 100) % 4;
+						int adjust = (int) (Math.random() * 100) % 5;
 						for (int k=0; k<adjust; k++)
 						{
 							boolean singlestep = true;
