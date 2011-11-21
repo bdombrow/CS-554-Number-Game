@@ -400,6 +400,16 @@ public class NumberPuzzle {
 			}
 		}
 
+		map.putInt("numRandomMoves", numRandomMoves);
+		map.putInt("numRandomPuzzleMoves", numRandomPuzzleMoves);
+		map.putInt("numPlayerPuzzleMoves", numPlayerPuzzleMoves);
+		for (i = 0; i < numRandomPuzzleMoves; i = i + 1) {
+			map.putInt(("randomPuzzleMoves" + i), randomPuzzleMoves[i]);
+		}
+		for (i = 0; i < numPlayerPuzzleMoves; i = i + 1) {
+			map.putInt(("playerPuzzleMoves" + i), playerPuzzleMoves[i]);
+		}
+
 		return;
 	}
 
@@ -425,6 +435,16 @@ public class NumberPuzzle {
 			}
 		}
 
+		numRandomMoves = icicle.getInt("numRandomMoves");
+		numRandomPuzzleMoves = icicle.getInt("numRandomPuzzleMoves");
+		numPlayerPuzzleMoves = icicle.getInt("numPlayerPuzzleMoves");
+		for (i = 0; i < numRandomPuzzleMoves; i = i + 1) {
+			randomPuzzleMoves[i] = icicle.getInt(("randomPuzzleMoves" + i));
+		}
+		for (i = 0; i < numPlayerPuzzleMoves; i = i + 1) {
+			playerPuzzleMoves[i] = icicle.getInt(("playerPuzzleMoves" + i));
+		}
+
 		if (neadNewPuzzle) {
 			nNumberPuzzleGrid = CreateNewNumberPuzzle(nXNumberBrickCount,
 					nYNumberBrickCount);
@@ -446,6 +466,17 @@ public class NumberPuzzle {
 						+ Integer.toString(j), nNumberPuzzleGrid[i][j]);
 			}
 		}
+
+		editor.putInt("numRandomMoves", numRandomMoves);
+		editor.putInt("numRandomPuzzleMoves", numRandomPuzzleMoves);
+		editor.putInt("numPlayerPuzzleMoves", numPlayerPuzzleMoves);
+		for (i = 0; i < numRandomPuzzleMoves; i = i + 1) {
+			editor.putInt(("randomPuzzleMoves" + i), randomPuzzleMoves[i]);
+		}
+		for (i = 0; i < numPlayerPuzzleMoves; i = i + 1) {
+			editor.putInt(("playerPuzzleMoves" + i), playerPuzzleMoves[i]);
+		}
+		
 		editor.commit();
 	}
 
@@ -471,6 +502,16 @@ public class NumberPuzzle {
 					neadNewPuzzle = true;
 				}
 			}
+		}
+
+		numRandomMoves = settings.getInt("numRandomMoves", 0);
+		numRandomPuzzleMoves = settings.getInt("numRandomPuzzleMoves", 0);
+		numPlayerPuzzleMoves = settings.getInt("numPlayerPuzzleMoves", 0);
+		for (i = 0; i < numRandomPuzzleMoves; i = i + 1) {
+			randomPuzzleMoves[i] = settings.getInt(("randomPuzzleMoves" + i), 5);
+		}
+		for (i = 0; i < numPlayerPuzzleMoves; i = i + 1) {
+			playerPuzzleMoves[i] = settings.getInt(("playerPuzzleMoves" + i), 5);
 		}
 
 		if (neadNewPuzzle || mNumberOptionChanged) {
