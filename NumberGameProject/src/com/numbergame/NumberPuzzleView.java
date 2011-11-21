@@ -62,6 +62,7 @@ public class NumberPuzzleView extends View {
 	private NumberPuzzle nNumberPuzzle;
 	
 	private int nScrambleMoves;
+	private boolean AIUnscrambleStarted = false;
 
 	public NumberPuzzleView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -199,6 +200,7 @@ public class NumberPuzzleView extends View {
     {
         	public void run()
         	{
+        		AIUnscrambleStarted = true;
         		try
         		{
         	    	while(nNumberPuzzle.AIUnScrambleNumberPuzzle())
@@ -217,6 +219,7 @@ public class NumberPuzzleView extends View {
         		catch (InterruptedException e)
         		{
         		}
+        		AIUnscrambleStarted = false;
     	}
     }   
 
@@ -224,6 +227,8 @@ public class NumberPuzzleView extends View {
     // to play back the scrambled moves
     public void AIUnScramble()
     {
+    	if (AIUnscrambleStarted)
+    		return;
     	Thread delay = new DelayedUnScrambleThread();
 		delay.start();
 		nStatusText.setText(nNumberPuzzle.getScore());
