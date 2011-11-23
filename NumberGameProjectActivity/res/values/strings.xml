@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="mode1text">Math Puzzle:</string>
-    <string name="mode2text">Number Puzzle:</string>
-    <string name="leveltext">Level</string>
-    <string name="sizetext">Size</string>
-    <string name="score">0000</string>
-    <string name="app_name">NumberGameProject</string>
-</resources>
