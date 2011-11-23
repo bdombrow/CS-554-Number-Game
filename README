@@ -1,0 +1,34 @@
+***************************************************************************
+                               CRAZY PUZZLE
+***************************************************************************
+
+This is android application which is open sourced terms of the GNU General Public License
+
+Open-Android-CrazyPuzzle Copyright © 2011 
+@author "Brent Dombrowski", 
+@author "Hema Kumar",
+@author "Frank Sliz"
+@author "Derek Qian"
+
+This file is part of Crazy puzzle.This is free software: you can redistribute it 
+and/or modify it under the terms of the GNU General Public License as published by the 
+Free Software Foundation, either version 3 of the License, or any later version.
+Crazy Puzzle is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+without even the implied warranty ofMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See theGNU General Public License for more details.
+  
+You should have received a copy of the GNU General Public License along with Crazy Puzzle. 
+If not, see <http://www.gnu.org/licenses/>.
+For feedback please mail at either of the below mentioned email id
+bdombrow@cecs.pdx.edu /hemasid@gmail.com / fwsliz@gmail.com / electronseu@gmail.com 
+
+This is a game which is build as part of an academic course. The requirement of the project can be accessed at either of the following location:
+
+https://github.com/bdombrow/CS-554-Number-Game/wiki
+https://github.com/bdombrow/CS-554-Number-Game/blob/master/Word%20and%20Math%20games.pdf
+
+The intention of this app is a maths game for children. It has two parts which include a number game and an equation puzzle.
+
+All the refrences have been listed at the below mentioned link:
+https://github.com/bdombrow/CS-554-Number-Game/wiki/References
+ 
