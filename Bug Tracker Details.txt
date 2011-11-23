@@ -1,0 +1,7 @@
+Please report any bug/feedback found in this application in this forum. You can also raise it a bug in GitHub.
+
+You can even mail them to either of the email id's listed below:
+"Brent Dombrowski" <bdombrow@cecs.pdx.edu>
+"Hema Kumar" <hemasid@gmail.com> 
+"Frank Sliz" <fwsliz@gmail.com>
+"Derek Qian" <electronseu@gmail.com>
